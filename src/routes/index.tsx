@@ -1,31 +1,111 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useSearch } from '@tanstack/react-router'
+import { z } from 'zod'
+import { zodValidator, fallback } from '@tanstack/zod-adapter'
+import { useEffect, useState, startTransition } from 'react'
+import { useDebouncedCallback } from 'use-debounce'
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Input } from '@/components/ui/input'
+import { Search } from 'lucide-react'
 import CurrentHuntCard from '@/components/CurrentHuntCard'
 import PokemonDatabaseCard from '@/components/PokemonDatabaseCard'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
+const pokemonSearchSchema = z.object({
+  searchTerm: fallback(z.string(), '').default(''),
+  activeTab: fallback(z.enum(['hunts', 'pokemon']), 'hunts').default('hunts'),
+})
+
 export const Route = createFileRoute('/')({
+  validateSearch: zodValidator(pokemonSearchSchema),
   component: App,
 })
 
-function App() {
+export default function App() {
+  const search = Route.useSearch()
+  const navigate = Route.useNavigate()
+
+  const [localSearchTerm, setLocalSearchTerm] = useState(search.searchTerm)
+
+  useEffect(() => {
+    setLocalSearchTerm(search.searchTerm)
+  }, [search.searchTerm])
+
+  const debouncedSetSearchTerm = useDebouncedCallback((value: string) => {
+    startTransition(() => {
+      navigate({
+        search: (prev) => ({
+          ...prev,
+          searchTerm: value,
+        }),
+        replace: true,
+      })
+    })
+  }, 300)
+
+  const handleSearchChange = (value: string) => {
+    setLocalSearchTerm(value)
+    debouncedSetSearchTerm(value)
+  }
+
+  const handleTabChange = (value: string) => {
+    startTransition(() => {
+      navigate({
+        search: (prev) => ({
+          ...prev,
+          activeTab: value as 'hunts' | 'pokemon',
+        }),
+        replace: true,
+      })
+    })
+  }
+
   return (
-    <div className="text-center">
-      <Tabs defaultValue="account" className="w-[400px]">
-        <TabsList>
-          <TabsTrigger
-            value="account"
-            className="data-[state=active]:bg-amber-600"
+    <div className="min-h-screen bg-[#fafafa] p-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-4xl font-bold text-[#1a1a1a]">
+            Pokemon Hunt Tracker
+          </h1>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-sm p-1 mb-6">
+          <Tabs
+            value={search.activeTab}
+            onValueChange={handleTabChange}
+            className="w-full"
           >
-            Current Hunts
-          </TabsTrigger>
-          <TabsTrigger value="password">Pokemon Database</TabsTrigger>
-        </TabsList>
-        <TabsContent value="account">
-          <CurrentHuntCard />
-        </TabsContent>
-        <TabsContent value="password">
-          <PokemonDatabaseCard />
-        </TabsContent>
-      </Tabs>{' '}
+            <TabsList className="flex w-full bg-white rounded-lg">
+              <TabsTrigger
+                value="hunts"
+                className="flex-1 py-3 px-6 rounded-lg text-black font-medium data-[state=active]:text-black"
+              >
+                Current Hunts
+              </TabsTrigger>
+              <TabsTrigger
+                value="pokemon"
+                className="flex-1 py-3 px-6 rounded-lg text-black font-medium data-[state=active]:text-black"
+              >
+                Pokemon Database
+              </TabsTrigger>
+            </TabsList>
+            <div className="relative mt-4">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1a1a1a] opacity-60" />
+              <Input
+                placeholder="Search..."
+                value={localSearchTerm}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                className="pl-10 bg-[#f2f2f2] border-[#e6e6e6] text-[#1a1a1a] placeholder-[#1a1a1a] placeholder-opacity-60"
+              />
+            </div>
+            <TabsContent value="hunts">
+              <CurrentHuntCard />
+            </TabsContent>
+            <TabsContent value="pokemon">
+              <PokemonDatabaseCard />
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
     </div>
   )
 }

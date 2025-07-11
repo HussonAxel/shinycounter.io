@@ -68,6 +68,9 @@ importers:
       '@tanstack/router-plugin':
         specifier: ^1.121.2
         version: 1.126.2(@tanstack/react-router@1.126.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(vite@6.3.5(@types/node@24.0.13)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3))
+      '@tanstack/zod-adapter':
+        specifier: ^1.127.2
+        version: 1.127.2(@tanstack/react-router@1.126.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(zod@3.25.76)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -95,6 +98,9 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@4.1.11)
+      use-debounce:
+        specifier: ^10.0.5
+        version: 10.0.5(react@19.1.0)
       vite:
         specifier: ^6.3.3
         version: 6.3.5(@types/node@24.0.13)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)
@@ -1941,6 +1947,13 @@ packages:
   '@tanstack/virtual-file-routes@1.121.21':
     resolution: {integrity: sha512-3nuYsTyaq6ZN7jRZ9z6Gj3GXZqBOqOT0yzd/WZ33ZFfv4yVNIvsa5Lw+M1j3sgyEAxKMqGu/FaNi7FCjr3yOdw==}
     engines: {node: '>=12'}
+
+  '@tanstack/zod-adapter@1.127.2':
+    resolution: {integrity: sha512-qhNA3A2pf6rbX8VKgT7O//FwwzK2csEB/Uib/cfGFj05vZBwH2nL33Zunf7R58Ew2Hkv0mqF52e85mSzRSxnlg==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      '@tanstack/react-router': '>=1.43.2'
+      zod: ^3.23.8
 
   '@testing-library/dom@10.4.0':
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
@@ -4721,6 +4734,12 @@ packages:
       '@types/react':
         optional: true
 
+  use-debounce@10.0.5:
+    resolution: {integrity: sha512-Q76E3lnIV+4YT9AHcrHEHYmAd9LKwUAbPXDm7FlqVGDHiSOhX3RDjT8dm0AxbJup6WgOb1YEcKyCr11kBJR5KQ==}
+    engines: {node: '>= 16.0.0'}
+    peerDependencies:
+      react: '*'
+
   use-sidecar@1.1.3:
     resolution: {integrity: sha512-Fedw0aZvkhynoPYlA5WXrMCAMm+nSWdZt6lzJQ7Ok8S6Q+VsHmHpRWndVRJ8Be0ZbkfPc5LRYH+5XrzXcEeLRQ==}
     engines: {node: '>=10'}
@@ -6749,6 +6768,11 @@ snapshots:
   '@tanstack/table-core@8.21.3': {}
 
   '@tanstack/virtual-file-routes@1.121.21': {}
+
+  '@tanstack/zod-adapter@1.127.2(@tanstack/react-router@1.126.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(zod@3.25.76)':
+    dependencies:
+      '@tanstack/react-router': 1.126.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      zod: 3.25.76
 
   '@testing-library/dom@10.4.0':
     dependencies:
@@ -9698,6 +9722,10 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       '@types/react': 19.1.8
+
+  use-debounce@10.0.5(react@19.1.0):
+    dependencies:
+      react: 19.1.0
 
   use-sidecar@1.1.3(@types/react@19.1.8)(react@19.1.0):
     dependencies:
