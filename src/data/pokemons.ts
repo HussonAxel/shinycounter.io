@@ -1,0 +1,18 @@
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
+
+const BASE_POKEAPI_URL = 'https://pokeapi.co/api/v2'
+const BASE_TYRADEX_URL = 'https://tyradex.vercel.app/api/v1'
+
+export const useGetAllPokemons = () => {
+  return useQuery({
+    queryKey: ['pokemons'],
+    queryFn: async () => {
+      const response = await axios.get(`${BASE_TYRADEX_URL}/pokemon`)
+      const data = response.data
+      return data
+    },
+    staleTime: 1000 * 60 * 60 * 24 * 7,
+    gcTime: 1000 * 60 * 60 * 24 * 30,
+  })
+}
