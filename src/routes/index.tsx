@@ -27,7 +27,6 @@ export default function App() {
   const navigate = Route.useNavigate()
 
   const { data: pokemons } = useGetAllPokemons()
-  console.log(pokemons)
 
   const [localSearchTerm, setLocalSearchTerm] = useState(search.searchTerm)
 
