@@ -30,6 +30,9 @@ export default function PokemonDatabaseCard({
   pokemonImage,
   pokemonTypes,
   pokemonStats,
+  pokemonHeight,
+  pokemonWeight,
+  pokemonAbilities,
 }: PokemonDatabaseCardProps) {
   // const searchedPokemon = useSearch({
   //   from: '/',
@@ -37,6 +40,12 @@ export default function PokemonDatabaseCard({
   // })
 
   const currentSearch = useSearch({ from: '/' })
+
+  console.log(pokemonAbilities)
+  const abilities = pokemonAbilities?.map((ability) => {
+    return `${ability.name} ${ability.tc ? '(TC)' : ''}`
+  })
+  const summaryAbilities = abilities?.join(', ')
 
   return (
     <Dialog>
@@ -95,15 +104,15 @@ export default function PokemonDatabaseCard({
             <div className="flex flex-col gap-2">
               <div className="flex flex-row w-full justify-between">
                 <p className="opacity-80">Height:</p>
-                <p>10</p>
+                <p>{pokemonHeight}</p>
               </div>
               <div className="flex flex-row w-full justify-between">
                 <p className="opacity-80">Weight:</p>
-                <p>10</p>
+                <p>{pokemonWeight}</p>
               </div>
               <div className="flex flex-row w-full justify-between">
                 <p className="opacity-80">Abilities:</p>
-                <p>{pokemonName}</p>
+                <p>{summaryAbilities}</p>
               </div>
             </div>
           </div>

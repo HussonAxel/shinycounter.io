@@ -27,6 +27,7 @@ export default function App() {
   const navigate = Route.useNavigate()
 
   const { data: pokemons } = useGetAllPokemons()
+  console.log(pokemons)
 
   const [localSearchTerm, setLocalSearchTerm] = useState(search.searchTerm)
 
@@ -114,6 +115,9 @@ export default function App() {
                       pokemonImage={`assets/static/sprites/base/${pokemon.pokedex_id}.webp`}
                       pokemonTypes={pokemon.types}
                       pokemonStats={pokemon.stats}
+                      pokemonHeight={pokemon.height}
+                      pokemonWeight={pokemon.weight}
+                      pokemonAbilities={pokemon.talents}
                     />
                   ))}
               </article>
