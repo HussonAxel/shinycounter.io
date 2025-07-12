@@ -1,4 +1,4 @@
-import { createFileRoute, useSearch } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
 import { zodValidator, fallback } from '@tanstack/zod-adapter'
 import { useEffect, useState, startTransition } from 'react'
@@ -9,10 +9,12 @@ import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
 import CurrentHuntCard from '@/components/CurrentHuntCard'
 import PokemonDatabaseCard from '@/components/PokemonDatabaseCard'
+import { useGetAllPokemons } from '@/data/pokemons'
 
 const pokemonSearchSchema = z.object({
   searchTerm: fallback(z.string(), '').default(''),
   activeTab: fallback(z.enum(['hunts', 'pokemon']), 'hunts').default('hunts'),
+  activePokemon: fallback(z.string(), '').default(''),
 })
 
 export const Route = createFileRoute('/')({
@@ -23,6 +25,9 @@ export const Route = createFileRoute('/')({
 export default function App() {
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
+
+  const { data: pokemons } = useGetAllPokemons()
+  console.log(pokemons)
 
   const [localSearchTerm, setLocalSearchTerm] = useState(search.searchTerm)
 
@@ -101,7 +106,18 @@ export default function App() {
               <CurrentHuntCard />
             </TabsContent>
             <TabsContent value="pokemon">
-              <PokemonDatabaseCard />
+              <article className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md gap-8 mx-8 my-4">
+                {pokemons &&
+                  pokemons.map((pokemon: any) => (
+                    <PokemonDatabaseCard
+                      pokemonName={pokemon.name.en}
+                      pokemonId={pokemon.ndex}
+                      pokemonImage={`assets/static/sprites/base/${pokemon.pokedex_id}.webp`}
+                      pokemonTypes={pokemon.types}
+                      pokemonStats={pokemon.stats}
+                    />
+                  ))}
+              </article>
             </TabsContent>
           </Tabs>
         </div>
