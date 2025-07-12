@@ -1,4 +1,5 @@
 import { useSearch } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 
 import {
   Card,
@@ -15,11 +16,18 @@ export default function PokemonDatabaseCard() {
     from: '/',
     select: (search) => search.searchTerm,
   })
+  const currentSearch = useSearch({ from: '/' })
 
   return (
     <article className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md gap-8 mx-8 my-4">
-      <Card className="hover:shadow-lg transition-all active:bg-gray-50 active:scale-[97%] active:shadow-xl">
-        <a href="#">
+      <Card className="hover:shadow-lg hover:scale-105 transition-all active:bg-gray-50 active:scale-[100%] active:shadow-xl">
+        <Link
+          to="."
+          search={{
+            ...currentSearch,
+            activePokemon: 'test',
+          }}
+        >
           <CardHeader className="flex flex-col items-center justify-center">
             <img
               src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
@@ -45,7 +53,7 @@ export default function PokemonDatabaseCard() {
               </Badge>{' '}
             </CardDescription>
           </CardHeader>
-        </a>
+        </Link>
       </Card>
       <Card>
         <a href="#">
