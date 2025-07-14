@@ -1,67 +1,69 @@
-import { createFileRoute, useSearch } from '@tanstack/react-router'
-import { z } from 'zod'
-import { fallback } from '@tanstack/zod-adapter'
-import { startTransition, useCallback, useMemo, useState } from 'react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { createFileRoute, useNavigate, useSearch } from '@tanstack/react-router'
+import { useMemo } from 'react'
 import { Input } from '@/components/ui/input'
+import { z } from 'zod'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import CurrentHuntCard from '@/components/CurrentHuntCard'
 import PokemonDatabaseCard from '@/components/PokemonDatabaseCard'
 import { useGetAllPokemons } from '@/data/pokemons'
 
 const pokemonSearchSchema = z.object({
-  activeTab: fallback(z.enum(['hunts', 'pokedex']), 'hunts').default('hunts'),
-  activePokemon: fallback(z.string(), '').default(''),
+  searchTerm: z.string().optional().catch(''),
+  activeTab: z.enum(['hunts', 'pokedex']).optional().catch('hunts'),
+  activePokemon: z.string().optional().catch(''),
 })
 
 export const Route = createFileRoute('/')({
   validateSearch: pokemonSearchSchema,
-  component: App,
+  component: PokemonApp,
 })
 
-export default function App() {
-  const currentSearch = useSearch({ from: '/' })
-  const navigate = Route.useNavigate()
+function PokemonApp() {
+  const navigate = useNavigate({ from: '/' })
+  const { searchTerm = '', activeTab = 'hunts' } = useSearch({ from: '/' })
   const { data: pokemons, isLoading } = useGetAllPokemons()
 
-  const [searchTerm, setSearchTerm] = useState('')
+  const handleSearchChange = (value: string) => {
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        searchTerm: value || undefined,
+      }),
+      replace: true,
+    })
+  }
 
-  const handleSearchChange = useCallback((value: string) => {
-    setSearchTerm(value)
-  }, [])
-
-  const handleTabChange = useCallback(
-    (value: string) => {
-      startTransition(() => {
-        navigate({
-          search: (prev) => ({
-            ...prev,
-            activeTab: value as 'hunts' | 'pokedex',
-          }),
-          replace: true,
-        })
-      })
-    },
-    [navigate],
-  )
+  const handleTabChange = (value: string) => {
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        activeTab: value as 'hunts' | 'pokedex',
+      }),
+      replace: true,
+    })
+  }
 
   const filteredPokemons = useMemo(() => {
-    if (!pokemons) return []
+    if (!pokemons || !Array.isArray(pokemons)) return []
 
-    const searchTermLower = searchTerm.toLowerCase().trim()
+    let filtered = pokemons.filter(
+      (pokemon: any) => pokemon.pokedex_id && pokemon.pokedex_id > 0,
+    )
 
-    return pokemons
-      .filter((pokemon: any) => pokemon.pokedex_id && pokemon.pokedex_id > 0)
-      .filter((pokemon: any) => {
-        if (!searchTermLower) return true
-
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase().trim()
+      filtered = filtered.filter((pokemon: any) => {
         return (
-          pokemon.name.fr.toLowerCase().includes(searchTermLower) ||
-          pokemon.pokedex_id.toString().includes(searchTermLower) ||
+          pokemon.name?.fr?.toLowerCase().includes(searchLower) ||
+          pokemon.pokedex_id.toString().includes(searchLower) ||
           pokemon.types?.some((type: any) =>
-            type.name.toLowerCase().includes(searchTermLower),
+            type.name?.toLowerCase().includes(searchLower),
           )
         )
       })
+    }
+
+    return filtered
   }, [pokemons, searchTerm])
 
   return (
@@ -75,11 +77,11 @@ export default function App() {
 
         <div className="bg-white rounded-lg shadow-sm p-1 mb-6">
           <Tabs
-            value={currentSearch.activeTab}
+            value={activeTab}
             onValueChange={handleTabChange}
             className="w-full"
           >
-            <TabsList className="flex w-full bg-white   rounded-lg">
+            <TabsList className="flex w-full bg-white rounded-lg">
               <TabsTrigger
                 value="hunts"
                 className="flex-1 py-3 px-6 rounded-lg text-black font-medium data-[state=active]:text-black"
@@ -122,17 +124,30 @@ export default function App() {
                   </div>
                 ) : (
                   filteredPokemons.map((pokemon: any) => (
-                    <PokemonDatabaseCard
+                    <div
                       key={pokemon.pokedex_id}
-                      pokemonName={pokemon.name.fr}
-                      pokemonId={pokemon.pokedex_id}
-                      pokemonImage={`assets/static/sprites/base/${pokemon.pokedex_id}.webp`}
-                      pokemonTypes={pokemon.types}
-                      pokemonStats={pokemon.stats}
-                      pokemonHeight={pokemon.height}
-                      pokemonWeight={pokemon.weight}
-                      pokemonAbilities={pokemon.talents}
-                    />
+                      onClick={() =>
+                        navigate({
+                          search: (prev) => ({
+                            ...prev,
+                            activePokemon: pokemon.name.fr,
+                          }),
+                          replace: true,
+                        })
+                      }
+                      className="cursor-pointer"
+                    >
+                      <PokemonDatabaseCard
+                        pokemonName={pokemon.name.fr}
+                        pokemonId={pokemon.pokedex_id}
+                        pokemonImage={`assets/static/sprites/base/${pokemon.pokedex_id}.webp`}
+                        pokemonTypes={pokemon.types}
+                        pokemonStats={pokemon.stats}
+                        pokemonHeight={pokemon.height}
+                        pokemonWeight={pokemon.weight}
+                        pokemonAbilities={pokemon.talents}
+                      />
+                    </div>
                   ))
                 )}
               </article>
