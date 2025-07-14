@@ -7,6 +7,7 @@ export interface PokemonDatabaseCardProps {
   pokemonHeight: number
   pokemonWeight: number
   pokemonAbilities: string[]
+  currentProgress: number | null
 }
 
 export interface CurrentHuntCardProps {
@@ -17,4 +18,5 @@ export interface CurrentHuntCardProps {
   pokemonJapanaseName: string
   pokemonFrenchName: string
   pokemonImage: string
+  currentProgress: number | null
 }
