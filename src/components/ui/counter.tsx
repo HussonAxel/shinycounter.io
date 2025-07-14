@@ -14,7 +14,7 @@ export default function Counter() {
 
   const maxOdds = 5
   return (
-    <aside className="flex flex-col gap-2 w-fit">
+    <aside className="flex flex-col gap-2 w-fit m-auto">
       <div className="flex items-center gap-2 m-auto">
         <Minus
           className="w-12 h-12 font-light text-[#1A1A1A] opacity-50 hover:opacity-80 transition-opacity duration-300"

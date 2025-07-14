@@ -29,7 +29,7 @@ function RouteComponent() {
   }
 
   return (
-    <section className="flex flex-row border-t border-gray-200">
+    <section className="flex flex-col border-t border-gray-200 md:flex-row">
       <CurrentHuntCardLeft
         pokemonId={pokemonId}
         pokemonName={pokemonName}
