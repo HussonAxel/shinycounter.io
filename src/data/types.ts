@@ -8,3 +8,13 @@ export interface PokemonDatabaseCardProps {
   pokemonWeight: number
   pokemonAbilities: string[]
 }
+
+export interface CurrentHuntCardProps {
+  pokemonId: string
+  pokemonName: string
+  pokemonPokeAPI: any
+  pokemonTyradex: any
+  pokemonJapanaseName: string
+  pokemonFrenchName: string
+  pokemonImage: string
+}

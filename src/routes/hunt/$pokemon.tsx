@@ -31,6 +31,11 @@ function RouteComponent() {
       pokemonName={pokemonName}
       pokemonPokeAPI={pokemonPokeAPI}
       pokemonTyradex={pokemonTyradex}
+      pokemonJapanaseName={pokemonTyradex.name.jp}
+      pokemonFrenchName={pokemonTyradex.name.fr}
+      pokemonImage={
+        pokemonPokeAPI.sprites.other['official-artwork'].front_default
+      }
     />
   )
 }
