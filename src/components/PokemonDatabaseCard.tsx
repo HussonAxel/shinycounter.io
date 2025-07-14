@@ -46,7 +46,7 @@ export default function PokemonDatabaseCard({
               className="w-full m-auto max-w-[150px]"
             />
             <CardTitle className="capitalize">{pokemonName}</CardTitle>
-            <CardDescription>{pokemonId}</CardDescription>
+            <CardDescription>#{pokemonId}</CardDescription>
             <CardDescription className="text-center text-black flex gap-2">
               {pokemonTypes?.map((type: any, index: number) => (
                 <Badge
