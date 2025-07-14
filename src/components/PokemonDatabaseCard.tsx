@@ -120,7 +120,7 @@ export default function PokemonDatabaseCard({
                       {statName.replace('_', '.')}:
                     </p>
                     <Progress value={(Number(statValue) / 255) * 100} />
-                    <p className="font-bold text-right">{statValue}</p>
+                    <p className=" text-right">{statValue}</p>
                   </div>
                 ))}
             </div>
