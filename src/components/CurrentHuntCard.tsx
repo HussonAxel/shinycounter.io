@@ -1,12 +1,13 @@
 export default function CurrentHuntCard({
-  pokemonId,
-  pokemonName,
-  pokemonData,
+  pokemonPokeAPI,
+  pokemonTyradex,
 }: {
   pokemonId: string
   pokemonName: string
-  pokemonData: any
+  pokemonPokeAPI: any
+  pokemonTyradex: any
 }) {
-  console.log(pokemonData)
+  console.log(pokemonPokeAPI)
+  console.log(pokemonTyradex)
   return <div>CurrentHuntCard</div>
 }

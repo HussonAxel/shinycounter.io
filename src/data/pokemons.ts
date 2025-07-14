@@ -25,15 +25,28 @@ export const useGetIdWithName = (name: string) => {
       const data = response.data.pokedex_id
       return data
     },
+    enabled: !!name,
   })
 }
 
-export const useGetPokemonById = (id: string) => {
+export const useGetPokemonByIdPokeAPI = (id: string) => {
   return useQuery({
-    queryKey: ['pokemon', id],
+    queryKey: ['pokemonPokeAPI', id],
     queryFn: async () => {
       const response = await axios.get(`${BASE_POKEAPI_URL}/pokemon/${id}`)
       const data = response.data
+      return data
+    },
+    enabled: !!id,
+  })
+}
+
+export const useGetPokemonByIdTyradex = (id: string) => {
+  return useQuery({
+    queryKey: ['pokemonTyradex', id],
+    queryFn: async () => {
+      const responose = await axios.get(`${BASE_TYRADEX_URL}/pokemon/${id}`)
+      const data = responose.data
       return data
     },
     enabled: !!id,

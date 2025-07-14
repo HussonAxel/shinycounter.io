@@ -1,6 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
 import CurrentHuntCard from '@/components/CurrentHuntCard'
-import { useGetPokemonById, useGetIdWithName } from '@/data/pokemons'
+import {
+  useGetPokemonByIdPokeAPI,
+  useGetIdWithName,
+  useGetPokemonByIdTyradex,
+} from '@/data/pokemons'
 
 export const Route = createFileRoute('/hunt/$pokemon')({
   component: RouteComponent,
@@ -8,14 +12,25 @@ export const Route = createFileRoute('/hunt/$pokemon')({
 
 function RouteComponent() {
   const { pokemon: pokemonName } = Route.useParams()
-  const { data: pokemonId } = useGetIdWithName(pokemonName)
+  const { data: pokemonId, isLoading: isLoadingId } =
+    useGetIdWithName(pokemonName)
 
-  const { data: pokemon } = useGetPokemonById(pokemonId)
+  const { data: pokemonPokeAPI, isLoading: isLoadingPokemonPokeAPI } =
+    useGetPokemonByIdPokeAPI(pokemonId)
+
+  const { data: pokemonTyradex, isLoading: isLoadingPokemonTyradex } =
+    useGetPokemonByIdTyradex(pokemonId)
+
+  if (isLoadingId || isLoadingPokemonPokeAPI || isLoadingPokemonTyradex) {
+    return <div>Loading...</div>
+  }
+
   return (
     <CurrentHuntCard
       pokemonId={pokemonId}
       pokemonName={pokemonName}
-      pokemonData={pokemon}
+      pokemonPokeAPI={pokemonPokeAPI}
+      pokemonTyradex={pokemonTyradex}
     />
   )
 }
