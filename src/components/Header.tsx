@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <header className="flex bg-white text-black justify-between">
       <nav className="flex flex-row justify-between w-full">
-        <div className="p-4 w-1/4 bg-gray-100">
+        <div className="p-4 w-1/4 bg-gray-100 md:bg-white">
           <h2 className="font-bold text-2xl">ShinyHunter.io</h2>
         </div>
         <div className="w-3/4 flex justify-end items-center p-4">
