@@ -3,14 +3,13 @@ import { useMemo } from 'react'
 import { Input } from '@/components/ui/input'
 import { z } from 'zod'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import CurrentHuntCard from '@/components/CurrentHuntCard'
+import CurrentHuntCard from '@/components/CurrentHuntsCardGlobalViewer'
 import PokemonDatabaseCard from '@/components/PokemonDatabaseCard'
 import { useGetAllPokemons } from '@/data/pokemons'
 
 const pokemonSearchSchema = z.object({
   searchTerm: z.string().optional().catch(''),
   activeTab: z.enum(['hunts', 'pokedex']).optional().catch('hunts'),
-  activePokemon: z.string().optional().catch(''),
 })
 
 export const Route = createFileRoute('/')({
@@ -124,19 +123,7 @@ function PokemonApp() {
                   </div>
                 ) : (
                   filteredPokemons.map((pokemon: any) => (
-                    <div
-                      key={pokemon.pokedex_id}
-                      onClick={() =>
-                        navigate({
-                          search: (prev) => ({
-                            ...prev,
-                            activePokemon: pokemon.name.fr,
-                          }),
-                          replace: true,
-                        })
-                      }
-                      className="cursor-pointer"
-                    >
+                    <div key={pokemon.pokedex_id}>
                       <PokemonDatabaseCard
                         pokemonName={pokemon.name.fr}
                         pokemonId={pokemon.pokedex_id}
