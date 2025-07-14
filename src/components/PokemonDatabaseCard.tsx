@@ -35,6 +35,14 @@ export default function PokemonDatabaseCard({
   })
   const summaryAbilities = abilities?.join(', ')
 
+  const getProgressColor = (value: number) => {
+    if (value >= 120) return '#30c750' // Vert fluo
+    if (value >= 100) return '#4ee44e' // Vert
+    if (value >= 60) return '#ffeb3b' // Jaune
+    if (value >= 1) return '#ff9800' // Orange
+    return '#f44336' // Rouge (pour les stats nulles)
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -62,27 +70,32 @@ export default function PokemonDatabaseCard({
         </Card>
       </DialogTrigger>
 
-      <DialogContent className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 max-w-none bg-[#fafafa]">
-        <DialogHeader className="flex flex-row w-full items-center gap-2">
-          <DialogTitle className="capitalize">
-            {pokemonName} - {pokemonId}
+      <DialogContent
+        showCloseButton={false}
+        className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 max-w-none bg-[#fafafa]"
+      >
+        <DialogHeader className="flex flex-row w-full items-center gap-2 justify-between">
+          <DialogTitle className="capitalize text-2xl">
+            {pokemonName} - #{pokemonId}
           </DialogTitle>
-          {pokemonTypes?.map((type: any, index: number) => (
-            <Badge
-              key={index}
-              variant="secondary"
-              className={`bg-${type.name} text-white dark:bg-${type.name} font-semibold`}
-            >
-              {type.name || type}
-            </Badge>
-          ))}
+          <div>
+            {pokemonTypes?.map((type: any, index: number) => (
+              <Badge
+                key={index}
+                variant="secondary"
+                className={`bg-${type.name} text-white dark:bg-${type.name} font-semibold first:mr-2 text-sm`}
+              >
+                {type.name || type}
+              </Badge>
+            ))}
+          </div>
         </DialogHeader>
 
         <div className="w-full border-t flex justify-center items-center">
           <img
             src={pokemonImage}
             alt={pokemonName}
-            className="h-32 w-32 object-contain"
+            className="h-48 w-48 object-contain"
           />
         </div>
 
@@ -116,11 +129,19 @@ export default function PokemonDatabaseCard({
                     key={statName}
                     className="grid grid-cols-[80px_1fr_50px] items-center gap-4"
                   >
-                    <p className="font-semibold uppercase">
-                      {statName.replace('_', '.')}:
-                    </p>
-                    <Progress value={(Number(statValue) / 255) * 100} />
-                    <p className=" text-right">{statValue}</p>
+                    <p className="uppercase">{statName.replace('_', '. ')}:</p>
+                    <Progress
+                      style={
+                        {
+                          '--progress-color': getProgressColor(
+                            Number(statValue),
+                          ),
+                        } as React.CSSProperties
+                      }
+                      className="[&>div]:bg-[var(--progress-color)]"
+                      value={(Number(statValue) / 150) * 100}
+                    />
+                    <p className="font-semibold text-right">{statValue}</p>
                   </div>
                 ))}
             </div>
