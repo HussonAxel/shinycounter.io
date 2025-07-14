@@ -36,5 +36,6 @@ export const useGetPokemonById = (id: string) => {
       const data = response.data
       return data
     },
+    enabled: !!id,
   })
 }

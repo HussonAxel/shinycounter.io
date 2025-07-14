@@ -11,6 +11,11 @@ function RouteComponent() {
   const { data: pokemonId } = useGetIdWithName(pokemonName)
 
   const { data: pokemon } = useGetPokemonById(pokemonId)
-  console.log(pokemon)
-  return <CurrentHuntCard pokemonId={pokemonId} pokemonName={pokemonName} />
+  return (
+    <CurrentHuntCard
+      pokemonId={pokemonId}
+      pokemonName={pokemonName}
+      pokemonData={pokemon}
+    />
+  )
 }
