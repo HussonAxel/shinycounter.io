@@ -19,6 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './ui/dialog'
+import { Link } from '@tanstack/react-router'
 
 export default function PokemonDatabaseCard({
   pokemonName,
@@ -152,7 +153,13 @@ export default function PokemonDatabaseCard({
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
-          <Button type="submit">Start Hunt</Button>
+          <Link
+            to="/hunt/$pokemon"
+            params={{ pokemon: pokemonName.toLowerCase() }}
+            search={{}}
+          >
+            <Button type="submit">Start Hunt</Button>
+          </Link>
         </DialogFooter>
       </DialogContent>
     </Dialog>

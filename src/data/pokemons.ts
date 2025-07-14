@@ -16,3 +16,25 @@ export const useGetAllPokemons = () => {
     gcTime: 1000 * 60 * 60 * 24 * 30,
   })
 }
+
+export const useGetIdWithName = (name: string) => {
+  return useQuery({
+    queryKey: ['pokemonIdWithName', name],
+    queryFn: async () => {
+      const response = await axios.get(`${BASE_TYRADEX_URL}/pokemon/${name}`)
+      const data = response.data.pokedex_id
+      return data
+    },
+  })
+}
+
+export const useGetPokemonById = (id: string) => {
+  return useQuery({
+    queryKey: ['pokemon', id],
+    queryFn: async () => {
+      const response = await axios.get(`${BASE_POKEAPI_URL}/pokemon/${id}`)
+      const data = response.data
+      return data
+    },
+  })
+}
