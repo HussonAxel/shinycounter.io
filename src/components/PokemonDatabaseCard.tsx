@@ -95,7 +95,7 @@ export default function PokemonDatabaseCard({
           <img
             src={pokemonImage}
             alt={pokemonName}
-            className="h-48 w-48 object-contain"
+            className="h-24 w-24 md:h-48 md:w-48 object-contain"
           />
         </div>
 
