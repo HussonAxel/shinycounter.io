@@ -158,7 +158,9 @@ export default function PokemonDatabaseCard({
             params={{ pokemon: pokemonName.toLowerCase() }}
             search={{}}
           >
-            <Button type="submit">Start Hunt</Button>
+            <Button type="submit" className="w-full">
+              Start Hunt
+            </Button>
           </Link>
         </DialogFooter>
       </DialogContent>
