@@ -84,13 +84,13 @@ export default function App() {
                 value="hunts"
                 className="flex-1 py-3 px-6 rounded-lg text-black font-medium data-[state=active]:text-black"
               >
-                Current Hunts
+                Hunts
               </TabsTrigger>
               <TabsTrigger
                 value="pokemon"
                 className="flex-1 py-3 px-6 rounded-lg text-black font-medium data-[state=active]:text-black"
               >
-                Pokemon Database
+                Pokedex
               </TabsTrigger>
             </TabsList>
             <div className="relative mt-4 mx-8">

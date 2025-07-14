@@ -47,7 +47,7 @@ export default function PokemonDatabaseCard({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Card className="hover:shadow-lg hover:scale-105 transition-all active:bg-gray-50 active:scale-[100%] active:shadow-xl cursor-pointer">
+        <Card className="hover:shadow-lg hover:scale-105 transition-all active:bg-gray-50 active:scale-[100%] active:shadow-xl cursor-pointer rounded-none sm:rounded-md">
           <CardHeader className="flex flex-col items-center justify-center">
             <img
               src={pokemonImage}
