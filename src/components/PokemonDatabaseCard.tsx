@@ -1,5 +1,4 @@
-import { useSearch } from '@tanstack/react-router'
-import { Link } from '@tanstack/react-router'
+// import { useSearch } from '@tanstack/react-router'
 
 import {
   Card,
@@ -9,7 +8,6 @@ import {
 } from '@/components/ui/card'
 
 import { Badge } from '@/components/ui/badge'
-import { BadgeCheckIcon } from 'lucide-react'
 
 import type { PokemonDatabaseCardProps } from '@/data/types'
 import { Button } from './ui/button'
@@ -39,10 +37,9 @@ export default function PokemonDatabaseCard({
   //   select: (search) => search.searchTerm,
   // })
 
-  const currentSearch = useSearch({ from: '/' })
+  // const currentSearch = useSearch({ from: '/' })
 
-  console.log(pokemonAbilities)
-  const abilities = pokemonAbilities?.map((ability) => {
+  const abilities = pokemonAbilities?.map((ability: any) => {
     return `${ability.name} ${ability.tc ? '(TC)' : ''}`
   })
   const summaryAbilities = abilities?.join(', ')
@@ -90,11 +87,11 @@ export default function PokemonDatabaseCard({
           ))}
         </DialogHeader>
 
-        <div className="w-full border-t">
+        <div className="w-full border-t flex justify-center items-center">
           <img
             src={pokemonImage}
             alt={pokemonName}
-            className="w-full h-auto max-w-[300px] mx-auto"
+            className="h-32 w-32 object-contain"
           />
         </div>
 
