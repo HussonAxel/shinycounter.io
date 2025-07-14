@@ -1,5 +1,3 @@
-// import { useSearch } from '@tanstack/react-router'
-
 import {
   Card,
   CardDescription,
@@ -32,13 +30,6 @@ export default function PokemonDatabaseCard({
   pokemonWeight,
   pokemonAbilities,
 }: PokemonDatabaseCardProps) {
-  // const searchedPokemon = useSearch({
-  //   from: '/',
-  //   select: (search) => search.searchTerm,
-  // })
-
-  // const currentSearch = useSearch({ from: '/' })
-
   const abilities = pokemonAbilities?.map((ability: any) => {
     return `${ability.name} ${ability.tc ? '(TC)' : ''}`
   })
