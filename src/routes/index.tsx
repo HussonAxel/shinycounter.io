@@ -125,7 +125,7 @@ function PokemonApp() {
                   filteredPokemons.map((pokemon: any) => (
                     <div key={pokemon.pokedex_id}>
                       <PokemonDatabaseCard
-                        pokemonName={pokemon.name.fr}
+                        pokemonName={pokemon.name.en}
                         pokemonId={pokemon.pokedex_id}
                         pokemonImage={`assets/static/sprites/base/${pokemon.pokedex_id}.webp`}
                         pokemonTypes={pokemon.types}
