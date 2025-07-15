@@ -21,6 +21,8 @@ import {
 } from './ui/dialog'
 import { Link } from '@tanstack/react-router'
 
+import { usePrefetchPokemonByIDWithTyradex } from '@/data/pokemons'
+
 export default function PokemonDatabaseCard({
   pokemonName,
   pokemonId,
@@ -43,6 +45,8 @@ export default function PokemonDatabaseCard({
     if (value >= 1) return '#ff9800' // Orange
     return '#f44336' // Rouge (pour les stats nulles)
   }
+
+  const prefetchPokemon = usePrefetchPokemonByIDWithTyradex()
 
   return (
     <Dialog>
@@ -158,7 +162,7 @@ export default function PokemonDatabaseCard({
             params={{ pokemon: pokemonName.toLowerCase() }}
             search={{}}
           >
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" onMouseDown={() => prefetchPokemon(pokemonName)}>
               Start Hunt
             </Button>
           </Link>
