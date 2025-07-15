@@ -5,8 +5,6 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
-import { Progress } from './ui/progress'
-
 import { Badge } from '@/components/ui/badge'
 
 import type { PokemonDatabaseCardProps } from '@/data/types'

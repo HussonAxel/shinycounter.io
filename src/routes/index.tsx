@@ -133,6 +133,7 @@ function PokemonApp() {
                         pokemonHeight={pokemon.height}
                         pokemonWeight={pokemon.weight}
                         pokemonAbilities={pokemon.talents}
+                        currentProgress={pokemon.current_progress}
                       />
                     </div>
                   ))
