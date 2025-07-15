@@ -15,7 +15,7 @@ export default function CurrentHuntCardRight({
   currentProgress,
 }: CurrentHuntCardProps) {
   return (
-    <article className="w-full lg:w-3/4">
+    <article className="w-full lg:w-3/5">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-2 sm:pt-4 px-4 sm:px-8 lg:px-16 gap-2 sm:gap-0">
         <h1 className="text-lg sm:text-xl lg:text-2xl text-center sm:text-left">
           {pokemonFrenchName} - #{pokemonId.toString().padStart(3, '0')}

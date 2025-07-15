@@ -11,7 +11,7 @@ export default function CurrentHuntCardLeft({
 }: CurrentHuntCardProps) {
   console.log(pokemonTyradex)
   return (
-    <aside className="w-full lg:w-1/4 bg-gray-100 p-2 sm:p-4">
+    <aside className="w-full lg:w-2/5 bg-gray-100 p-2 sm:p-4">
       <div className="flex flex-col gap-2 w-full">
         <div className="w-full m-auto">
           <h1 className="text-xl sm:text-2xl lg:text-4xl opacity-30 text-[#1A1A1A] font-bold text-center">

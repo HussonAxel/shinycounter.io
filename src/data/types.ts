@@ -4,9 +4,6 @@ export interface PokemonDatabaseCardProps {
   pokemonImage: string
   pokemonTypes?: string[]
   pokemonStats?: string[]
-  pokemonHeight: number
-  pokemonWeight: number
-  pokemonAbilities: string[]
   currentProgress: number | null
 }
 

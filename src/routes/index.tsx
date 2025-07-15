@@ -4,8 +4,8 @@ import { Input } from '@/components/ui/input'
 import { z } from 'zod'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import CurrentHuntCard from '@/components/CurrentHuntsCardGlobalViewer'
-import PokemonDatabaseCard from '@/components/PokemonDatabaseCard'
-import { useGetAllPokemons } from '@/data/pokemons'
+import PokemonDatabaseCard from '@/components/PokedexCards'
+import { useGetAllPokemons, usePrefetchPokemon } from '@/data/pokemons'
 
 const pokemonSearchSchema = z.object({
   searchTerm: z.string().optional().catch(''),
@@ -21,7 +21,7 @@ function PokemonApp() {
   const navigate = useNavigate({ from: '/' })
   const { searchTerm = '', activeTab = 'hunts' } = useSearch({ from: '/' })
   const { data: pokemons, isLoading } = useGetAllPokemons()
-
+  const prefetchPokemon = usePrefetchPokemon()
   const handleSearchChange = (value: string) => {
     navigate({
       search: (prev) => ({
@@ -46,7 +46,7 @@ function PokemonApp() {
     if (!pokemons || !Array.isArray(pokemons)) return []
 
     let filtered = pokemons.filter(
-      (pokemon: any) => pokemon.pokedex_id && pokemon.pokedex_id > 0,
+      (pokemon: any) => pokemon.entry_number && pokemon.entry_number > 0,
     )
 
     if (searchTerm) {
@@ -123,16 +123,13 @@ function PokemonApp() {
                   </div>
                 ) : (
                   filteredPokemons.map((pokemon: any) => (
-                    <div key={pokemon.pokedex_id}>
+                    <div onMouseEnter={() => prefetchPokemon(pokemon.entry_number)} key={pokemon.entry_number}>
                       <PokemonDatabaseCard
-                        pokemonName={pokemon.name.fr}
-                        pokemonId={pokemon.pokedex_id}
-                        pokemonImage={`assets/static/sprites/base/${pokemon.pokedex_id}.webp`}
+                        pokemonName={pokemon.pokemon_species.name}
+                        pokemonId={pokemon.entry_number}
+                        pokemonImage={`assets/static/sprites/base/${pokemon.entry_number}.webp`}
                         pokemonTypes={pokemon.types}
                         pokemonStats={pokemon.stats}
-                        pokemonHeight={pokemon.height}
-                        pokemonWeight={pokemon.weight}
-                        pokemonAbilities={pokemon.talents}
                         currentProgress={pokemon.current_progress}
                       />
                     </div>

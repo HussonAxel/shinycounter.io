@@ -1,11 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import CurrentHuntCardLeft from '@/components/CurrentHuntCardLeft'
 import CurrentHuntCardRight from '@/components/CurrentHuntCardRight'
-import {
-  useGetPokemonByIdPokeAPI,
-  useGetIdWithName,
-  useGetPokemonByIdTyradex,
-} from '@/data/pokemons'
+import { useGetPokemonByIdPokeAPI } from '@/data/pokemons'
 import useStore from '@/store/store'
 
 export const Route = createFileRoute('/hunt/$pokemon')({
@@ -15,16 +11,13 @@ export const Route = createFileRoute('/hunt/$pokemon')({
 function RouteComponent() {
   const { counter } = useStore()
   const { pokemon: pokemonName } = Route.useParams()
-  const { data: pokemonId, isLoading: isLoadingId } =
-    useGetIdWithName(pokemonName)
+
 
   const { data: pokemonPokeAPI, isLoading: isLoadingPokemonPokeAPI } =
-    useGetPokemonByIdPokeAPI(pokemonId)
+    useGetPokemonByIdPokeAPI(pokemonName)
 
-  const { data: pokemonTyradex, isLoading: isLoadingPokemonTyradex } =
-    useGetPokemonByIdTyradex(pokemonId)
 
-  if (isLoadingId || isLoadingPokemonPokeAPI || isLoadingPokemonTyradex) {
+  if (isLoadingPokemonPokeAPI) {
     return <div>Loading...</div>
   }
 
