@@ -1,17 +1,3 @@
-import { useSearch } from '@tanstack/react-router'
-
-import { useGetSinglePokemon } from '@/data/pokemons'
-
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-
 import {
   Card,
   CardDescription,
@@ -22,91 +8,64 @@ import {
 import { Progress } from './ui/progress'
 
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 
-import { BadgeCheckIcon } from 'lucide-react'
-
-// Fixed component
-interface PokemonDatabaseCardProps {
-  pokemonName: string
-}
+import type { PokemonDatabaseCardProps } from '@/data/types'
+import { Button } from './ui/button'
+import { Progress } from './ui/progress'
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from './ui/dialog'
+import { Link } from '@tanstack/react-router'
 
 export default function PokemonDatabaseCard({
   pokemonName,
+  pokemonId,
+  pokemonImage,
+  pokemonTypes,
+  pokemonStats,
+  pokemonHeight,
+  pokemonWeight,
+  pokemonAbilities,
 }: PokemonDatabaseCardProps) {
-  const pokemon = useGetSinglePokemon(pokemonName)
-  const pokemonData = pokemon.data // Fix: Define pokemonData
+  const abilities = pokemonAbilities?.map((ability: any) => {
+    return `${ability.name} ${ability.tc ? '(TC)' : ''}`
+  })
+  const summaryAbilities = abilities?.join(', ')
 
-  if (pokemon.isLoading) {
-    return (
-      <Card className="animate-pulse">
-        <CardHeader className="flex flex-col items-center justify-center">
-          <div className="w-[150px] h-[150px] bg-gray-200 rounded"></div>
-          <div className="h-4 bg-gray-200 rounded w-24"></div>
-        </CardHeader>
-      </Card>
-    )
-  }
-
-  if (pokemon.isError) {
-    return <div>Error loading Pokemon</div>
-  }
-
-  if (!pokemonData) {
-    return null
-  }
-
-  // Helper functions for better code organization
-  const getPokemonNumber = () => {
-    return `#${pokemonData.id.toString().padStart(3, '0')}`
-  }
-
-  const getTypeColor = (type: string) => {
-    const colors = {
-      grass: 'bg-green-500',
-      poison: 'bg-purple-500',
-      fire: 'bg-red-500',
-      water: 'bg-blue-500',
-      electric: 'bg-yellow-500',
-      // Add more as needed
-    }
-    return colors[type.toLowerCase()] || 'bg-gray-500'
-  }
-
-  const formatHeight = (height: number) => {
-    return `${(height / 10).toFixed(1)} m` // API returns in decimeters
-  }
-
-  const formatWeight = (weight: number) => {
-    return `${(weight / 10).toFixed(1)} kg` // API returns in hectograms
+  const getProgressColor = (value: number) => {
+    if (value >= 120) return '#30c750' // Vert fluo
+    if (value >= 100) return '#4ee44e' // Vert
+    if (value >= 60) return '#ffeb3b' // Jaune
+    if (value >= 1) return '#ff9800' // Orange
+    return '#f44336' // Rouge (pour les stats nulles)
   }
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Card className="hover:shadow-lg hover:scale-105 transition-all active:bg-gray-50 active:scale-[100%] active:shadow-xl cursor-pointer">
+        <Card className="hover:shadow-lg hover:scale-105 transition-all active:bg-gray-50 active:scale-[100%] active:shadow-xl cursor-pointer rounded-none sm:rounded-md">
           <CardHeader className="flex flex-col items-center justify-center">
             <img
-              src={
-                pokemonData.sprites?.other?.['official-artwork']
-                  ?.front_default ||
-                pokemonData.sprites?.front_default ||
-                `assets/static/sprites/base/${pokemonData.id}.webp`
-              }
-              alt={pokemonData.name}
+              src={pokemonImage}
+              alt={pokemonName}
               className="w-full m-auto max-w-[150px]"
             />
-            <CardTitle className="capitalize">{pokemonData.name}</CardTitle>
-            <CardDescription>{getPokemonNumber()}</CardDescription>
+            <CardTitle className="capitalize">{pokemonName}</CardTitle>
+            <CardDescription>#{pokemonId}</CardDescription>
             <CardDescription className="text-center text-black flex gap-2">
-              {pokemonData.types?.map((typeInfo) => (
+              {pokemonTypes?.map((type: any, index: number) => (
                 <Badge
-                  key={typeInfo.type.name}
+                  key={index}
                   variant="secondary"
-                  className={`${getTypeColor(typeInfo.type.name)} text-white`}
+                  className={`bg-${type.name} text-white dark:bg-${type.name} font-semibold`}
                 >
-                  <BadgeCheckIcon className="w-3 h-3 mr-1" />
-                  {typeInfo.type.name}
+                  {type.name || type}
                 </Badge>
               ))}
             </CardDescription>
@@ -114,31 +73,32 @@ export default function PokemonDatabaseCard({
         </Card>
       </DialogTrigger>
 
-      <DialogContent className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 max-w-none bg-[#fafafa]">
-        <DialogHeader className="flex flex-row w-full items-center gap-2">
-          <DialogTitle className="capitalize">
-            {pokemonData.name} - {getPokemonNumber()}
+      <DialogContent
+        showCloseButton={false}
+        className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 max-w-none bg-[#fafafa]"
+      >
+        <DialogHeader className="flex flex-row w-full items-center gap-2 justify-between">
+          <DialogTitle className="capitalize text-2xl">
+            {pokemonName} - #{pokemonId}
           </DialogTitle>
-          {pokemonData.types?.map((typeInfo) => (
-            <Badge
-              key={typeInfo.type.name}
-              variant="secondary"
-              className={`${getTypeColor(typeInfo.type.name)} text-white`}
-            >
-              <BadgeCheckIcon className="w-3 h-3 mr-1" />
-              {typeInfo.type.name}
-            </Badge>
-          ))}
+          <div>
+            {pokemonTypes?.map((type: any, index: number) => (
+              <Badge
+                key={index}
+                variant="secondary"
+                className={`bg-${type.name} text-white dark:bg-${type.name} font-semibold first:mr-2 text-sm`}
+              >
+                {type.name || type}
+              </Badge>
+            ))}
+          </div>
         </DialogHeader>
 
-        <div className="w-full border-t">
+        <div className="w-full border-t flex justify-center items-center">
           <img
-            src={
-              pokemonData.sprites?.other?.['official-artwork']?.front_default ||
-              pokemonData.sprites?.front_default
-            }
-            alt={pokemonData.name}
-            className="w-full h-auto max-w-[300px] mx-auto"
+            src={pokemonImage}
+            alt={pokemonName}
+            className="h-24 w-24 md:h-48 md:w-48 object-contain"
           />
         </div>
 
@@ -148,19 +108,15 @@ export default function PokemonDatabaseCard({
             <div className="flex flex-col gap-2">
               <div className="flex flex-row w-full justify-between">
                 <p className="opacity-80">Height:</p>
-                <p>{formatHeight(pokemonData.height)}</p>
+                <p>{pokemonHeight}</p>
               </div>
               <div className="flex flex-row w-full justify-between">
                 <p className="opacity-80">Weight:</p>
-                <p>{formatWeight(pokemonData.weight)}</p>
+                <p>{pokemonWeight}</p>
               </div>
               <div className="flex flex-row w-full justify-between">
                 <p className="opacity-80">Abilities:</p>
-                <p>
-                  {pokemonData.abilities
-                    ?.map((ability) => ability.ability.name)
-                    .join(', ')}
-                </p>
+                <p>{summaryAbilities}</p>
               </div>
             </div>
           </div>
@@ -170,18 +126,27 @@ export default function PokemonDatabaseCard({
           <div>
             <h2 className="font-semibold text-xl mb-4">Base Stats</h2>
             <div className="flex flex-col gap-2">
-              {pokemonData.stats?.map((stat) => (
-                <div
-                  key={stat.stat.name}
-                  className="grid grid-cols-[80px_1fr_50px] items-center gap-4"
-                >
-                  <p className="font-semibold uppercase">
-                    {stat.stat.name.replace('-', '.')}:
-                  </p>
-                  <Progress value={(stat.base_stat / 255) * 100} />
-                  <p className="font-bold text-right">{stat.base_stat}</p>
-                </div>
-              ))}
+              {pokemonStats &&
+                Object.entries(pokemonStats).map(([statName, statValue]) => (
+                  <div
+                    key={statName}
+                    className="grid grid-cols-[80px_1fr_50px] items-center gap-4"
+                  >
+                    <p className="uppercase">{statName.replace('_', '. ')}:</p>
+                    <Progress
+                      style={
+                        {
+                          '--progress-color': getProgressColor(
+                            Number(statValue),
+                          ),
+                        } as React.CSSProperties
+                      }
+                      className="[&>div]:bg-[var(--progress-color)]"
+                      value={(Number(statValue) / 150) * 100}
+                    />
+                    <p className="font-semibold text-right">{statValue}</p>
+                  </div>
+                ))}
             </div>
           </div>
         </article>
@@ -190,7 +155,15 @@ export default function PokemonDatabaseCard({
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
-          <Button type="submit">Start Hunt</Button>
+          <Link
+            to="/hunt/$pokemon"
+            params={{ pokemon: pokemonName.toLowerCase() }}
+            search={{}}
+          >
+            <Button type="submit" className="w-full">
+              Start Hunt
+            </Button>
+          </Link>
         </DialogFooter>
       </DialogContent>
     </Dialog>
