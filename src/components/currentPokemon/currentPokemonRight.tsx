@@ -1,4 +1,6 @@
 import {Badge} from '@/components/ui/badge'
+import {Button} from '@/components/ui/button'
+import useSound from 'use-sound'
 
 interface CurrentPokemonRightProps {
   pokemonID: number;
@@ -6,10 +8,21 @@ interface CurrentPokemonRightProps {
   pokemonTypes: string[];
 }
 
-export default function CurrentPokemonRight({ pokemonID, pokemonDefaultName, pokemonTypes  }: CurrentPokemonRightProps) {
+export default function CurrentPokemonRight({ pokemonID, pokemonDefaultName, pokemonTypes, }: CurrentPokemonRightProps) {
+
+
+  const [playPokemonLegacyCry] = useSound(
+    `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/legacy/${pokemonID}.ogg`,
+  )
+  const [playPokemonLatestCry] = useSound(
+    `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${pokemonID}.ogg`,
+  )
+
   return (
     <div className="h-full bg-gray-200 w-3/5">
-      <p className='capitalize'>{pokemonDefaultName} - #{pokemonID}</p>
+      <p className="capitalize">
+        {pokemonDefaultName} - #{pokemonID}
+      </p>
       <div>
         {pokemonTypes.map((type, index) => (
           <Badge
@@ -25,6 +38,14 @@ export default function CurrentPokemonRight({ pokemonID, pokemonDefaultName, pok
             <span className="hidden sm:inline">{type}</span>
           </Badge>
         ))}
+        <Button
+          onClick={() => playPokemonLatestCry()}
+          className="mt-4 bg-white text-black uppercase font-semibold ring ring-gray-200 transition duration-200 active:scale-95 hover:bg-gray-100 hover:ring-gray-300"
+        >Latest Cry </Button>
+        <Button
+          onClick={() => playPokemonLegacyCry()}
+          className="mt-4 bg-white text-black uppercase font-semibold ring ring-gray-200 transition duration-200 active:scale-95 hover:bg-gray-100 hover:ring-gray-300"
+        >Legacy Cry</Button>
       </div>
     </div>
   )

@@ -11,7 +11,6 @@ export default function CurrentPokemonLeft({ pokemonJapaneseName, pokemonDefault
   const [isShiny, setIsShiny] = useState(false);
   const handleClick = () => {
     setIsShiny(!isShiny);
-    console.log(isShiny);
   }
   return (
     <div className="h-full bg-gray-100 w-2/5 flex flex-col items-center justify-center p-6">
@@ -32,11 +31,10 @@ export default function CurrentPokemonLeft({ pokemonJapaneseName, pokemonDefault
           onMouseDown={handleClick}
           className="mt-4 bg-white text-black uppercase font-semibold ring ring-gray-200  transition duration-200 active:scale-95 hover:bg-gray-100 hover:ring-gray-300"
         >
-          Classic Pokémon
+          {isShiny ? 'Normal' : 'Shiny'} Pokémon
         </Button>
         <Button
-          onMouseDown={handleClick}
-          className="mt-4 bg-white text-black uppercase font-semibold ring ring-gray-200  transition duration-200 active:scale-95 hover:bg-gray-100 hover:ring-gray-300"
+          className="mt-4 bg-white text-black uppercase font-semibold ring ring-gray-200 transition duration-200 active:scale-95 hover:bg-gray-100 hover:ring-gray-300"
         >
           Start Hunt
         </Button>

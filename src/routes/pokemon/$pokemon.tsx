@@ -46,7 +46,7 @@ function RouteComponent() {
         pokemonID={pokemonData.id}
       />
       <CurrentPokemonRight
-        pokemonID={pokemonData.id.toString().padStart(3, '0')}
+        pokemonID={pokemonData.id}
         pokemonDefaultName={pokemonData.name}
         pokemonTypes={
           pokemonData.types.map(
