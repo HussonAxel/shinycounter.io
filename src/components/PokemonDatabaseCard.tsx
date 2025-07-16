@@ -6,7 +6,7 @@ import {
 } from '@/components/ui/card'
 
 import type { PokemonDatabaseCardProps } from '@/data/types'
-import { usePrefetchPokemonDataByID } from '@/data/pokemons'
+import { usePrefetchPokemonFullData } from '@/data/pokemons'
 
 export default function PokemonDatabaseCard({
   pokemonName,
@@ -14,12 +14,11 @@ export default function PokemonDatabaseCard({
   pokemonImage,
 }: PokemonDatabaseCardProps) {
 
-  const prefetchPokemonData = usePrefetchPokemonDataByID()
+const prefetchPokemonFullData = usePrefetchPokemonFullData()
 
-  const handleOnMouseEnter = async () => {
-    prefetchPokemonData(pokemonId.toString())
-  }
-
+const handleOnMouseEnter = async () => {
+  prefetchPokemonFullData(pokemonId.toString())
+}
 
   return (
       <Card

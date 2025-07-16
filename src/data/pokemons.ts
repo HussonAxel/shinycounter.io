@@ -34,6 +34,14 @@ export const fetchPokemonDataByID = async (id: string) => {
   return response.json()
 }
 
+export const fetchPokemonSpeciesDataByID = async(id: string) => {
+  const response = await fetch(`${BASE_POKEAPI_URL}/pokemon-species/${id}`)
+  if (!response.ok) {
+    throw new Error('Failed to fetch pokemon species data by id')
+  }
+  return response.json()
+}
+
 //QUERY HOOKS 
 
 export const useGetNationalDex = () => {
@@ -56,7 +64,30 @@ export const useGetPokemonDataByID = (id: string) => {
   })
 }
 
+export const useGetPokemonSpeciesDataByID = (id: string) => {
+  return useQuery({
+    queryKey: QUERY_KEYS.pokemonPokeAPI(id),
+    queryFn: () => fetchPokemonSpeciesDataByID(id),
+    placeholderData: (previousData) => previousData,
+    refetchOnMount: false,
+    ...DEFAULT_CACHE_OPTIONS,
+  })
+}
+
+export function useGetPokemonFullData(id: string) {
+const pokemonDataQuery = useGetPokemonDataByID(id)
+const pokemonSpeciesDataQuery = useGetPokemonSpeciesDataByID(id)
+
+return {
+  pokemonData: pokemonDataQuery.data,
+  pokemonSpeciesData: pokemonSpeciesDataQuery.data,
+  isLoading: pokemonDataQuery.isLoading || pokemonSpeciesDataQuery.isLoading,
+  isError: pokemonDataQuery.isError || pokemonSpeciesDataQuery.isError,
+  error: pokemonDataQuery.error || pokemonSpeciesDataQuery.error,
+}}
+
 //PREFETCH HOOKS 
+
 export const usePrefetchPokemonDataByID = () => {
   const queryClient = useQueryClient()
 
@@ -70,3 +101,26 @@ export const usePrefetchPokemonDataByID = () => {
   }
 }
 
+export const usePrefetchPokemonSpeciesDataByID = () => {
+  const queryClient = useQueryClient()
+
+  return (id: string) => {
+    console.log("prefetching pokemon species data by id...", id)
+    queryClient.ensureQueryData({
+      queryKey: QUERY_KEYS.pokemonPokeAPI(id),
+      queryFn: () => fetchPokemonSpeciesDataByID(id),
+      ...DEFAULT_CACHE_OPTIONS,
+    })
+  }
+}
+
+export const usePrefetchPokemonFullData = () => {
+  const prefetchPokemonDataByID = usePrefetchPokemonDataByID()
+  const prefetchPokemonSpeciesDataByID = usePrefetchPokemonSpeciesDataByID()
+
+  return (id: string) => {
+    console.log("prefetching full pokemon data by id...", id)
+    prefetchPokemonDataByID(id)
+    prefetchPokemonSpeciesDataByID(id)
+  }
+}
