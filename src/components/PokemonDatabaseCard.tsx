@@ -39,8 +39,16 @@ export default function PokemonDatabaseCard({
   const prefetchPokemonData = usePrefetchPokemonDataByID()
 
   const isOpen = search.pokemon === pokemonName.toLowerCase() 
+  console.log(isOpen)
 
-  const {data: pokemonData, isLoading: isLoadingPokemonData, isFetching: isFetchingPokemonData  } = useGetPokemonDataByID(pokemonId.toString(), isOpen)
+    // const {
+    //   data: posts,
+    //   isLoading: postsLoading,
+    //   isFetching: postsFetching,
+    // } = useGetPokemonDataByID(pokemonId.toString(), isOpen)
+
+
+
 
   const abilities = pokemonAbilities?.map((ability: any) => {
     return `${ability.name} ${ability.tc ? '(TC)' : ''}`
@@ -60,6 +68,16 @@ export default function PokemonDatabaseCard({
     })
   }
 
+  const handleOnClose = () => {
+    navigate({
+      to: "/",
+      search: (prev) =>({
+        ...prev, 
+        pokemon: "", 
+      })
+,    })
+  }
+
 
   const handleOnMouseEnter = async () => {
     prefetchPokemonData(pokemonId.toString())
@@ -67,7 +85,7 @@ export default function PokemonDatabaseCard({
 
 
   return (
-    <Dialog>
+    <Dialog onOpenChange={(open) => !open && handleOnClose()}>
       <DialogTrigger asChild>
         <Card className="hover:shadow-lg hover:scale-105 transition-all active:bg-gray-50 active:scale-[100%] active:shadow-xl cursor-pointer rounded-none sm:rounded-md"
         onClick={handleOnClick}
