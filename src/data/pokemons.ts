@@ -41,6 +41,14 @@ export const fetchPokemonSpeciesDataByID = async(id: string) => {
   return response.json()
 }
 
+export const fetchTalentDataByName = async (name: string) => {
+  const response = await fetch (`${BASE_POKEAPI_URL}/ability/${name}`)
+  if (!response.ok) {
+    throw new Error(`Failed to fetch talent data for ${name}`)
+  }
+  return response.json()
+}
+
 //QUERY HOOKS 
 
 export const useGetNationalDex = () => {
@@ -67,6 +75,16 @@ export const useGetPokemonSpeciesDataByID = (id: string) => {
   return useQuery({
     queryKey: QUERY_KEYS.pokemonSpeciesDataByID(id),
     queryFn: () => fetchPokemonSpeciesDataByID(id),
+    placeholderData: (previousData) => previousData,
+    refetchOnMount: false,
+    ...DEFAULT_CACHE_OPTIONS,
+  })
+}
+
+export const useGetTalentDataByName = (name: string) => {
+  return useQuery({
+    queryKey: ['talentData', name],
+    queryFn: () => fetchTalentDataByName(name),
     placeholderData: (previousData) => previousData,
     refetchOnMount: false,
     ...DEFAULT_CACHE_OPTIONS,

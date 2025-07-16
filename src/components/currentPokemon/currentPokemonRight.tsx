@@ -1,7 +1,15 @@
-import {Badge} from '@/components/ui/badge'
-import {Button} from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+
 import useSound from 'use-sound'
 
+import { useGetTalentDataByName } from '@/data/pokemons'
 interface CurrentPokemonRightProps {
   pokemonID: number
   pokemonDefaultName: string
@@ -10,6 +18,7 @@ interface CurrentPokemonRightProps {
   pokemonCategory: string
   pokemonWeight: number
   pokemonHeight: number
+  pokemonAbilities?: string[]
 }
 
 export default function CurrentPokemonRight({
@@ -19,7 +28,8 @@ export default function CurrentPokemonRight({
   pokemonFirstAppearance,
   pokemonCategory,
   pokemonWeight,
-  pokemonHeight
+  pokemonHeight,
+  pokemonAbilities,
 }: CurrentPokemonRightProps) {
   const [playPokemonLegacyCry] = useSound(
     `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/legacy/${pokemonID}.ogg`,
@@ -61,10 +71,34 @@ export default function CurrentPokemonRight({
           Legacy Cry
         </Button>
       </div>
-      <p>First Appearance  : Generation <span className="font-bold uppercase">{pokemonFirstAppearance}</span></p>
+      <p>
+        First Appearance : Generation{' '}
+        <span className="font-bold uppercase">{pokemonFirstAppearance}</span>
+      </p>
       <p>Category : {pokemonCategory}</p>
       <p>Weight: {pokemonWeight}kg </p>
       <p>Height: {pokemonHeight}m </p>
+      {pokemonAbilities &&
+        pokemonAbilities.map((ability, index) => {
+          const { data: talentData, isLoading } = useGetTalentDataByName(ability.ability.name)
+          
+          return (
+            <Tooltip key={index}>
+              <TooltipTrigger asChild>
+                <Button variant="outline">
+                  {ability.ability.name}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                {isLoading ? (
+                  <p>Chargement...</p>
+                ) : (
+                  <p>{talentData?.effect_entries?.find(entry => entry.language.name === 'en')?.effect || 'Description non disponible'}</p>
+                )}
+              </TooltipContent>
+            </Tooltip>
+          )
+        })}
     </div>
   )
 }

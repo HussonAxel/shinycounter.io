@@ -60,6 +60,7 @@ function RouteComponent() {
         )?.genus || 'Catégorie Inconnue'}
         pokemonWeight={pokemonData.weight / 10} // Convert to kg
         pokemonHeight={pokemonData.height / 10} // Convert to m
+        pokemonAbilities={pokemonData.abilities}
       />
     </section>
   )
