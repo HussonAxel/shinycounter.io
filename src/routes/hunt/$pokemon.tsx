@@ -1,59 +1,59 @@
-import { createFileRoute } from '@tanstack/react-router'
-import CurrentHuntCardLeft from '@/components/CurrentHuntCardLeft'
-import CurrentHuntCardRight from '@/components/CurrentHuntCardRight'
-import {
-  useGetPokemonByIdPokeAPI,
-  useGetIdWithName,
-  useGetPokemonByIdTyradex,
-} from '@/data/pokemons'
-import useStore from '@/store/store'
+// import { createFileRoute } from '@tanstack/react-router'
+// import CurrentHuntCardLeft from '@/components/CurrentHuntCardLeft'
+// import CurrentHuntCardRight from '@/components/CurrentHuntCardRight'
+// import {
+//   useGetPokemonByIdPokeAPI,
+//   useGetIdWithName,
+//   useGetPokemonByIdTyradex,
+// } from '@/data/pokemons'
+// import useStore from '@/store/store'
 
-export const Route = createFileRoute('/hunt/$pokemon')({
-  component: RouteComponent,
-})
+// export const Route = createFileRoute('/hunt/$pokemon')({
+//   component: RouteComponent,
+// })
 
-function RouteComponent() {
-  const { counter } = useStore()
-  const { pokemon: pokemonName } = Route.useParams()
-  const { data: pokemonId, isLoading: isLoadingId } =
-    useGetIdWithName(pokemonName)
+// function RouteComponent() {
+//   const { counter } = useStore()
+//   const { pokemon: pokemonName } = Route.useParams()
+//   const { data: pokemonId, isLoading: isLoadingId } =
+//     useGetIdWithName(pokemonName)
 
-  const { data: pokemonPokeAPI, isLoading: isLoadingPokemonPokeAPI } =
-    useGetPokemonByIdPokeAPI(pokemonId)
+//   const { data: pokemonPokeAPI, isLoading: isLoadingPokemonPokeAPI } =
+//     useGetPokemonByIdPokeAPI(pokemonId)
 
-  const { data: pokemonTyradex, isLoading: isLoadingPokemonTyradex } =
-    useGetPokemonByIdTyradex(pokemonId)
+//   const { data: pokemonTyradex, isLoading: isLoadingPokemonTyradex } =
+//     useGetPokemonByIdTyradex(pokemonId)
 
-  if (isLoadingId || isLoadingPokemonPokeAPI || isLoadingPokemonTyradex) {
-    return <div>Loading...</div>
-  }
+//   if (isLoadingId || isLoadingPokemonPokeAPI || isLoadingPokemonTyradex) {
+//     return <div>Loading...</div>
+//   }
 
-  return (
-    <section className="flex flex-col border-t border-gray-200 md:flex-row">
-      <CurrentHuntCardLeft
-        pokemonId={pokemonId}
-        pokemonName={pokemonName}
-        pokemonPokeAPI={pokemonPokeAPI}
-        pokemonTyradex={pokemonTyradex}
-        pokemonJapanaseName={pokemonTyradex.name.jp}
-        pokemonFrenchName={pokemonTyradex.name.fr}
-        pokemonImage={
-          pokemonPokeAPI.sprites.other['official-artwork'].front_default
-        }
-        currentProgress={counter}
-      />
-      <CurrentHuntCardRight
-        pokemonId={pokemonId}
-        pokemonName={pokemonName}
-        pokemonPokeAPI={pokemonPokeAPI}
-        pokemonTyradex={pokemonTyradex}
-        pokemonJapanaseName={pokemonTyradex.name.jp}
-        pokemonFrenchName={pokemonTyradex.name.fr}
-        pokemonImage={
-          pokemonPokeAPI.sprites.other['official-artwork'].front_default
-        }
-        currentProgress={counter}
-      />
-    </section>
-  )
-}
+//   return (
+//     <section className="flex flex-col border-t border-gray-200 md:flex-row">
+//       <CurrentHuntCardLeft
+//         pokemonId={pokemonId}
+//         pokemonName={pokemonName}
+//         pokemonPokeAPI={pokemonPokeAPI}
+//         pokemonTyradex={pokemonTyradex}
+//         pokemonJapanaseName={pokemonTyradex.name.jp}
+//         pokemonFrenchName={pokemonTyradex.name.fr}
+//         pokemonImage={
+//           pokemonPokeAPI.sprites.other['official-artwork'].front_default
+//         }
+//         currentProgress={counter}
+//       />
+//       <CurrentHuntCardRight
+//         pokemonId={pokemonId}
+//         pokemonName={pokemonName}
+//         pokemonPokeAPI={pokemonPokeAPI}
+//         pokemonTyradex={pokemonTyradex}
+//         pokemonJapanaseName={pokemonTyradex.name.jp}
+//         pokemonFrenchName={pokemonTyradex.name.fr}
+//         pokemonImage={
+//           pokemonPokeAPI.sprites.other['official-artwork'].front_default
+//         }
+//         currentProgress={counter}
+//       />
+//     </section>
+//   )
+// }

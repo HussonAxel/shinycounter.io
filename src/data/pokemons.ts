@@ -2,7 +2,6 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 
 const BASE_POKEAPI_URL = 'https://pokeapi.co/api/v2'
-const BASE_TYRADEX_URL = 'https://tyradex.vercel.app/api/v1'
 
 export const QUERY_KEYS = {
   nationalDex: ['nationalDex'] as const, 
@@ -62,7 +61,7 @@ export const usePrefetchPokemonDataByID = () => {
 
   return (id: string) => {
     console.log("prefetching pokemon data by id...", id)
-    queryClient.prefetchQuery({
+    queryClient.ensureQueryData({
       queryKey: QUERY_KEYS.pokemonDataByID(id),
       queryFn: () => fetchPokemonDataByID(id),
       ...DEFAULT_CACHE_OPTIONS,
@@ -70,129 +69,3 @@ export const usePrefetchPokemonDataByID = () => {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// export const fetchAllPokemons = async () => {
-//   const response = await axios.get(`${BASE_TYRADEX_URL}/pokemon`)
-//   return response.data
-// }
-
-// export const fetchPokemonIdByName = async (name: string) => {
-//   const response = await axios.get(`${BASE_TYRADEX_URL}/pokemon/${name}`)
-//   return response.data.pokedex_id
-// }
-
-// export const fetchPokemonByIdPokeAPI = async (id: string) => {
-//   const response = await axios.get(`${BASE_POKEAPI_URL}/pokemon/${id}`)
-//   console.log(response.data)
-//   return response.data
-// }
-
-// export const fetchPokemonByIdTyradex = async (id: string) => {
-//   const response = await axios.get(`${BASE_TYRADEX_URL}/pokemon/${id}`)
-//   return response.data
-// }
-
-// export const useGetAllPokemons = () => {
-//   return useQuery({
-//     queryKey: QUERY_KEYS.pokemons,
-//     queryFn: fetchAllPokemons,
-//     ...DEFAULT_CACHE_OPTIONS,
-//   })
-// }
-
-// export const useGetIdWithName = (name: string) => {
-//   return useQuery({
-//     queryKey: QUERY_KEYS.pokemonIdWithName(name),
-//     queryFn: () => fetchPokemonIdByName(name),
-//     enabled: !!name,
-//     ...DEFAULT_CACHE_OPTIONS,
-//   })
-// }
-
-// export const useGetPokemonByIdPokeAPI = (id: string) => {
-//   return useQuery({
-//     queryKey: QUERY_KEYS.pokemonPokeAPI(id),
-//     queryFn: () => fetchPokemonByIdPokeAPI(id),
-//     enabled: false,
-//     ...DEFAULT_CACHE_OPTIONS,
-//   })
-// }
-
-// export const useGetPokemonByIdTyradex = (id: string) => {
-//   return useQuery({
-//     queryKey: QUERY_KEYS.pokemonTyradex(id),
-//     queryFn: () => fetchPokemonByIdTyradex(id),
-//     enabled: !!id,
-//     ...DEFAULT_CACHE_OPTIONS,
-//   })
-// }
-
-// export const usePrefetchAllPokemons = () => {
-//   const queryClient = useQueryClient()
-
-//   return () => {
-//     queryClient.prefetchQuery({
-//       queryKey: QUERY_KEYS.pokemons,
-//       queryFn: fetchAllPokemons,
-//       ...DEFAULT_CACHE_OPTIONS,
-//     })
-//   }
-// }
-
-// export const usePrefetchPokemonByIDWithPokeAPI = () => {
-//   const queryClient = useQueryClient()
-
-//   return (id: string) => {
-//     queryClient.prefetchQuery({
-//       queryKey: QUERY_KEYS.pokemonPokeAPI(id),
-//       queryFn: () => fetchPokemonByIdPokeAPI(id),
-//       ...DEFAULT_CACHE_OPTIONS,
-//     })
-//   }
-// }
-
-// export const usePrefetchPokemonByIDWithTyradex = () => {
-//   const queryClient = useQueryClient()
-
-//   return (id: string) => {
-//     queryClient.prefetchQuery({
-//       queryKey: QUERY_KEYS.pokemonTyradex(id),
-//       queryFn: () => fetchPokemonByIdTyradex(id),
-//       ...DEFAULT_CACHE_OPTIONS,
-//     })
-//   }
-// }
