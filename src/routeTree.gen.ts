@@ -13,6 +13,7 @@ import { createServerRootRoute } from '@tanstack/react-start/server'
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as NewHuntRouteImport } from './routes/newHunt'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PokemonPokemonRouteImport } from './routes/pokemon/$pokemon'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo.tanstack-query'
 import { Route as DemoTableRouteImport } from './routes/demo.table'
 import { Route as DemoConvexRouteImport } from './routes/demo.convex'
@@ -33,6 +34,11 @@ const NewHuntRoute = NewHuntRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PokemonPokemonRoute = PokemonPokemonRouteImport.update({
+  id: '/pokemon/$pokemon',
+  path: '/pokemon/$pokemon',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/demo/convex': typeof DemoConvexRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/pokemon/$pokemon': typeof PokemonPokemonRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -100,6 +107,7 @@ export interface FileRoutesByTo {
   '/demo/convex': typeof DemoConvexRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/pokemon/$pokemon': typeof PokemonPokemonRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/demo/convex': typeof DemoConvexRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/pokemon/$pokemon': typeof PokemonPokemonRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -127,6 +136,7 @@ export interface FileRouteTypes {
     | '/demo/convex'
     | '/demo/table'
     | '/demo/tanstack-query'
+    | '/pokemon/$pokemon'
     | '/demo/form/address'
     | '/demo/form/simple'
     | '/demo/start/api-request'
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/demo/convex'
     | '/demo/table'
     | '/demo/tanstack-query'
+    | '/pokemon/$pokemon'
     | '/demo/form/address'
     | '/demo/form/simple'
     | '/demo/start/api-request'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/demo/convex'
     | '/demo/table'
     | '/demo/tanstack-query'
+    | '/pokemon/$pokemon'
     | '/demo/form/address'
     | '/demo/form/simple'
     | '/demo/start/api-request'
@@ -164,6 +176,7 @@ export interface RootRouteChildren {
   DemoConvexRoute: typeof DemoConvexRoute
   DemoTableRoute: typeof DemoTableRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  PokemonPokemonRoute: typeof PokemonPokemonRoute
   DemoFormAddressRoute: typeof DemoFormAddressRoute
   DemoFormSimpleRoute: typeof DemoFormSimpleRoute
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
@@ -205,6 +218,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pokemon/$pokemon': {
+      id: '/pokemon/$pokemon'
+      path: '/pokemon/$pokemon'
+      fullPath: '/pokemon/$pokemon'
+      preLoaderRoute: typeof PokemonPokemonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/tanstack-query': {
@@ -284,6 +304,7 @@ const rootRouteChildren: RootRouteChildren = {
   DemoConvexRoute: DemoConvexRoute,
   DemoTableRoute: DemoTableRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  PokemonPokemonRoute: PokemonPokemonRoute,
   DemoFormAddressRoute: DemoFormAddressRoute,
   DemoFormSimpleRoute: DemoFormSimpleRoute,
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,
