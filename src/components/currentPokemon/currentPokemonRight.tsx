@@ -3,14 +3,24 @@ import {Button} from '@/components/ui/button'
 import useSound from 'use-sound'
 
 interface CurrentPokemonRightProps {
-  pokemonID: number;
-  pokemonDefaultName: string;
-  pokemonTypes: string[];
+  pokemonID: number
+  pokemonDefaultName: string
+  pokemonTypes: string[]
+  pokemonFirstAppearance: string
+  pokemonCategory: string
+  pokemonWeight: number
+  pokemonHeight: number
 }
 
-export default function CurrentPokemonRight({ pokemonID, pokemonDefaultName, pokemonTypes, }: CurrentPokemonRightProps) {
-
-
+export default function CurrentPokemonRight({
+  pokemonID,
+  pokemonDefaultName,
+  pokemonTypes,
+  pokemonFirstAppearance,
+  pokemonCategory,
+  pokemonWeight,
+  pokemonHeight
+}: CurrentPokemonRightProps) {
   const [playPokemonLegacyCry] = useSound(
     `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/legacy/${pokemonID}.ogg`,
   )
@@ -41,12 +51,20 @@ export default function CurrentPokemonRight({ pokemonID, pokemonDefaultName, pok
         <Button
           onClick={() => playPokemonLatestCry()}
           className="mt-4 bg-white text-black uppercase font-semibold ring ring-gray-200 transition duration-200 active:scale-95 hover:bg-gray-100 hover:ring-gray-300"
-        >Latest Cry </Button>
+        >
+          Latest Cry{' '}
+        </Button>
         <Button
           onClick={() => playPokemonLegacyCry()}
           className="mt-4 bg-white text-black uppercase font-semibold ring ring-gray-200 transition duration-200 active:scale-95 hover:bg-gray-100 hover:ring-gray-300"
-        >Legacy Cry</Button>
+        >
+          Legacy Cry
+        </Button>
       </div>
+      <p>First Appearance  : Generation <span className="font-bold uppercase">{pokemonFirstAppearance}</span></p>
+      <p>Category : {pokemonCategory}</p>
+      <p>Weight: {pokemonWeight}kg </p>
+      <p>Height: {pokemonHeight}m </p>
     </div>
   )
 }

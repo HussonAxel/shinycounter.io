@@ -53,6 +53,13 @@ function RouteComponent() {
             (type: { type: { name: string } }) => type.type.name,
           ) || []
         }
+        pokemonFirstAppearance={pokemonSpeciesData.generation.name.replace('generation-', '')}
+        pokemonCategory={pokemonSpeciesData.genera.find(
+          (genera: { language: { name: string } }) =>
+            genera.language.name === 'en'
+        )?.genus || 'Catégorie Inconnue'}
+        pokemonWeight={pokemonData.weight / 10} // Convert to kg
+        pokemonHeight={pokemonData.height / 10} // Convert to m
       />
     </section>
   )
