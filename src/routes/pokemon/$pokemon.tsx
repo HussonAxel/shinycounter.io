@@ -29,16 +29,20 @@ function RouteComponent() {
       return <div className="h-full bg-gray-200 w-3/5">Aucun Pokémon trouvé</div>
     }
 
-    console.log(pokemonData.types.map(type => type.type.name) || [])
+    console.log(pokemonData.types.map((type: { type: { name: any } }) => type.type.name) || [])
   return (
     <section className="h-[calc(100vh-68px)] flex flex-row
     ">
         <CurrentPokemonLeft
-          pokemonJapaneseName={pokemonSpeciesData.names.find(name=> name.language.name === 'ja-Hrkt')?.name || 'Nom Japonais Inconnu'}
+          pokemonJapaneseName={pokemonSpeciesData.names.find((name: { language: { name: string } }) => name.language.name === 'ja-Hrkt')?.name || 'Nom Japonais Inconnu'}
           pokemonDefaultName={pokemonData.name}
-          pokemonTypes={pokemonData.types.map(type => type.type.name) || []}
+          pokemonTypes={pokemonData.types.map((type: { type: { name: string } }) => type.type.name) || []}
+          pokemonID={pokemonData.id}
         />
-        <CurrentPokemonRight />
+        <CurrentPokemonRight
+          pokemonID={pokemonData.id}
+          pokemonDefaultName={pokemonData.name}
+        />
     </section>
   )
 }
