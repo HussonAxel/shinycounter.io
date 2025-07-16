@@ -10,6 +10,7 @@ import { useGetNationalDex } from '@/data/pokemons'
 const pokemonSearchSchema = z.object({
   searchTerm: z.string().optional().catch(''),
   activeTab: z.enum(['hunts', 'pokedex']).optional().catch('hunts'),
+  pokemon: z.string().optional().catch(''),
 })
 
 export const Route = createFileRoute('/')({
@@ -19,7 +20,7 @@ export const Route = createFileRoute('/')({
 
 function PokemonApp() {
   const navigate = useNavigate({ from: '/' })
-  const { searchTerm = '', activeTab = 'hunts' } = useSearch({ from: '/' })
+  const { searchTerm = '', activeTab = 'hunts', pokemon = '' } = useSearch({ from: '/' })
 
   const { data: pokemons, isLoading } = useGetNationalDex()
   const pokemonEntries = pokemons?.pokemon_entries ?? []

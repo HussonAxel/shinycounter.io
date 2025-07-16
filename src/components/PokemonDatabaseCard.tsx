@@ -19,9 +19,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './ui/dialog'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate, useSearch } from '@tanstack/react-router'
+import { getProgressColor } from '@/lib/functions'
 
-import { usePrefetchPokemonByIDWithTyradex } from '@/data/pokemons'
+import { usePrefetchPokemonDataByID, useGetPokemonDataByID } from '@/data/pokemons'
 
 export default function PokemonDatabaseCard({
   pokemonName,
@@ -33,28 +34,44 @@ export default function PokemonDatabaseCard({
   pokemonWeight,
   pokemonAbilities,
 }: PokemonDatabaseCardProps) {
+  const navigate = useNavigate()
+  const search = useSearch({from : "/"})
+  const prefetchPokemonData = usePrefetchPokemonDataByID()
+
+  const isOpen = search.pokemon === pokemonName.toLowerCase() 
+
+  const {data: pokemonData, isLoading: isLoadingPokemonData, isFetching: isFetchingPokemonData  } = useGetPokemonDataByID(pokemonId.toString(), isOpen)
+
   const abilities = pokemonAbilities?.map((ability: any) => {
     return `${ability.name} ${ability.tc ? '(TC)' : ''}`
   })
   const summaryAbilities = abilities?.join(', ')
 
-  const getProgressColor = (value: number) => {
-    if (value >= 120) return '#30c750' // Vert fluo
-    if (value >= 100) return '#4ee44e' // Vert
-    if (value >= 60) return '#ffeb3b' // Jaune
-    if (value >= 1) return '#ff9800' // Orange
-    return '#f44336' // Rouge (pour les stats nulles)
+
+
+
+  const handleOnClick = () => {
+    navigate({
+      to: "/", 
+      search: (prev) => ({
+        ...prev, 
+        pokemon: pokemonName.toLowerCase(), 
+      })
+    })
   }
 
-  const prefetchPokemon = usePrefetchPokemonByIDWithTyradex()
+
+  const handleOnMouseEnter = async () => {
+    prefetchPokemonData(pokemonId.toString())
+  }
+
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Card className="hover:shadow-lg hover:scale-105 transition-all active:bg-gray-50 active:scale-[100%] active:shadow-xl cursor-pointer rounded-none sm:rounded-md"
-        onMouseEnter={() => {
-          console.log(pokemonId)
-        }}
+        onClick={handleOnClick}
+        onMouseEnter={handleOnMouseEnter}
         >
           <CardHeader className="flex flex-col items-center justify-center">
             <img
@@ -166,7 +183,7 @@ export default function PokemonDatabaseCard({
             params={{ pokemon: pokemonName.toLowerCase() }}
             search={{}}
           >
-            <Button type="submit" className="w-full" onMouseDown={() => prefetchPokemon(pokemonName)}>
+            <Button type="submit" className="w-full">
               Start Hunt
             </Button>
           </Link>
