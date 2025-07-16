@@ -45,7 +45,6 @@ function PokemonApp() {
   }
 
   const filteredPokemons = useMemo(() => {
-    console.log(pokemonEntries)
     if (!pokemonEntries || !Array.isArray(pokemonEntries)) return []
 
     let filtered = pokemonEntries.filter(
