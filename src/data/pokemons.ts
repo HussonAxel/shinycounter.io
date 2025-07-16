@@ -5,6 +5,7 @@ const BASE_POKEAPI_URL = 'https://pokeapi.co/api/v2'
 const BASE_TYRADEX_URL = 'https://tyradex.vercel.app/api/v1'
 
 export const QUERY_KEYS = {
+  nationalDex: ['nationalDex'] as const, 
   pokemons: ['pokemons'] as const,
   pokemonIdWithName: (name: string) => ['pokemonIdWithName', name] as const,
   pokemonPokeAPI: (id: string) => ['pokemonPokeAPI', id] as const,
@@ -14,6 +15,11 @@ export const QUERY_KEYS = {
 const DEFAULT_CACHE_OPTIONS = {
   staleTime: 1000 * 60 * 60 * 24 * 7, // 7 days
   gcTime: 1000 * 60 * 60 * 24 * 30, // 30 days
+}
+
+export const fetchNationalDex = async () => {
+  const response = await axios.get(`${BASE_POKEAPI_URL}/pokedex/1`)
+  return response.data
 }
 
 export const fetchAllPokemons = async () => {
@@ -34,6 +40,15 @@ export const fetchPokemonByIdPokeAPI = async (id: string) => {
 export const fetchPokemonByIdTyradex = async (id: string) => {
   const response = await axios.get(`${BASE_TYRADEX_URL}/pokemon/${id}`)
   return response.data
+}
+
+
+export const useGetNationalDex = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.nationalDex,
+    queryFn: fetchNationalDex,
+    ...DEFAULT_CACHE_OPTIONS,
+  })
 }
 
 export const useGetAllPokemons = () => {

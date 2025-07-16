@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import CurrentHuntCard from '@/components/CurrentHuntsCardGlobalViewer'
 import PokemonDatabaseCard from '@/components/PokemonDatabaseCard'
-import { useGetAllPokemons } from '@/data/pokemons'
+import { useGetNationalDex } from '@/data/pokemons'
 
 const pokemonSearchSchema = z.object({
   searchTerm: z.string().optional().catch(''),
@@ -20,7 +20,9 @@ export const Route = createFileRoute('/')({
 function PokemonApp() {
   const navigate = useNavigate({ from: '/' })
   const { searchTerm = '', activeTab = 'hunts' } = useSearch({ from: '/' })
-  const { data: pokemons, isLoading } = useGetAllPokemons()
+
+  const { data: pokemons, isLoading } = useGetNationalDex()
+  const pokemonEntries = pokemons?.pokemon_entries ?? []
 
   const handleSearchChange = (value: string) => {
     navigate({
@@ -43,10 +45,11 @@ function PokemonApp() {
   }
 
   const filteredPokemons = useMemo(() => {
-    if (!pokemons || !Array.isArray(pokemons)) return []
+    console.log(pokemonEntries)
+    if (!pokemonEntries || !Array.isArray(pokemonEntries)) return []
 
-    let filtered = pokemons.filter(
-      (pokemon: any) => pokemon.pokedex_id && pokemon.pokedex_id > 0,
+    let filtered = pokemonEntries.filter(
+      (pokemon: any) => pokemon.entry_number && pokemon.entry_number > 0,
     )
 
     if (searchTerm) {
@@ -54,7 +57,7 @@ function PokemonApp() {
       filtered = filtered.filter((pokemon: any) => {
         return (
           pokemon.name?.fr?.toLowerCase().includes(searchLower) ||
-          pokemon.pokedex_id.toString().includes(searchLower) ||
+          pokemon.entry_number.toString().includes(searchLower) ||
           pokemon.types?.some((type: any) =>
             type.name?.toLowerCase().includes(searchLower),
           )
@@ -63,7 +66,7 @@ function PokemonApp() {
     }
 
     return filtered
-  }, [pokemons, searchTerm])
+  }, [pokemonEntries, searchTerm])
 
   return (
     <div className="min-h-screen bg-[#fafafa] p-6">
@@ -123,11 +126,11 @@ function PokemonApp() {
                   </div>
                 ) : (
                   filteredPokemons.map((pokemon: any) => (
-                    <div key={pokemon.pokedex_id}>
+                    <div key={pokemon.entry_number}>
                       <PokemonDatabaseCard
-                        pokemonName={pokemon.name.en}
-                        pokemonId={pokemon.pokedex_id}
-                        pokemonImage={`assets/static/sprites/base/${pokemon.pokedex_id}.webp`}
+                        pokemonName={pokemon.pokemon_species.name}
+                        pokemonId={pokemon.entry_number}
+                        pokemonImage={`assets/static/sprites/base/${pokemon.entry_number}.webp`}
                         pokemonTypes={pokemon.types}
                         pokemonStats={pokemon.stats}
                         pokemonHeight={pokemon.height}
