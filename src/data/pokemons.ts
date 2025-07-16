@@ -1,5 +1,4 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import axios from 'axios'
 
 const BASE_POKEAPI_URL = 'https://pokeapi.co/api/v2'
 
@@ -13,28 +12,26 @@ export const QUERY_KEYS = {
 }
 
 const DEFAULT_CACHE_OPTIONS = {
-  staleTime: 1000 * 60 * 60 * 24 * 7, // 7 days
-  gcTime: 1000 * 60 * 60 * 24 * 30, // 30 days
   keepPreviousData: true,
 }
 
 
 //FETCH FUNCTIONS
 export const fetchNationalDex = async () => {
-  const response = await axios.get(`${BASE_POKEAPI_URL}/pokedex/1`)
-  if (response.status !== 200) {
+  const response = await fetch(`${BASE_POKEAPI_URL}/pokedex/1`)
+  if (!response.ok) {
     throw new Error('Failed to fetch national dex')
   }
-  return response.data
+  return response.json()
 }
 
 export const fetchPokemonDataByID = async (id: string) => {
   console.log("fetching pokemon data by id...", id)
-  const response = await axios.get(`${BASE_POKEAPI_URL}/pokemon/${id}`)
-  if (response.status !== 200) {
+  const response = await fetch(`${BASE_POKEAPI_URL}/pokemon/${id}`)
+  if (!response.ok) {
     throw new Error('Failed to fetch pokemon data by id')
   }
-  return response.data
+  return response.json()
 }
 
 //QUERY HOOKS 
