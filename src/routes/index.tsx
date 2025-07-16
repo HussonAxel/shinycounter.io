@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import CurrentHuntCard from '@/components/CurrentHuntsCardGlobalViewer'
 import PokemonDatabaseCard from '@/components/PokemonDatabaseCard'
 import { useGetNationalDex } from '@/data/pokemons'
+import { Link } from '@tanstack/react-router'
 
 const pokemonSearchSchema = z.object({
   searchTerm: z.string().optional().catch(''),
@@ -45,6 +46,8 @@ function PokemonApp() {
   }
 
   const filteredPokemons = useMemo(() => {
+    if (activeTab !== 'pokedex') return []
+    
     if (!pokemonEntries || !Array.isArray(pokemonEntries)) return []
 
     let filtered = pokemonEntries.filter(
@@ -65,7 +68,7 @@ function PokemonApp() {
     }
 
     return filtered
-  }, [pokemonEntries, searchTerm])
+  }, [pokemonEntries, searchTerm, activeTab])
 
   return (
     <div className="min-h-screen bg-[#fafafa] p-6">
@@ -97,44 +100,51 @@ function PokemonApp() {
               </TabsTrigger>
             </TabsList>
 
-            <div className="relative mt-4 mx-8">
-              <Input
-                type="text"
-                placeholder="Search Pokemon by name, ID, or type..."
-                value={searchTerm}
-                onChange={(e) => handleSearchChange(e.target.value)}
-                className="pr-10"
-              />
-            </div>
+            {activeTab === 'pokedex' && (
+              <div className="relative mt-4 mx-8">
+                <Input
+                  type="text"
+                  placeholder="Search Pokemon by name, ID, or type..."
+                  value={searchTerm}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  className="pr-10"
+                />
+              </div>
+            )}
 
             <TabsContent value="hunts">
               <CurrentHuntCard />
             </TabsContent>
 
             <TabsContent value="pokedex">
-              <article className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 mx-8 my-4">
-                {isLoading ? (
-                  <div className="col-span-full flex justify-center py-8">
-                    <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
-                  </div>
-                ) : filteredPokemons.length === 0 ? (
-                  <div className="col-span-full text-center py-8 text-gray-500">
-                    {searchTerm
-                      ? 'No Pokemon found matching your search.'
-                      : 'No Pokemon available.'}
-                  </div>
-                ) : (
-                  filteredPokemons.map((pokemon: any) => (
-                    <div key={pokemon.entry_number}>
-                      <PokemonDatabaseCard
-                        pokemonName={pokemon.pokemon_species.name}
-                        pokemonId={pokemon.entry_number}
-                        pokemonImage={`assets/static/sprites/base/${pokemon.entry_number}.webp`}
-                      />
+              {activeTab === 'pokedex' && (
+                <article className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 mx-8 my-4">
+                  {isLoading ? (
+                    <div className="col-span-full flex justify-center py-8">
+                      <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
                     </div>
-                  ))
-                )}
-              </article>
+                  ) : filteredPokemons.length === 0 ? (
+                    <div className="col-span-full text-center py-8 text-gray-500">
+                      {searchTerm
+                        ? 'No Pokemon found matching your search.'
+                        : 'No Pokemon available.'}
+                    </div>
+                  ) : (
+                    filteredPokemons.map((pokemon: any) => (
+                      <Link
+                        to="/pokemon/$pokemon"
+                        params={{ pokemon: pokemon.pokemon_species.name }}
+                      >
+                        <PokemonDatabaseCard
+                          pokemonName={pokemon.pokemon_species.name}
+                          pokemonId={pokemon.entry_number}
+                          pokemonImage={`assets/static/sprites/base/${pokemon.entry_number}.webp`}
+                        />
+                      </Link>
+                    ))
+                  )}
+                </article>
+              )}
             </TabsContent>
           </Tabs>
         </div>

@@ -43,15 +43,18 @@ export const useGetNationalDex = () => {
   return useQuery({
     queryKey: QUERY_KEYS.nationalDex,
     queryFn: fetchNationalDex,
+    placeholderData: (previousData) => previousData,
+    refetchOnMount: false,
     ...DEFAULT_CACHE_OPTIONS,
   })
 }
 
-export const useGetPokemonDataByID = (id: string, enabled: boolean = false) => {
+export const useGetPokemonDataByID = (id: string) => {
   return useQuery({
     queryKey: QUERY_KEYS.pokemonDataByID(id),
     queryFn: () => fetchPokemonDataByID(id),
-    enabled: enabled && !!id,
+    placeholderData: (previousData) => previousData,
+    refetchOnMount: false,
     ...DEFAULT_CACHE_OPTIONS,
   })
 }

@@ -7,7 +7,6 @@ import {
 
 import type { PokemonDatabaseCardProps } from '@/data/types'
 import { usePrefetchPokemonDataByID } from '@/data/pokemons'
-import { Link } from '@tanstack/react-router'
 
 export default function PokemonDatabaseCard({
   pokemonName,
@@ -23,7 +22,6 @@ export default function PokemonDatabaseCard({
 
 
   return (
-    <Link to='/pokemon/$pokemon' params={{ pokemon: pokemonName }}>
       <Card
         className="hover:shadow-lg hover:scale-105 transition-all active:bg-gray-50 active:scale-[100%] active:shadow-xl cursor-pointer rounded-none sm:rounded-md"
         onMouseEnter={handleOnMouseEnter}
@@ -39,6 +37,5 @@ export default function PokemonDatabaseCard({
           <CardDescription className="text-center text-black flex gap-2"></CardDescription>
         </CardHeader>
       </Card>
-    </Link>
   )
 }
