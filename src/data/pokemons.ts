@@ -3,12 +3,11 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 const BASE_POKEAPI_URL = 'https://pokeapi.co/api/v2'
 
 export const QUERY_KEYS = {
-  nationalDex: ['nationalDex'] as const, 
+  nationalDex: ['nationalDex'] as const,
   pokemons: ['pokemons'] as const,
-  pokemonIdWithName: (name: string) => ['pokemonIdWithName', name] as const,
-  pokemonPokeAPI: (id: string) => ['pokemonPokeAPI', id] as const,
-  pokemonTyradex: (id: string) => ['pokemonTyradex', id] as const,
   pokemonDataByID: (id: string) => ['pokemonDataByID', id] as const,
+  pokemonSpeciesDataByID: (id: string) =>
+    ['pokemonSpeciesDataByID', id] as const,
 }
 
 const DEFAULT_CACHE_OPTIONS = {
@@ -66,7 +65,7 @@ export const useGetPokemonDataByID = (id: string) => {
 
 export const useGetPokemonSpeciesDataByID = (id: string) => {
   return useQuery({
-    queryKey: QUERY_KEYS.pokemonPokeAPI(id),
+    queryKey: QUERY_KEYS.pokemonSpeciesDataByID(id),
     queryFn: () => fetchPokemonSpeciesDataByID(id),
     placeholderData: (previousData) => previousData,
     refetchOnMount: false,
@@ -105,9 +104,9 @@ export const usePrefetchPokemonSpeciesDataByID = () => {
   const queryClient = useQueryClient()
 
   return (id: string) => {
-    console.log("prefetching pokemon species data by id...", id)
+    console.log('prefetching pokemon species data by id...', id)
     queryClient.ensureQueryData({
-      queryKey: QUERY_KEYS.pokemonPokeAPI(id),
+      queryKey: QUERY_KEYS.pokemonSpeciesDataByID(id),
       queryFn: () => fetchPokemonSpeciesDataByID(id),
       ...DEFAULT_CACHE_OPTIONS,
     })

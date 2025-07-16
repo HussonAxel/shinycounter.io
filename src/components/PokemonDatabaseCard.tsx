@@ -17,7 +17,7 @@ export default function PokemonDatabaseCard({
 const prefetchPokemonFullData = usePrefetchPokemonFullData()
 
 const handleOnMouseEnter = async () => {
-  prefetchPokemonFullData(pokemonId.toString())
+  prefetchPokemonFullData(pokemonName)
 }
 
   return (
