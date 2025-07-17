@@ -53,20 +53,28 @@ function RouteComponent() {
             (type: { type: { name: string } }) => type.type.name,
           ) || []
         }
-        pokemonFirstAppearance={pokemonSpeciesData.generation.name.replace('generation-', '')}
-        pokemonCategory={pokemonSpeciesData.genera.find(
-          (genera: { language: { name: string } }) =>
-            genera.language.name === 'en'
-        )?.genus || 'Catégorie Inconnue'}
+        pokemonFirstAppearance={pokemonSpeciesData.generation.name.replace(
+          'generation-',
+          '',
+        )}
+        pokemonCategory={
+          pokemonSpeciesData.genera.find(
+            (genera: { language: { name: string } }) =>
+              genera.language.name === 'en',
+          )?.genus || 'Catégorie Inconnue'
+        }
         pokemonWeight={pokemonData.weight / 10} // Convert to kg
         pokemonHeight={pokemonData.height / 10} // Convert to m
         pokemonAbilities={pokemonData.abilities}
-        pokemonShape={
-          pokemonSpeciesData.shape.name || 'Forme Inconnue'
-        }
-        pokemonColor={
-          pokemonSpeciesData.color.name || 'Couleur Inconnue'
-        }
+        pokemonShape={pokemonSpeciesData.shape.name || 'Forme Inconnue'}
+        pokemonColor={pokemonSpeciesData.color.name || 'Couleur Inconnue'}
+pokemonStats={
+  pokemonData.stats.map(
+    (stat: { base_stat: number; stat: { name: string } }) => ({
+      name: stat.stat.name,
+      base_stat: stat.base_stat, 
+    }))
+}
       />
     </section>
   )
