@@ -38,7 +38,7 @@ export default function CurrentPokemonRight({
   pokemonStats = [],
 }: CurrentPokemonRightProps) {
   return (
-    <div className="h-full bg-gray-50 dark:bg-gray-800 w-3/5 p-6 rounded-lg shadow-sm">
+    <div className="bg-gray-50 dark:bg-gray-800 w-3/5 p-6 rounded-lg shadow-sm">
       <PokemonHeader
         pokemonID={pokemonID}
         pokemonDefaultName={pokemonDefaultName}

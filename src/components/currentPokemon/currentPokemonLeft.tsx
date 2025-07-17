@@ -1,19 +1,23 @@
- interface CurrentPokemonLeftProps {
-  pokemonJapaneseName: string;
-  pokemonDefaultName: string;
-  pokemonID: number;
+interface CurrentPokemonLeftProps {
+  pokemonJapaneseName: string
+  pokemonDefaultName: string
+  pokemonID: number
 }
 
-import {Button} from "../ui/button";
+import { Button } from '../ui/button'
 
-import { useState } from "react";
-export default function CurrentPokemonLeft({ pokemonJapaneseName, pokemonDefaultName, pokemonID }: CurrentPokemonLeftProps) {
-  const [isShiny, setIsShiny] = useState(false);
+import { useState } from 'react'
+export default function CurrentPokemonLeft({
+  pokemonJapaneseName,
+  pokemonDefaultName,
+  pokemonID,
+}: CurrentPokemonLeftProps) {
+  const [isShiny, setIsShiny] = useState(false)
   const handleClick = () => {
-    setIsShiny(!isShiny);
+    setIsShiny(!isShiny)
   }
   return (
-    <div className="h-full bg-gray-100 w-2/5 flex flex-col items-center justify-center p-6 sticky top-0">
+    <div className="h-screen bg-gray-100 w-2/5 flex flex-col items-center justify-center p-6 sticky top-0 overflow-y-auto">
       <h2 className="text-7xl font-semibold text-[#1A1A1A]/33 mb-4">
         {pokemonJapaneseName}
       </h2>
@@ -33,9 +37,7 @@ export default function CurrentPokemonLeft({ pokemonJapaneseName, pokemonDefault
         >
           {isShiny ? 'Normal' : 'Shiny'} Pokémon
         </Button>
-        <Button
-          className="mt-4 bg-white text-black uppercase font-semibold ring ring-gray-200 transition duration-200 active:scale-95 hover:bg-gray-100 hover:ring-gray-300"
-        >
+        <Button className="mt-4 bg-white text-black uppercase font-semibold ring ring-gray-200 transition duration-200 active:scale-95 hover:bg-gray-100 hover:ring-gray-300">
           Start Hunt
         </Button>
       </div>

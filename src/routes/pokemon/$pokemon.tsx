@@ -32,10 +32,7 @@ function RouteComponent() {
       [],
   )
   return (
-    <section
-      className="h-[calc(100vh-68px)] flex flex-row
-    "
-    >
+    <section className="min-h-screen flex flex-row">
       <CurrentPokemonLeft
         pokemonJapaneseName={
           pokemonSpeciesData.names.find(
