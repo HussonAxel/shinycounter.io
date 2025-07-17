@@ -5,31 +5,32 @@ import CurrentPokemonRight from '@/components/currentPokemon/currentPokemonRight
 
 import { useGetPokemonFullData } from '@/data/pokemons'
 
-
-
 export const Route = createFileRoute('/pokemon/$pokemon')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-    const { pokemon } = Route.useParams()
+  const { pokemon } = Route.useParams()
 
   const { pokemonData, pokemonSpeciesData, isLoading, isError } =
     useGetPokemonFullData(pokemon)
-    
-    if (isLoading) {
-      return <div className="h-full bg-gray-200 w-3/5">Chargement...</div>
-    }
 
-    if (isError) {
-      return <div className="h-full bg-gray-200 w-3/5">Erreur de chargement</div>
-    }
+  if (isLoading) {
+    return <div className="h-full bg-gray-200 w-3/5">Chargement...</div>
+  }
 
-    if (!pokemonData || !pokemonSpeciesData) {
-      return <div className="h-full bg-gray-200 w-3/5">Aucun Pokémon trouvé</div>
-    }
+  if (isError) {
+    return <div className="h-full bg-gray-200 w-3/5">Erreur de chargement</div>
+  }
 
-    console.log(pokemonData.types.map((type: { type: { name: any } }) => type.type.name) || [])
+  if (!pokemonData || !pokemonSpeciesData) {
+    return <div className="h-full bg-gray-200 w-3/5">Aucun Pokémon trouvé</div>
+  }
+
+  console.log(
+    pokemonData.types.map((type: { type: { name: any } }) => type.type.name) ||
+      [],
+  )
   return (
     <section
       className="h-[calc(100vh-68px)] flex flex-row
@@ -68,13 +69,12 @@ function RouteComponent() {
         pokemonAbilities={pokemonData.abilities}
         pokemonShape={pokemonSpeciesData.shape.name || 'Forme Inconnue'}
         pokemonColor={pokemonSpeciesData.color.name || 'Couleur Inconnue'}
-pokemonStats={
-  pokemonData.stats.map(
-    (stat: { base_stat: number; stat: { name: string } }) => ({
-      name: stat.stat.name,
-      base_stat: stat.base_stat, 
-    }))
-}
+        pokemonStats={pokemonData.stats.map(
+          (stat: { base_stat: number; stat: { name: string } }) => ({
+            name: stat.stat.name,
+            base_stat: stat.base_stat,
+          }),
+        )}
       />
     </section>
   )
