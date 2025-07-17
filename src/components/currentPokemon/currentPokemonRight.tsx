@@ -6,6 +6,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+
+import { ProgressBar } from '../ui/progress-indicator'
 import useSound from 'use-sound'
 import { useGetTalentDataByName } from '@/data/pokemons'
 import { Link } from '@tanstack/react-router'
@@ -199,7 +201,12 @@ export default function CurrentPokemonRight({
           Stats
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-
+          <ProgressBar
+            className="bg-red-400 [&>div]:!bg-blue-500 "
+            min={0}
+            max={100}
+            value={30}
+          />
         </div>
       </div>
     </div>
