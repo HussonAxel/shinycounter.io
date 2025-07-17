@@ -8,7 +8,6 @@ import {
 import useSound from 'use-sound'
 import { useGetTalentDataByName } from '@/data/pokemons'
 
-// Types pour les données Pokémon
 interface PokemonAbility {
   ability: {
     name: string
@@ -45,7 +44,6 @@ export default function CurrentPokemonRight({
   pokemonHeight,
   pokemonAbilities,
 }: CurrentPokemonRightProps) {
-  // Sons des Pokémon
   const [playPokemonLegacyCry] = useSound(
     `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/legacy/${pokemonID}.ogg`,
     { volume: 0.5 },
@@ -57,38 +55,31 @@ export default function CurrentPokemonRight({
 
   return (
     <div className="h-full bg-gray-50 dark:bg-gray-800 w-3/5 p-6 rounded-lg shadow-sm">
-      {/* En-tête avec nom et ID */}
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white capitalize">
-          {pokemonDefaultName}{' '}
-          <span className="text-gray-500">#{pokemonID}</span>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white capitalize mb-4">
+          {pokemonDefaultName} - 
+          <span className="text-gray-500"> #{pokemonID}</span>
         </h2>
-      </div>
-
-      {/* Types du Pokémon */}
-      <div className="mb-6">
-        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-          Types
-        </h3>
-        <div className="flex flex-wrap gap-2">
-          {pokemonTypes.map((type, index) => (
-            <Badge
-              key={index}
-              variant="secondary"
-              className={`bg-${type} text-white dark:bg-${type} font-bold text-xs sm:text-sm uppercase px-3 py-2 rounded-xl flex items-center gap-2 shadow-sm hover:shadow-md transition-shadow`}
-            >
-              <img
-                src={`/assets/static/pkmnsTypes/${type}.svg`}
-                alt={type}
-                className="w-4 h-4 sm:w-5 sm:h-5"
-              />
-              <span className="hidden sm:inline">{type}</span>
-            </Badge>
-          ))}
+        <div className="mb-6">
+          <div className="flex flex-wrap gap-2">
+            {pokemonTypes.map((type, index) => (
+              <Badge
+                key={index}
+                variant="secondary"
+                className={`bg-${type} text-white dark:bg-${type} font-bold text-xs sm:text-sm uppercase px-3 py-2 rounded-xl flex items-center gap-2 shadow-sm hover:shadow-md transition-shadow`}
+              >
+                <img
+                  src={`/assets/static/pkmnsTypes/${type}.svg`}
+                  alt={type}
+                  className="w-4 h-4 sm:w-5 sm:h-5"
+                />
+                <span className="hidden sm:inline">{type}</span>
+              </Badge>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Boutons de sons */}
       <div className="mb-6">
         <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
           Sons
@@ -109,7 +100,6 @@ export default function CurrentPokemonRight({
         </div>
       </div>
 
-      {/* Informations du Pokémon */}
       <div className="mb-6 space-y-3">
         <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
           Informations
@@ -142,7 +132,6 @@ export default function CurrentPokemonRight({
         </div>
       </div>
 
-      {/* Capacités */}
       {pokemonAbilities && pokemonAbilities.length > 0 && (
         <div>
           <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
