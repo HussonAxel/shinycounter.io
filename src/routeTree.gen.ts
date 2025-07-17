@@ -13,6 +13,8 @@ import { createServerRootRoute } from '@tanstack/react-start/server'
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as NewHuntRouteImport } from './routes/newHunt'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TypeTypeRouteImport } from './routes/type/$type'
+import { Route as TalentTalentRouteImport } from './routes/talent/$talent'
 import { Route as PokemonPokemonRouteImport } from './routes/pokemon/$pokemon'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo.tanstack-query'
 import { Route as DemoTableRouteImport } from './routes/demo.table'
@@ -34,6 +36,16 @@ const NewHuntRoute = NewHuntRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TypeTypeRoute = TypeTypeRouteImport.update({
+  id: '/type/$type',
+  path: '/type/$type',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TalentTalentRoute = TalentTalentRouteImport.update({
+  id: '/talent/$talent',
+  path: '/talent/$talent',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PokemonPokemonRoute = PokemonPokemonRouteImport.update({
@@ -95,6 +107,8 @@ export interface FileRoutesByFullPath {
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/pokemon/$pokemon': typeof PokemonPokemonRoute
+  '/talent/$talent': typeof TalentTalentRoute
+  '/type/$type': typeof TypeTypeRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -108,6 +122,8 @@ export interface FileRoutesByTo {
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/pokemon/$pokemon': typeof PokemonPokemonRoute
+  '/talent/$talent': typeof TalentTalentRoute
+  '/type/$type': typeof TypeTypeRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -122,6 +138,8 @@ export interface FileRoutesById {
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/pokemon/$pokemon': typeof PokemonPokemonRoute
+  '/talent/$talent': typeof TalentTalentRoute
+  '/type/$type': typeof TypeTypeRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -137,6 +155,8 @@ export interface FileRouteTypes {
     | '/demo/table'
     | '/demo/tanstack-query'
     | '/pokemon/$pokemon'
+    | '/talent/$talent'
+    | '/type/$type'
     | '/demo/form/address'
     | '/demo/form/simple'
     | '/demo/start/api-request'
@@ -150,6 +170,8 @@ export interface FileRouteTypes {
     | '/demo/table'
     | '/demo/tanstack-query'
     | '/pokemon/$pokemon'
+    | '/talent/$talent'
+    | '/type/$type'
     | '/demo/form/address'
     | '/demo/form/simple'
     | '/demo/start/api-request'
@@ -163,6 +185,8 @@ export interface FileRouteTypes {
     | '/demo/table'
     | '/demo/tanstack-query'
     | '/pokemon/$pokemon'
+    | '/talent/$talent'
+    | '/type/$type'
     | '/demo/form/address'
     | '/demo/form/simple'
     | '/demo/start/api-request'
@@ -177,6 +201,8 @@ export interface RootRouteChildren {
   DemoTableRoute: typeof DemoTableRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   PokemonPokemonRoute: typeof PokemonPokemonRoute
+  TalentTalentRoute: typeof TalentTalentRoute
+  TypeTypeRoute: typeof TypeTypeRoute
   DemoFormAddressRoute: typeof DemoFormAddressRoute
   DemoFormSimpleRoute: typeof DemoFormSimpleRoute
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
@@ -218,6 +244,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/type/$type': {
+      id: '/type/$type'
+      path: '/type/$type'
+      fullPath: '/type/$type'
+      preLoaderRoute: typeof TypeTypeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/talent/$talent': {
+      id: '/talent/$talent'
+      path: '/talent/$talent'
+      fullPath: '/talent/$talent'
+      preLoaderRoute: typeof TalentTalentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pokemon/$pokemon': {
@@ -305,6 +345,8 @@ const rootRouteChildren: RootRouteChildren = {
   DemoTableRoute: DemoTableRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   PokemonPokemonRoute: PokemonPokemonRoute,
+  TalentTalentRoute: TalentTalentRoute,
+  TypeTypeRoute: TypeTypeRoute,
   DemoFormAddressRoute: DemoFormAddressRoute,
   DemoFormSimpleRoute: DemoFormSimpleRoute,
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,
