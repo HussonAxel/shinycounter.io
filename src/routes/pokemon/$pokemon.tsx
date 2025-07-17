@@ -61,6 +61,12 @@ function RouteComponent() {
         pokemonWeight={pokemonData.weight / 10} // Convert to kg
         pokemonHeight={pokemonData.height / 10} // Convert to m
         pokemonAbilities={pokemonData.abilities}
+        pokemonShape={
+          pokemonSpeciesData.shape.name || 'Forme Inconnue'
+        }
+        pokemonColor={
+          pokemonSpeciesData.color.name || 'Couleur Inconnue'
+        }
       />
     </section>
   )
