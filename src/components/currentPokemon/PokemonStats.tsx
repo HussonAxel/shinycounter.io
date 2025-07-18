@@ -2,7 +2,7 @@ import { ProgressBar } from '../ui/progress-indicator'
 import { calculateMaxStatValue, calculateMinStatValue } from '@/lib/functions'
 
 interface PokemonStatsProps {
-  pokemonStats: { base_stat: number; stat: { name: string } }[]
+  pokemonStats: { base_stat: number; name: string }[]
 }
 
 export default function PokemonStats({ pokemonStats }: PokemonStatsProps) {
@@ -33,7 +33,7 @@ export default function PokemonStats({ pokemonStats }: PokemonStatsProps) {
                 </div>
                 <div className="col-span-5">
                   <ProgressBar
-                    className="bg-gray-200 dark:bg-gray-600 [&>div]:!bg-orange-400 h-2 rounded-full"
+                    className="bg-gray-200 dark:bg-gray-600 [&>div]:!bg-orange-400 h-2 rounded-full w-1/2 md:w-full"
                     min={0}
                     max={200}
                     value={stat.base_stat}
