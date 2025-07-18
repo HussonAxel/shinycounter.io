@@ -20,7 +20,7 @@ export default function PokemonInfo({
       <h3 className="text-md font-semibold text-[#1A1A1A] dark:text-gray-300 mb-3">
         Informations
       </h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
         <div className="bg-white dark:bg-gray-700 p-3 rounded-lg shadow-sm">
           <span className="text-gray-500 dark:text-gray-400">Generation</span>
           <p className="font-semibold text-[#1A1A1A] dark:text-white uppercase">

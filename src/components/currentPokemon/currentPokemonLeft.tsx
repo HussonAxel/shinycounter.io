@@ -17,7 +17,7 @@ export default function CurrentPokemonLeft({
     setIsShiny(!isShiny)
   }
   return (
-    <div className="md:h-screen bg-gray-100 w-full md:w-2/5 flex flex-col items-center justify-center p-6 md:sticky top-0 overflow-y-auto">
+    <div className="md:h-[calc(100vh-68px)] bg-gray-100 w-full md:w-2/5 flex flex-col items-center justify-center p-6 md:sticky top-0 overflow-y-auto">
       <h2 className="text-4xl sm:text-7xl font-semibold text-[#1A1A1A]/33 mb-4">
         {pokemonJapaneseName}
       </h2>

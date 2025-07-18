@@ -2,7 +2,8 @@ import PokemonHeader from './PokemonHeader'
 import PokemonSounds from './PokemonSounds'
 import PokemonAbilities from './PokemonAbilities'
 import PokemonInfo from './PokemonInfo'
-import PokemonStats from './PokemonStats'
+// import PokemonStats from './PokemonStats'
+import PokemonForms from './PokemonForms'
 
 interface PokemonAbility {
   ability: {
@@ -22,6 +23,8 @@ interface CurrentPokemonRightProps {
   pokemonShape: string
   pokemonColor: string
   pokemonStats?: { base_stat: number; name: string }[]
+  pokemonBaseForm: string
+  pokemonNextForms?: string
 }
 
 export default function CurrentPokemonRight({
@@ -36,6 +39,8 @@ export default function CurrentPokemonRight({
   pokemonShape,
   pokemonColor,
   pokemonStats = [],
+  pokemonBaseForm,
+  pokemonNextForms,
 }: CurrentPokemonRightProps) {
   return (
     <div className="bg-gray-50 dark:bg-gray-800 w-full md:w-3/5 p-6 rounded-lg shadow-sm">
@@ -57,8 +62,12 @@ export default function CurrentPokemonRight({
         pokemonShape={pokemonShape}
         pokemonColor={pokemonColor}
       />
+      <PokemonForms
+        pokemonBaseForm={pokemonBaseForm}
+        pokemonNextForms={pokemonNextForms}
+      />
 
-      <PokemonStats pokemonStats={pokemonStats} />
+      {/* <PokemonStats pokemonStats={pokemonStats} /> */}
     </div>
   )
 }

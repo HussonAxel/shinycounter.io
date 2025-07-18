@@ -3,7 +3,10 @@ import { createFileRoute } from '@tanstack/react-router'
 import CurrentPokemonLeft from '@/components/currentPokemon/currentPokemonLeft'
 import CurrentPokemonRight from '@/components/currentPokemon/currentPokemonRight'
 
-import { useGetPokemonFullData } from '@/data/pokemons'
+import {
+  useGetPokemonFullData,
+  useGetEvolutionChainByURL,
+} from '@/data/pokemons'
 
 export const Route = createFileRoute('/pokemon/$pokemon')({
   component: RouteComponent,
@@ -11,28 +14,34 @@ export const Route = createFileRoute('/pokemon/$pokemon')({
 
 function RouteComponent() {
   const { pokemon } = Route.useParams()
-
+  
   const { pokemonData, pokemonSpeciesData, isLoading, isError } =
-    useGetPokemonFullData(pokemon)
+  useGetPokemonFullData(pokemon)
+  
+  const evolutionChainURL = pokemonSpeciesData?.evolution_chain?.url
 
-  if (isLoading) {
+  const { data: evolutionChainData, isLoading: isLoadingEvolutionChain, isError: isErrorEvolutionChain } = useGetEvolutionChainByURL(
+    evolutionChainURL
+  )
+
+  
+  
+  if (isLoading || isLoadingEvolutionChain) {
     return <div className="h-full bg-gray-200 w-3/5">Chargement...</div>
   }
-
-  if (isError) {
+  
+  if (isError || isErrorEvolutionChain) {
     return <div className="h-full bg-gray-200 w-3/5">Erreur de chargement</div>
   }
-
+  
   if (!pokemonData || !pokemonSpeciesData) {
     return <div className="h-full bg-gray-200 w-3/5">Aucun Pokémon trouvé</div>
   }
 
-  console.log(
-    pokemonData.types.map((type: { type: { name: any } }) => type.type.name) ||
-      [],
-  )
+  console.log('Evolution Chain Data:', evolutionChainData)
+
   return (
-    <section className="min-h-screen flex flex-col md:flex-row">
+    <section className="max-h-[calc(100vh-68px)] flex flex-col md:flex-row">
       <CurrentPokemonLeft
         pokemonJapaneseName={
           pokemonSpeciesData.names.find(
@@ -72,6 +81,14 @@ function RouteComponent() {
             base_stat: stat.base_stat,
           }),
         )}
+        pokemonBaseForm={evolutionChainData.chain.species.name}
+        pokemonNextForms={
+          evolutionChainData.chain.evolves_to
+            ?.map(
+              (evolve: { species: { name: string } }) => evolve.species.name,
+            )
+            .join(', ') || ''
+        }
       />
     </section>
   )

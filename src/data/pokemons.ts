@@ -49,6 +49,14 @@ export const fetchTalentDataByName = async (name: string) => {
   return response.json()
 }
 
+export const fetchEvolutionChainByURL = async (url: string) => {
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error('Failed to fetch evolution chain data')
+  }
+  return response.json()
+}
+
 //QUERY HOOKS 
 
 export const useGetNationalDex = () => {
@@ -87,6 +95,17 @@ export const useGetTalentDataByName = (name: string) => {
     queryFn: () => fetchTalentDataByName(name),
     placeholderData: (previousData) => previousData,
     refetchOnMount: false,
+    ...DEFAULT_CACHE_OPTIONS,
+  })
+}
+
+export const useGetEvolutionChainByURL = (url: string) => {
+  return useQuery({
+    queryKey: ['evolutionChain', url || ''],
+    queryFn: () => fetchEvolutionChainByURL(url),
+    placeholderData: (previousData) => previousData,
+    refetchOnMount: false,
+    enabled: !!url,
     ...DEFAULT_CACHE_OPTIONS,
   })
 }
@@ -139,5 +158,18 @@ export const usePrefetchPokemonFullData = () => {
     console.log("prefetching full pokemon data by id...", id)
     prefetchPokemonDataByID(id)
     prefetchPokemonSpeciesDataByID(id)
+  }
+}
+
+export const usePrefetchEvolutionChainByURL = () => {
+  const queryClient = useQueryClient()
+
+  return (url: string) => {
+    console.log("prefetching evolution chain by url...", url)
+    queryClient.ensureQueryData({
+      queryKey: ['evolutionChain', url],
+      queryFn: () => fetchEvolutionChainByURL(url),
+      ...DEFAULT_CACHE_OPTIONS,
+    })
   }
 }
