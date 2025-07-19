@@ -8,6 +8,8 @@ import {
   useGetEvolutionChainByURL,
 } from '@/data/pokemons'
 
+import { extractPokemonIdFromUrl } from '@/lib/functions'
+
 export const Route = createFileRoute('/pokemon/$pokemon')({
   component: RouteComponent,
 })
@@ -88,6 +90,38 @@ function RouteComponent() {
               (evolve: { species: { name: string } }) => evolve.species.name,
             )
             .join(', ') || ''
+        }
+        pokemonNextNextForms={
+          evolutionChainData.chain.evolves_to
+            ?.flatMap(
+              (evolve: any) =>
+                evolve.evolves_to?.map(
+                  (nextEvolve: { species: { name: string } }) =>
+                    nextEvolve.species.name,
+                ) || [],
+            )
+            .join(', ') || ''
+        }
+        pokemonBaseFormID={extractPokemonIdFromUrl(
+          evolutionChainData.chain.species.url,
+        ) ?? undefined}
+        pokemonNextFormsID={
+          evolutionChainData.chain.evolves_to
+            ?.map((evolve: { species: { url: string } }) =>
+              extractPokemonIdFromUrl(evolve.species.url),
+            )
+            .join(', ') || undefined
+        }
+        pokemonNextNextFormsID={
+          evolutionChainData.chain.evolves_to
+            ?.flatMap(
+              (evolve: any) =>
+                evolve.evolves_to?.map(
+                  (nextEvolve: { species: { url: string } }) =>
+                    extractPokemonIdFromUrl(nextEvolve.species.url),
+                ) || [],
+            )
+            .join(', ') || undefined
         }
       />
     </section>

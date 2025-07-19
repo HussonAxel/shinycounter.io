@@ -6,17 +6,19 @@ export const getProgressColor = (value: number) => {
   return '#f44336' // Rouge (pour les stats nulles)
 }
 
-
 export const calculateMaxStatValue = (baseValue: number, statName: string) => {
-  return (statName === "hp") ? 
-  Math.floor((31 + 2 * baseValue + (252 /4) * 1) + 110 )
-  :
-  Math.floor(((((31 + 2 * baseValue) +(252/4) * 1) + 5 ) * 1.1))
+  return statName === 'hp'
+    ? Math.floor(31 + 2 * baseValue + (252 / 4) * 1 + 110)
+    : Math.floor((31 + 2 * baseValue + (252 / 4) * 1 + 5) * 1.1)
 }
 
 export const calculateMinStatValue = (baseValue: number, statName: string) => {
-  return (statName === "hp") ?
-  Math.floor((2 * baseValue ) + 110 )
-  :
-  Math.floor((2 * baseValue + 5 ) * 0.9)
+  return statName === 'hp'
+    ? Math.floor(2 * baseValue + 110)
+    : Math.floor((2 * baseValue + 5) * 0.9)
+}
+
+export const extractPokemonIdFromUrl = (url: string): number | null => {
+  const match = url.match(/\/(\d+)\/?$/)
+  return match ? parseInt(match[1], 10) : null
 }
