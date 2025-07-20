@@ -41,7 +41,7 @@ export default function CurrentPokemonRight({
   // pokemonStats = [],
 }: CurrentPokemonRightProps) {
   return (
-    <div className="bg-gray-50 dar  k:bg-gray-800 w-full md:w-3/5 p-6 rounded-lg shadow-sm">
+    <div className="bg-gray-50 dar  k:bg-gray-800 w-full md:w-3/5 p-6 rounded-lg shadow-sm h-[calc(100vh-68px)] overflow-y-auto">
       <PokemonHeader
         pokemonID={pokemonID}
         pokemonDefaultName={pokemonDefaultName}

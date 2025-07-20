@@ -79,7 +79,7 @@ function RouteComponent() {
             base_stat: stat.base_stat,
           }),
         )}
-        pokemonEnglishName={evolutionChainData.chain.species.name}
+        pokemonEnglishName={pokemonData.name}
       />
     </section>
   )
