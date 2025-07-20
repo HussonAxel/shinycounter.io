@@ -23,12 +23,7 @@ interface CurrentPokemonRightProps {
   pokemonShape: string
   pokemonColor: string
   pokemonStats?: { base_stat: number; name: string }[]
-  pokemonBaseForm: string
-  pokemonNextForms?: string
-  pokemonNextNextForms?: string
-  pokemonBaseFormID?: number
-  pokemonNextFormsID?: number
-  pokemonNextNextFormsID?: number
+  pokemonEnglishName: string
 }
 
 export default function CurrentPokemonRight({
@@ -42,16 +37,11 @@ export default function CurrentPokemonRight({
   pokemonAbilities,
   pokemonShape,
   pokemonColor,
+  pokemonEnglishName,
   // pokemonStats = [],
-  pokemonBaseForm,
-  pokemonNextForms,
-  pokemonNextNextForms,
-  pokemonBaseFormID,
-  pokemonNextFormsID,
-  pokemonNextNextFormsID
 }: CurrentPokemonRightProps) {
   return (
-    <div className="bg-gray-50 dark:bg-gray-800 w-full md:w-3/5 p-6 rounded-lg shadow-sm">
+    <div className="bg-gray-50 dar  k:bg-gray-800 w-full md:w-3/5 p-6 rounded-lg shadow-sm">
       <PokemonHeader
         pokemonID={pokemonID}
         pokemonDefaultName={pokemonDefaultName}
@@ -70,15 +60,7 @@ export default function CurrentPokemonRight({
         pokemonShape={pokemonShape}
         pokemonColor={pokemonColor}
       />
-      <PokemonForms
-        pokemonBaseForm={pokemonBaseForm}
-        pokemonNextForms={pokemonNextForms}
-        pokemonNextNextForms={pokemonNextNextForms ? pokemonNextNextForms : ''}
-        pokemonBaseFormID={pokemonBaseFormID}
-        pokemonNextFormsID={pokemonNextFormsID}
-        pokemonNextNextFormsID={pokemonNextNextFormsID}
-      />
-
+      <PokemonForms pokemonEnglishName={pokemonEnglishName} />
 
       {/* <PokemonStats pokemonStats={pokemonStats} /> */}
     </div>

@@ -6,35 +6,39 @@ import {
 } from '@/components/ui/card'
 
 import type { PokemonDatabaseCardProps } from '@/data/types'
-import { usePrefetchPokemonFullData } from '@/data/pokemons'
+import {
+  usePrefetchNationalDexTyradex,
+  usePrefetchPokemonFullData,
+} from '@/data/pokemons'
 
 export default function PokemonDatabaseCard({
   pokemonName,
   pokemonId,
   pokemonImage,
 }: PokemonDatabaseCardProps) {
+  const prefetchPokemonFullData = usePrefetchPokemonFullData()
+  const prefetchNationalDexTyradex = usePrefetchNationalDexTyradex()
 
-const prefetchPokemonFullData = usePrefetchPokemonFullData()
-
-const handleOnMouseEnter = async () => {
-  prefetchPokemonFullData(pokemonName)
-}
+  const handleOnMouseEnter = async () => {
+    prefetchNationalDexTyradex()
+    prefetchPokemonFullData(pokemonName)
+  }
 
   return (
-      <Card
-        className="hover:shadow-lg hover:scale-105 transition-all active:bg-gray-50 active:scale-[100%] active:shadow-xl cursor-pointer rounded-none sm:rounded-md"
-        onMouseEnter={handleOnMouseEnter}
-      >
-        <CardHeader className="flex flex-col items-center justify-center">
-          <img
-            src={pokemonImage}
-            alt={pokemonName}
-            className="w-full m-auto max-w-[150px]"
-          />
-          <CardTitle className="capitalize">{pokemonName}</CardTitle>
-          <CardDescription>#{pokemonId}</CardDescription>
-          <CardDescription className="text-center text-black flex gap-2"></CardDescription>
-        </CardHeader>
-      </Card>
+    <Card
+      className="hover:shadow-lg hover:scale-105 transition-all active:bg-gray-50 active:scale-[100%] active:shadow-xl cursor-pointer rounded-none sm:rounded-md"
+      onMouseEnter={handleOnMouseEnter}
+    >
+      <CardHeader className="flex flex-col items-center justify-center">
+        <img
+          src={pokemonImage}
+          alt={pokemonName}
+          className="w-full m-auto max-w-[150px]"
+        />
+        <CardTitle className="capitalize">{pokemonName}</CardTitle>
+        <CardDescription>#{pokemonId}</CardDescription>
+        <CardDescription className="text-center text-black flex gap-2"></CardDescription>
+      </CardHeader>
+    </Card>
   )
 }

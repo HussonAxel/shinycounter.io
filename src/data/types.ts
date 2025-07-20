@@ -14,3 +14,10 @@ export interface CurrentHuntCardProps {
   pokemonImage: string
   currentProgress: number | null
 }
+
+export interface PokemonFormsProps {
+  condition: string
+  name: string
+  pokedex_id: string
+  varieties: string[]
+}

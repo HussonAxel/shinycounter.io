@@ -16,7 +16,7 @@ export default function PokemonInfo({
   pokemonColor,
 }: PokemonInfoProps) {
   return (
-    <div className="mb-8 space-y-3">
+    <div className="mb-6 space-y-3">
       <h3 className="text-md font-semibold text-[#1A1A1A] dark:text-gray-300 mb-3">
         Informations
       </h3>

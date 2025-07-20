@@ -23,7 +23,7 @@ export default function PokemonAbilities({
   if (!pokemonAbilities) return null
 
   return (
-    <div className="mb-8">
+    <div className="mb-6">
       <h3 className="text-md font-semibold text-[#1A1A1A] dark:text-gray-300 mb-3">
         Capacités
       </h3>

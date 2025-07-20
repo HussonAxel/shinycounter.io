@@ -47,7 +47,7 @@ function PokemonApp() {
 
   const filteredPokemons = useMemo(() => {
     if (activeTab !== 'pokedex') return []
-    
+
     if (!pokemonEntries || !Array.isArray(pokemonEntries)) return []
 
     let filtered = pokemonEntries.filter(
@@ -73,7 +73,7 @@ function PokemonApp() {
   return (
     <div className="min-h-screen bg-[#fafafa] p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-6">
           <h1 className="text-4xl font-bold text-[#1a1a1a]">
             Pokemon Hunt Tracker
           </h1>
