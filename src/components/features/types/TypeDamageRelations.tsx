@@ -56,6 +56,7 @@ export default function TypeDamageRelations() {
     (type: { name: string }) => type.name,
   )
 
+  // Calcul du multiplicateur pour chaque type
   const typesFilteredFrom = allTypes.results
     .filter(
       (type: { name: string }) =>
@@ -66,11 +67,16 @@ export default function TypeDamageRelations() {
       const halfDamageFrom = HALF_DAMAGES_FROM.includes(type.name)
       const noDamageFrom = NO_DAMAGES_FROM.includes(type.name)
 
+      let multiplier = 1
+      if (noDamageFrom) multiplier = 0
+      else {
+        if (doubleDamageFrom) multiplier *= 2
+        if (halfDamageFrom) multiplier *= 0.5
+      }
+
       return {
         name: type.name,
-        ...(doubleDamageFrom && { doubleDamageFrom }),
-        ...(halfDamageFrom && { halfDamageFrom }),
-        ...(noDamageFrom && { noDamageFrom }),
+        multiplier,
       }
     })
 
@@ -84,11 +90,16 @@ export default function TypeDamageRelations() {
       const halfDamageTo = HALF_DAMAGES_TO.includes(type.name)
       const noDamageTo = NO_DAMAGES_TO.includes(type.name)
 
+      let multiplier = 1
+      if (noDamageTo) multiplier = 0
+      else {
+        if (doubleDamageTo) multiplier *= 2
+        if (halfDamageTo) multiplier *= 0.5
+      }
+
       return {
         name: type.name,
-        ...(doubleDamageTo && { doubleDamageTo }),
-        ...(halfDamageTo && { halfDamageTo }),
-        ...(noDamageTo && { noDamageTo }),
+        multiplier,
       }
     })
 
@@ -203,45 +214,19 @@ function DamageTable({
                 key={`${type.name}-${index}`}
                 className="space-y-1 text-center"
               >
-                {isFrom ? (
-                  type.doubleDamageFrom ? (
-                    <CheckIcon
-                      className="inline-flex stroke-emerald-600"
-                      size={16}
-                      aria-hidden="true"
-                    />
-                  ) : (
-                    <XIcon
-                      className="inline-flex stroke-red-600"
-                      size={16}
-                      aria-hidden="true"
-                    />
-                  )
-                ) : type.doubleDamageTo ? (
-                  <CheckIcon
-                    className="inline-flex stroke-emerald-600"
-                    size={16}
-                    aria-hidden="true"
-                  />
-                ) : (
-                  <XIcon
-                    className="inline-flex stroke-red-600"
-                    size={16}
-                    aria-hidden="true"
-                  />
-                )}
-                <span className="sr-only">
-                  {isFrom
-                    ? type.doubleDamageFrom
-                      ? 'doubleDamageFrom'
-                      : 'Not doubleDamageFrom'
-                    : type.doubleDamageTo
-                      ? 'doubleDamageTo'
-                      : 'Not doubleDamageTo'}
+                <span
+                  className={
+                    type.multiplier === 2
+                      ? 'text-emerald-600 font-bold'
+                      : type.multiplier === 0.5
+                        ? 'text-yellow-600 font-bold'
+                        : type.multiplier === 0
+                          ? 'text-gray-400 font-bold'
+                          : ''
+                  }
+                >
+                  {type.multiplier}
                 </span>
-                <div className="text-muted-foreground text-xs font-medium">
-                  {isFrom ? type.halfDamageFrom : type.halfDamageTo}
-                </div>
               </TableCell>
             ))}
           </TableRow>
