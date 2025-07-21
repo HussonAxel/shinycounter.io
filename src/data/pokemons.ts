@@ -1,7 +1,17 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
+//──────────────────────────────────────────────────────────────────────────────
+// CONSTANTS
+//──────────────────────────────────────────────────────────────────────────────
 const BASE_POKEAPI_URL = 'https://pokeapi.co/api/v2'
 
+const DEFAULT_CACHE_OPTIONS = {
+  keepPreviousData: true,
+}
+
+//──────────────────────────────────────────────────────────────────────────────
+// QUERY KEYS
+//──────────────────────────────────────────────────────────────────────────────
 export const QUERY_KEYS = {
   nationalDex: ['nationalDex'] as const,
   nationalDexTyradex: ['nationalDexTyradex'] as const,
@@ -9,155 +19,172 @@ export const QUERY_KEYS = {
   pokemonDataByID: (id: string) => ['pokemonDataByID', id] as const,
   pokemonSpeciesDataByID: (id: string) =>
     ['pokemonSpeciesDataByID', id] as const,
+  typeDataByName: (name: string) => ['typeData', name] as const,
 }
 
-const DEFAULT_CACHE_OPTIONS = {
-  keepPreviousData: true,
-}
-
-//FETCH FUNCTIONS
+//──────────────────────────────────────────────────────────────────────────────
+// FETCH FUNCTIONS
+//──────────────────────────────────────────────────────────────────────────────
 export const fetchNationalDex = async () => {
-  const response = await fetch(`${BASE_POKEAPI_URL}/pokedex/1`)
-  if (!response.ok) {
-    throw new Error('Failed to fetch national dex')
-  }
-  return response.json()
+  const res = await fetch(`${BASE_POKEAPI_URL}/pokedex/1`)
+  if (!res.ok) throw new Error('Failed to fetch national dex')
+  return res.json()
 }
 
 export const fetchNationalDexTyradex = async () => {
-  const response = await fetch('https://tyradex.vercel.app/api/v1/pokemon')
-  if (!response.ok) {
-    throw new Error('Failed to fetch national dex tyradex')
-  }
-  return response.json()
+  const res = await fetch('https://tyradex.vercel.app/api/v1/pokemon')
+  if (!res.ok) throw new Error('Failed to fetch national dex tyradex')
+  return res.json()
 }
 
 export const fetchPokemonDataByID = async (id: string) => {
   console.log('fetching pokemon data by id...', id)
-  const response = await fetch(`${BASE_POKEAPI_URL}/pokemon/${id}`)
-  if (!response.ok) {
-    throw new Error('Failed to fetch pokemon data by id')
-  }
-  return response.json()
+  const res = await fetch(`${BASE_POKEAPI_URL}/pokemon/${id}`)
+  if (!res.ok) throw new Error('Failed to fetch pokemon data by id')
+  return res.json()
 }
 
 export const fetchPokemonSpeciesDataByID = async (id: string) => {
-  const response = await fetch(`${BASE_POKEAPI_URL}/pokemon-species/${id}`)
-  if (!response.ok) {
-    throw new Error('Failed to fetch pokemon species data by id')
-  }
-  return response.json()
-}
-
-export const fetchTalentDataByName = async (name: string) => {
-  const response = await fetch(`${BASE_POKEAPI_URL}/ability/${name}`)
-  if (!response.ok) {
-    throw new Error(`Failed to fetch talent data for ${name}`)
-  }
-  return response.json()
+  const res = await fetch(`${BASE_POKEAPI_URL}/pokemon-species/${id}`)
+  if (!res.ok) throw new Error('Failed to fetch pokemon species data by id')
+  return res.json()
 }
 
 export const fetchEvolutionChainByURL = async (url: string) => {
-  const response = await fetch(url)
-  if (!response.ok) {
-    throw new Error('Failed to fetch evolution chain data')
-  }
-  return response.json()
+  const res = await fetch(url)
+  if (!res.ok) throw new Error('Failed to fetch evolution chain data')
+  return res.json()
 }
 
-//QUERY HOOKS
+export const fetchAllTypes = async () => {
+  const res = await fetch(`${BASE_POKEAPI_URL}/type`)
+  if (!res.ok) throw new Error('Failed to fetch all types')
+  return res.json()
+}
+export const fetchDataTypeByName = async (name: string) => {
+  const res = await fetch(`${BASE_POKEAPI_URL}/type/${name}`)
+  if (!res.ok) throw new Error(`Failed to fetch type data for ${name}`)
+  return res.json()
+}
 
-export const useGetNationalDex = () => {
-  return useQuery({
+export const fetchTalentDataByName = async (name: string) => {
+  const res = await fetch(`${BASE_POKEAPI_URL}/ability/${name}`)
+  if (!res.ok) throw new Error(`Failed to fetch talent data for ${name}`)
+  return res.json()
+}
+
+//──────────────────────────────────────────────────────────────────────────────
+// DATA-FETCHING HOOKS (useGet…)
+//──────────────────────────────────────────────────────────────────────────────
+export const useGetNationalDex = () =>
+  useQuery({
     queryKey: QUERY_KEYS.nationalDex,
     queryFn: fetchNationalDex,
-    placeholderData: (previousData) => previousData,
+    placeholderData: (prev) => prev,
     refetchOnMount: false,
     ...DEFAULT_CACHE_OPTIONS,
   })
-}
-export const useGetNationalDexTyradex = () => {
-  return useQuery({
+
+export const useGetNationalDexTyradex = () =>
+  useQuery({
     queryKey: QUERY_KEYS.nationalDexTyradex,
     queryFn: fetchNationalDexTyradex,
-    placeholderData: (previousData) => previousData,
+    placeholderData: (prev) => prev,
     refetchOnMount: false,
     ...DEFAULT_CACHE_OPTIONS,
   })
-}
-export const useGetPokemonDataByID = (id: string) => {
-  return useQuery({
+
+export const useGetPokemonDataByID = (id: string) =>
+  useQuery({
     queryKey: QUERY_KEYS.pokemonDataByID(id),
     queryFn: () => fetchPokemonDataByID(id),
-    placeholderData: (previousData) => previousData,
+    placeholderData: (prev) => prev,
     refetchOnMount: false,
     ...DEFAULT_CACHE_OPTIONS,
   })
-}
 
-export const useGetPokemonSpeciesDataByID = (id: string) => {
-  return useQuery({
+export const useGetPokemonSpeciesDataByID = (id: string) =>
+  useQuery({
     queryKey: QUERY_KEYS.pokemonSpeciesDataByID(id),
     queryFn: () => fetchPokemonSpeciesDataByID(id),
-    placeholderData: (previousData) => previousData,
+    placeholderData: (prev) => prev,
     refetchOnMount: false,
     ...DEFAULT_CACHE_OPTIONS,
   })
-}
 
-export const useGetTalentDataByName = (name: string) => {
-  return useQuery({
-    queryKey: ['talentData', name],
-    queryFn: () => fetchTalentDataByName(name),
-    placeholderData: (previousData) => previousData,
-    refetchOnMount: false,
-    ...DEFAULT_CACHE_OPTIONS,
-  })
-}
-
-export const useGetEvolutionChainByURL = (url: string) => {
-  return useQuery({
+export const useGetEvolutionChainByURL = (url: string) =>
+  useQuery({
     queryKey: ['evolutionChain', url || ''],
     queryFn: () => fetchEvolutionChainByURL(url),
-    placeholderData: (previousData) => previousData,
+    placeholderData: (prev) => prev,
     refetchOnMount: false,
     enabled: !!url,
     ...DEFAULT_CACHE_OPTIONS,
   })
-}
 
+
+export const useGetAllTypes = () =>
+  useQuery({
+    queryKey: ['allTypes'],
+    queryFn: fetchAllTypes,
+    refetchOnMount: false,
+    placeholderData: (prev) => prev,
+    ...DEFAULT_CACHE_OPTIONS,
+  })
+
+export const useGetTypeDataByName = (name: string) =>
+  useQuery({
+    queryKey: QUERY_KEYS.typeDataByName(name),
+    queryFn: () => fetchDataTypeByName(name),
+    placeholderData: (prev) => prev,
+    refetchOnMount: false,
+    enabled: !!name,
+    ...DEFAULT_CACHE_OPTIONS,
+  })
+
+export const useGetTalentDataByName = (name: string) =>
+  useQuery({
+    queryKey: ['talentData', name] as const,
+    queryFn: () => fetchTalentDataByName(name),
+    placeholderData: (prev) => prev,
+    refetchOnMount: false,
+    ...DEFAULT_CACHE_OPTIONS,
+  })
+
+//──────────────────────────────────────────────────────────────────────────────
+// COMPOSITE HOOKS
+//──────────────────────────────────────────────────────────────────────────────
 export function useGetPokemonFullData(id: string) {
-  const pokemonDataQuery = useGetPokemonDataByID(id)
-  const pokemonSpeciesDataQuery = useGetPokemonSpeciesDataByID(id)
+  const dataQuery = useGetPokemonDataByID(id)
+  const speciesQuery = useGetPokemonSpeciesDataByID(id)
 
   return {
-    pokemonData: pokemonDataQuery.data,
-    pokemonSpeciesData: pokemonSpeciesDataQuery.data,
-    isLoading: pokemonDataQuery.isLoading || pokemonSpeciesDataQuery.isLoading,
-    isError: pokemonDataQuery.isError || pokemonSpeciesDataQuery.isError,
-    error: pokemonDataQuery.error || pokemonSpeciesDataQuery.error,
+    pokemonData: dataQuery.data,
+    pokemonSpeciesData: speciesQuery.data,
+    isLoading: dataQuery.isLoading || speciesQuery.isLoading,
+    isError: dataQuery.isError || speciesQuery.isError,
+    error: dataQuery.error || speciesQuery.error,
   }
 }
 
-//PREFETCH HOOKS
-
+//──────────────────────────────────────────────────────────────────────────────
+// PREFETCH HOOKS (usePrefetch…)
+//──────────────────────────────────────────────────────────────────────────────
 export const usePrefetchNationalDexTyradex = () => {
-  const queryClient = useQueryClient()
-  return () => {
-    queryClient.ensureQueryData({
+  const qc = useQueryClient()
+  return () =>
+    qc.ensureQueryData({
       queryKey: QUERY_KEYS.nationalDexTyradex,
       queryFn: fetchNationalDexTyradex,
       ...DEFAULT_CACHE_OPTIONS,
     })
-  }
 }
 
 export const usePrefetchPokemonDataByID = () => {
-  const queryClient = useQueryClient()
-
+  const qc = useQueryClient()
   return (id: string) => {
     console.log('prefetching pokemon data by id...', id)
-    queryClient.ensureQueryData({
+    qc.ensureQueryData({
       queryKey: QUERY_KEYS.pokemonDataByID(id),
       queryFn: () => fetchPokemonDataByID(id),
       ...DEFAULT_CACHE_OPTIONS,
@@ -166,11 +193,10 @@ export const usePrefetchPokemonDataByID = () => {
 }
 
 export const usePrefetchPokemonSpeciesDataByID = () => {
-  const queryClient = useQueryClient()
-
+  const qc = useQueryClient()
   return (id: string) => {
     console.log('prefetching pokemon species data by id...', id)
-    queryClient.ensureQueryData({
+    qc.ensureQueryData({
       queryKey: QUERY_KEYS.pokemonSpeciesDataByID(id),
       queryFn: () => fetchPokemonSpeciesDataByID(id),
       ...DEFAULT_CACHE_OPTIONS,
@@ -178,26 +204,37 @@ export const usePrefetchPokemonSpeciesDataByID = () => {
   }
 }
 
-export const usePrefetchPokemonFullData = () => {
-  const prefetchPokemonDataByID = usePrefetchPokemonDataByID()
-  const prefetchPokemonSpeciesDataByID = usePrefetchPokemonSpeciesDataByID()
-
-  return (id: string) => {
-    console.log('prefetching full pokemon data by id...', id)
-    prefetchPokemonDataByID(id)
-    prefetchPokemonSpeciesDataByID(id)
-  }
-}
-
 export const usePrefetchEvolutionChainByURL = () => {
-  const queryClient = useQueryClient()
-
+  const qc = useQueryClient()
   return (url: string) => {
     console.log('prefetching evolution chain by url...', url)
-    queryClient.ensureQueryData({
+    qc.ensureQueryData({
       queryKey: ['evolutionChain', url],
       queryFn: () => fetchEvolutionChainByURL(url),
       ...DEFAULT_CACHE_OPTIONS,
     })
+  }
+}
+
+export const usePrefetchTypeDataByName = () => {
+  const qc = useQueryClient()
+  return (name: string) => {
+    console.log('prefetching type data by name...', name)
+    qc.ensureQueryData({
+      queryKey: QUERY_KEYS.typeDataByName(name),
+      queryFn: () => fetchDataTypeByName(name),
+      ...DEFAULT_CACHE_OPTIONS,
+    })
+  }
+}
+
+export const usePrefetchPokemonFullData = () => {
+  const prefetchData = usePrefetchPokemonDataByID()
+  const prefetchSpecies = usePrefetchPokemonSpeciesDataByID()
+
+  return (id: string) => {
+    console.log('prefetching full pokemon data by id...', id)
+    prefetchData(id)
+    prefetchSpecies(id)
   }
 }

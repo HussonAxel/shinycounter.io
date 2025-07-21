@@ -20,11 +20,8 @@ function RouteComponent() {
 
   const evolutionChainURL = pokemonSpeciesData?.evolution_chain?.url
 
-  const {
-    data: evolutionChainData,
-    isLoading: isLoadingEvolutionChain,
-    isError: isErrorEvolutionChain,
-  } = useGetEvolutionChainByURL(evolutionChainURL)
+  const { isLoading: isLoadingEvolutionChain, isError: isErrorEvolutionChain } =
+    useGetEvolutionChainByURL(evolutionChainURL)
 
   if (isLoading || isLoadingEvolutionChain) {
     return <div className="h-full bg-gray-200 w-3/5">Chargement...</div>

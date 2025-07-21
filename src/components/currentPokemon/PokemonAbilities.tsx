@@ -22,6 +22,8 @@ export default function PokemonAbilities({
 }: PokemonAbilitiesProps) {
   if (!pokemonAbilities) return null
 
+  
+
   return (
     <div className="mb-6">
       <h3 className="text-md font-semibold text-[#1A1A1A] dark:text-gray-300 mb-3">

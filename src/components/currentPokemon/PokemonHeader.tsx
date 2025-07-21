@@ -1,6 +1,8 @@
 import { Badge } from '@/components/ui/badge'
 import { Link } from '@tanstack/react-router'
 
+import { usePrefetchTypeDataByName } from '@/data/pokemons'
+
 interface PokemonHeaderProps {
   pokemonID: number
   pokemonDefaultName: string
@@ -12,6 +14,11 @@ export default function PokemonHeader({
   pokemonDefaultName,
   pokemonTypes,
 }: PokemonHeaderProps) {
+
+  const prefetchTypeData = usePrefetchTypeDataByName()
+
+
+
   return (
     <div className="mb-6">
       <h2 className="text-2xl font-bold text-[#1A1A1A] dark:text-white capitalize mb-4">
@@ -21,7 +28,7 @@ export default function PokemonHeader({
       <div className="mb-6">
         <div className="flex flex-wrap gap-2">
           {pokemonTypes.map((type, index) => (
-            <Link to={`/type/$type`} key={index} params={{ type }}>
+            <Link to={`/type/$type`} key={index} params={{ type }} onMouseEnter={() => prefetchTypeData(type)}>
               <Badge
                 variant="secondary"
                 className={`bg-${type} text-white dark:bg-${type} font-bold text-xs sm:text-sm uppercase px-2 py-1 rounded-xl flex items-center gap-2 shadow-sm hover:shadow-md transition-shadow`}
