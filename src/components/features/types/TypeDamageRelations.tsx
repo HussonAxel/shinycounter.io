@@ -18,8 +18,6 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 import { Badge } from '@/components/ui/badge'
 
-import { CheckIcon, XIcon } from 'lucide-react'
-
 export default function TypeDamageRelations() {
   const [tab, setTab] = useState<'from' | 'to'>('from')
 
@@ -149,7 +147,6 @@ function DamageTable({
   items,
   typeName,
   prefetchTypeData,
-  isFrom,
 }: {
   items: any[]
   typeName: string
