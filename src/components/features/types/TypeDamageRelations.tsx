@@ -172,14 +172,14 @@ function DamageTable({
                 >
                   <Badge
                     variant="secondary"
-                    className={`bg-${type.name} text-white dark:bg-${type.name} font-bold text-xs sm:text-sm uppercase px-2 py-1 rounded-xl flex items-center gap-2 shadow-sm hover:shadow-md transition-shadow md:min-h-32 min-w-4 `}
+                    className={`bg-${type.name} text-white dark:bg-${type.name} font-bold text-xs sm:text-sm uppercase px-2 py-1 rounded-xl flex items-center gap-2 shadow-sm hover:shadow-md transition-shadow min-h-32 min-w-8 `}
                   >
                     <img
                       src={`/assets/static/pkmnsTypes/${type.name}.svg`}
                       alt={type.name}
                       className="w-3 h-3 sm:w-4 sm:h-4"
                     />
-                    <span className="hidden sm:inline">{type.name}</span>
+                    <span>{type.name}</span>
                   </Badge>
                 </Link>
               </span>
@@ -203,7 +203,7 @@ function DamageTable({
                   alt={typeName}
                   className="w-3 h-3 sm:w-4 sm:h-4"
                 />
-                <span className="hidden sm:inline">{typeName}</span>
+                <span>{typeName}</span>
               </Badge>
             </TableHead>
             {item.types.map((type: any, index: number) => (
