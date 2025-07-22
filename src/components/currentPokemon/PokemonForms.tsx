@@ -142,10 +142,6 @@ export default function PokemonForms({
 
   return (
     <div className="space-y-6 mb-6">
-      <h3 className="text-md font-semibold text-[#1A1A1A] dark:text-gray-300 mb-3">
-        Evolution Chain & Forms
-      </h3>
-
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
         {hasEvolutions && (
           <>
