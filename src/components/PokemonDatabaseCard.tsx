@@ -9,6 +9,8 @@ import type { PokemonDatabaseCardProps } from '@/data/types'
 import {
   usePrefetchNationalDexTyradex,
   usePrefetchPokemonFullData,
+  usePrefetchEvolutionChainByURL,
+  fetchPokemonSpeciesDataByID,
 } from '@/data/pokemons'
 
 export default function PokemonDatabaseCard({
@@ -18,10 +20,17 @@ export default function PokemonDatabaseCard({
 }: PokemonDatabaseCardProps) {
   const prefetchPokemonFullData = usePrefetchPokemonFullData()
   const prefetchNationalDexTyradex = usePrefetchNationalDexTyradex()
+  const prefetchEvolutionChainByURL = usePrefetchEvolutionChainByURL()
 
   const handleOnMouseEnter = async () => {
+
     prefetchNationalDexTyradex()
     prefetchPokemonFullData(pokemonName)
+      const speciesData = await fetchPokemonSpeciesDataByID(String(pokemonId))
+      const evolutionChainUrl = speciesData?.evolution_chain?.url
+      if (evolutionChainUrl) {
+        prefetchEvolutionChainByURL(evolutionChainUrl)
+      }
   }
 
   return (
