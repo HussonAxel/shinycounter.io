@@ -161,7 +161,7 @@ function DamageTable({
           {items[0].types.map((type: any, index: number) => (
             <TableHead
               key={type.name}
-              className="text-foreground h-auto py-3 align-bottom"
+              className="text-foreground h-auto py-3 align-bottom px-0 self-center pr-3"
             >
               <span className="relative left-[calc(50%-.5rem)] block rotate-180 leading-4 whitespace-nowrap [text-orientation:sideways] [writing-mode:vertical-rl]">
                 <Link
@@ -172,7 +172,7 @@ function DamageTable({
                 >
                   <Badge
                     variant="secondary"
-                    className={`bg-${type.name} text-white dark:bg-${type.name} font-bold text-xs sm:text-sm uppercase px-2 py-1 rounded-xl flex items-center gap-2 shadow-sm hover:shadow-md transition-shadow`}
+                    className={`bg-${type.name} text-white dark:bg-${type.name} font-bold text-xs sm:text-sm uppercase px-2 py-1 rounded-xl flex items-center gap-2 shadow-sm hover:shadow-md transition-shadow md:min-h-32 min-w-4 `}
                   >
                     <img
                       src={`/assets/static/pkmnsTypes/${type.name}.svg`}
@@ -193,10 +193,10 @@ function DamageTable({
             key={item.feature}
             className="*:border-border [&>:not(:last-child)]:border-r"
           >
-            <TableHead className="text-foreground font-medium capitalize">
+            <TableHead className="text-foreground font-medium capitalize text-center pt-4">
               <Badge
                 variant="secondary"
-                className={`bg-${typeName} text-white dark:bg-${typeName} font-bold text-xs sm:text-sm uppercase px-2 py-1 rounded-xl flex items-center gap-2 shadow-sm hover:shadow-md transition-shadow`}
+                className={`bg-${typeName} text-white dark:bg-${typeName} font-bold text-xs sm:text-sm uppercase px-4 py-2 rounded-xl flex items-center gap-2 shadow-sm hover:shadow-md transition-shadow m-auto`}
               >
                 <img
                   src={`/assets/static/pkmnsTypes/${typeName}.svg`}
@@ -209,7 +209,7 @@ function DamageTable({
             {item.types.map((type: any, index: number) => (
               <TableCell
                 key={`${type.name}-${index}`}
-                className="space-y-1 text-center"
+                className="space-y-1 text-center min-w-[70px]"
               >
                 <span
                   className={
