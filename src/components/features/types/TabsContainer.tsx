@@ -1,46 +1,34 @@
-import { BoxIcon, HouseIcon, PanelsTopLeftIcon } from "lucide-react"
+import { BoxIcon, HouseIcon, PanelsTopLeftIcon } from 'lucide-react'
 
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-import TypeDamageRelations from "./TypeDamageRelations"
-import TypePokemons from "./$typePokemons"
+import TypeDamageRelations from './TypeDamageRelations'
+import TypePokemons from './$typePokemons'
 
 import {
   useGetTypeDataByName,
-  usePrefetchPokemonDataByID,
+  usePrefetchPokemonsDataByUrls,
 } from '@/data/pokemons'
-import { useParams } from "@tanstack/react-router"
-
-import { extractPokemonIdFromUrl } from "@/lib/functions"
-
-
+import { useParams } from '@tanstack/react-router'
 
 export default function ComponentTabs436() {
-
-    const type = useParams({
-      from: '/type/$type',
-      select: (params) => params.type,
-    })
-
-    const prefetchPokemonDataByID = usePrefetchPokemonDataByID()
-
-    const { data, isLoading, error } = useGetTypeDataByName(type)
-
-    if (isLoading) return <div>Loading...</div>
-    if (error) return <div>Error: {error.message}</div>
-    if (!data) return <div>No data found</div>
-
-const handleOnMouseEnter = () => {
-  data.pokemon.forEach((pokemon: any) => {
-    prefetchPokemonDataByID(extractPokemonIdFromUrl(pokemon.pokemon.url)) 
+  const type = useParams({
+    from: '/type/$type',
+    select: (params) => params.type,
   })
-}
+
+  const { data, isLoading, error } = useGetTypeDataByName(type)
+  const prefetchPokemonsDataByUrls = usePrefetchPokemonsDataByUrls()
+
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
+  if (!data) return <div>No data found</div>
+
+  const handleOnMouseEnter = () => {
+    const pokemonUrls = data.pokemon.map((pokemon: any) => pokemon.pokemon.url)
+    prefetchPokemonsDataByUrls(pokemonUrls)
+  }
 
   return (
     <Tabs defaultValue="tab-1">

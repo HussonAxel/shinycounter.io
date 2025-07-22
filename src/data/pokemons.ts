@@ -17,6 +17,7 @@ export const QUERY_KEYS = {
   nationalDexTyradex: ['nationalDexTyradex'] as const,
   pokemons: ['pokemons'] as const,
   pokemonDataByID: (id: string) => ['pokemonDataByID', id] as const,
+  pokemonsDataByUrls: (urls: string[]) => ['pokemonsDataByUrls', urls] as const,
   pokemonSpeciesDataByID: (id: string) =>
     ['pokemonSpeciesDataByID', id] as const,
   typeDataByName: (name: string) => ['typeData', name] as const,
@@ -41,6 +42,11 @@ export const fetchPokemonDataByID = async (id: string) => {
   const res = await fetch(`${BASE_POKEAPI_URL}/pokemon/${id}`)
   if (!res.ok) throw new Error('Failed to fetch pokemon data by id')
   return res.json()
+}
+
+export const fetchPokemonsDataByUrls = async(urls: string[]) => {
+  const res = await Promise.all(urls.map(url => fetch(url).then(res => res.json())))
+  return res
 }
 
 export const fetchPokemonSpeciesDataByID = async (id: string) => {
@@ -97,6 +103,15 @@ export const useGetPokemonDataByID = (id: string) =>
   useQuery({
     queryKey: QUERY_KEYS.pokemonDataByID(id),
     queryFn: () => fetchPokemonDataByID(id),
+    placeholderData: (prev) => prev,
+    refetchOnMount: false,
+    ...DEFAULT_CACHE_OPTIONS,
+  })
+
+export const useGetPokemonsDataByUrls = (urls: string[]) => 
+  useQuery({
+    queryKey: QUERY_KEYS.pokemonsDataByUrls(urls),
+    queryFn: () => fetchPokemonsDataByUrls(urls),
     placeholderData: (prev) => prev,
     refetchOnMount: false,
     ...DEFAULT_CACHE_OPTIONS,
@@ -185,6 +200,17 @@ export const usePrefetchPokemonDataByID = () => {
     qc.ensureQueryData({
       queryKey: QUERY_KEYS.pokemonDataByID(id),
       queryFn: () => fetchPokemonDataByID(id),
+      ...DEFAULT_CACHE_OPTIONS,
+    })
+  }
+}
+
+export const usePrefetchPokemonsDataByUrls = () => {
+  const qc = useQueryClient()
+  return (urls: string[]) => {
+    qc.ensureQueryData({
+      queryKey: QUERY_KEYS.pokemonsDataByUrls(urls),
+      queryFn: () => fetchPokemonsDataByUrls(urls),
       ...DEFAULT_CACHE_OPTIONS,
     })
   }
