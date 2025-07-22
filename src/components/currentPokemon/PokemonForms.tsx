@@ -1,13 +1,11 @@
 import {
   useGetNationalDexTyradex,
-  useGetPokemonDataByID,
+  useGetPokemonFullData,
 } from '@/data/pokemons'
 import { useParams } from '@tanstack/react-router'
 import type { PokemonFormsProps } from '@/data/types'
 import { Link } from '@tanstack/react-router'
 import { normalizePokemonName } from '@/lib/functions'
-import { useQueryClient } from '@tanstack/react-query'
-import { QUERY_KEYS } from '@/data/pokemons'
 import { extractPokemonIdFromUrl } from '@/lib/functions'
 
 interface PokemonVariety {
@@ -18,12 +16,8 @@ interface PokemonVariety {
   }
 }
 
-interface PokemonSpeciesData {
-  varieties: PokemonVariety[]
-}
-
 function EvolutionPokemon({ pokemon }: { pokemon: PokemonFormsProps }) {
-  const { data: pokemonData } = useGetPokemonDataByID(pokemon.pokedex_id)
+  const { pokemonData } = useGetPokemonFullData(pokemon.pokedex_id)
   const englishName = pokemonData?.name || pokemon.name
 
   return (
@@ -72,9 +66,9 @@ function CurrentPokemon({
   )
 }
 
-function PokemonForm({ variety }: { variety: PokemonVariety }) {
+function PokemonForm({ variety, isCurrent }: { variety: PokemonVariety, isCurrent: boolean }) {
   return (
-    <div className="flex flex-col items-center text-center group">
+    <div className={`flex flex-col items-center text-center group ${isCurrent ? 'ring-2 ring-purple-500' : ''}`}>
       <Link
         to="/pokemon/$pokemon"
         params={{
@@ -101,16 +95,13 @@ export default function PokemonForms({
   pokemonEnglishName: string
 }) {
   const { pokemon: pokemonName } = useParams({ from: '/pokemon/$pokemon' })
-  const queryClient = useQueryClient()
 
-  const pokemonSpeciesData = queryClient.getQueryData(
-    QUERY_KEYS.pokemonSpeciesDataByID(pokemonName),
-  ) as PokemonSpeciesData | undefined
-
+  // Utilisation du hook composite
+  const { pokemonData, pokemonSpeciesData, isLoading } = useGetPokemonFullData(pokemonName)
   const { data: pokemonsTyradex, isLoading: isLoadingTyradex } =
     useGetNationalDexTyradex()
 
-  if (isLoadingTyradex || !pokemonSpeciesData) {
+  if (isLoadingTyradex || isLoading || !pokemonData || !pokemonSpeciesData) {
     return (
       <div className="flex items-center justify-center p-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -120,6 +111,7 @@ export default function PokemonForms({
       </div>
     )
   }
+  const pokemonVarieties = pokemonSpeciesData.varieties
 
   const currentPokemonData = pokemonsTyradex.find(
     ({ name }: { name: { en: string } }) =>
@@ -128,10 +120,6 @@ export default function PokemonForms({
 
   const preEvoltutions = currentPokemonData?.evolution?.pre || []
   const nextEvolutions = currentPokemonData?.evolution?.next || []
-
-  const pokemonVarieties = pokemonSpeciesData.varieties.filter(
-    (variety: PokemonVariety) => variety.is_default === false,
-  )
 
   const hasEvolutions = preEvoltutions.length > 0 || nextEvolutions.length > 0
   const hasForms = pokemonVarieties.length > 0
@@ -182,7 +170,7 @@ export default function PokemonForms({
             <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
               {pokemonVarieties.map(
                 (variety: PokemonVariety, index: number) => (
-                  <PokemonForm key={index} variety={variety} />
+                  <PokemonForm key={index} variety={variety} isCurrent={normalizePokemonName(variety.pokemon.name) === pokemonName} />
                 ),
               )}
             </div>

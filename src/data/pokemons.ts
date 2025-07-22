@@ -170,7 +170,8 @@ export const useGetTalentDataByName = (name: string) =>
 //──────────────────────────────────────────────────────────────────────────────
 export function useGetPokemonFullData(id: string) {
   const dataQuery = useGetPokemonDataByID(id)
-  const speciesQuery = useGetPokemonSpeciesDataByID(id)
+  const speciesUrl = dataQuery.data?.species?.url
+  const speciesQuery = useGetPokemonSpeciesDataByURL(speciesUrl || '')
 
   return {
     pokemonData: dataQuery.data,
@@ -256,5 +257,34 @@ export const usePrefetchPokemonFullData = () => {
   return (id: string) => {
     prefetchData(id)
     prefetchSpecies(id)
+  }
+}
+
+//──────────────────────────────────────────────────────────────────────────────
+export const fetchPokemonSpeciesDataByURL = async (url: string) => {
+  const res = await fetch(url)
+  if (!res.ok) throw new Error('Failed to fetch pokemon species data by url')
+  return res.json()
+}
+
+export const useGetPokemonSpeciesDataByURL = (url: string) =>
+  useQuery({
+    queryKey: ['pokemonSpeciesDataByURL', url],
+    queryFn: () => fetchPokemonSpeciesDataByURL(url),
+    placeholderData: (prev) => prev,
+    refetchOnMount: false,
+    enabled: !!url,
+    ...DEFAULT_CACHE_OPTIONS,
+  })
+
+export const usePrefetchPokemonSpeciesDataByURL = () => {
+  const qc = useQueryClient()
+  return (url: string) => {
+    if (!url) return
+    qc.ensureQueryData({
+      queryKey: ['pokemonSpeciesDataByURL', url],
+      queryFn: () => fetchPokemonSpeciesDataByURL(url),
+      ...DEFAULT_CACHE_OPTIONS,
+    })
   }
 }

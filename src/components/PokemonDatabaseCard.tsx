@@ -10,7 +10,7 @@ import {
   usePrefetchNationalDexTyradex,
   usePrefetchPokemonFullData,
   usePrefetchEvolutionChainByURL,
-  fetchPokemonSpeciesDataByID,
+  fetchPokemonSpeciesDataByURL,
 } from '@/data/pokemons'
 
 export default function PokemonDatabaseCard({
@@ -23,14 +23,18 @@ export default function PokemonDatabaseCard({
   const prefetchEvolutionChainByURL = usePrefetchEvolutionChainByURL()
 
   const handleOnMouseEnter = async () => {
-
     prefetchNationalDexTyradex()
     prefetchPokemonFullData(pokemonName)
-      const speciesData = await fetchPokemonSpeciesDataByID(String(pokemonId))
+    const apiUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
+    const data = await fetch(apiUrl).then(res => res.json())
+    const speciesUrl = data?.species?.url
+    if (speciesUrl) {
+      const speciesData = await fetchPokemonSpeciesDataByURL(speciesUrl)
       const evolutionChainUrl = speciesData?.evolution_chain?.url
       if (evolutionChainUrl) {
         prefetchEvolutionChainByURL(evolutionChainUrl)
       }
+    }
   }
 
   return (
