@@ -38,7 +38,6 @@ export const fetchNationalDexTyradex = async () => {
 }
 
 export const fetchPokemonDataByID = async (id: string) => {
-  console.log('fetching pokemon data by id...', id)
   const res = await fetch(`${BASE_POKEAPI_URL}/pokemon/${id}`)
   if (!res.ok) throw new Error('Failed to fetch pokemon data by id')
   return res.json()
@@ -183,7 +182,6 @@ export const usePrefetchNationalDexTyradex = () => {
 export const usePrefetchPokemonDataByID = () => {
   const qc = useQueryClient()
   return (id: string) => {
-    console.log('prefetching pokemon data by id...', id)
     qc.ensureQueryData({
       queryKey: QUERY_KEYS.pokemonDataByID(id),
       queryFn: () => fetchPokemonDataByID(id),
@@ -195,7 +193,6 @@ export const usePrefetchPokemonDataByID = () => {
 export const usePrefetchPokemonSpeciesDataByID = () => {
   const qc = useQueryClient()
   return (id: string) => {
-    console.log('prefetching pokemon species data by id...', id)
     qc.ensureQueryData({
       queryKey: QUERY_KEYS.pokemonSpeciesDataByID(id),
       queryFn: () => fetchPokemonSpeciesDataByID(id),
@@ -207,7 +204,6 @@ export const usePrefetchPokemonSpeciesDataByID = () => {
 export const usePrefetchEvolutionChainByURL = () => {
   const qc = useQueryClient()
   return (url: string) => {
-    console.log('prefetching evolution chain by url...', url)
     qc.ensureQueryData({
       queryKey: ['evolutionChain', url],
       queryFn: () => fetchEvolutionChainByURL(url),
@@ -219,7 +215,6 @@ export const usePrefetchEvolutionChainByURL = () => {
 export const usePrefetchTypeDataByName = () => {
   const qc = useQueryClient()
   return (name: string) => {
-    console.log('prefetching type data by name...', name)
     qc.ensureQueryData({
       queryKey: QUERY_KEYS.typeDataByName(name),
       queryFn: () => fetchDataTypeByName(name),
@@ -233,7 +228,6 @@ export const usePrefetchPokemonFullData = () => {
   const prefetchSpecies = usePrefetchPokemonSpeciesDataByID()
 
   return (id: string) => {
-    console.log('prefetching full pokemon data by id...', id)
     prefetchData(id)
     prefetchSpecies(id)
   }

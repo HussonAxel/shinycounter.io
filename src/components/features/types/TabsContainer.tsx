@@ -9,8 +9,39 @@ import {
 } from "@/components/ui/tabs"
 
 import TypeDamageRelations from "./TypeDamageRelations"
+import TypePokemons from "./$typePokemons"
+
+import {
+  useGetTypeDataByName,
+  usePrefetchPokemonDataByID,
+} from '@/data/pokemons'
+import { useParams } from "@tanstack/react-router"
+
+import { extractPokemonIdFromUrl } from "@/lib/functions"
+
+
 
 export default function ComponentTabs436() {
+
+    const type = useParams({
+      from: '/type/$type',
+      select: (params) => params.type,
+    })
+
+    const prefetchPokemonDataByID = usePrefetchPokemonDataByID()
+
+    const { data, isLoading, error } = useGetTypeDataByName(type)
+
+    if (isLoading) return <div>Loading...</div>
+    if (error) return <div>Error: {error.message}</div>
+    if (!data) return <div>No data found</div>
+
+const handleOnMouseEnter = () => {
+  data.pokemon.forEach((pokemon: any) => {
+    prefetchPokemonDataByID(extractPokemonIdFromUrl(pokemon.pokemon.url)) 
+  })
+}
+
   return (
     <Tabs defaultValue="tab-1">
       <ScrollArea>
@@ -29,6 +60,7 @@ export default function ComponentTabs436() {
           <TabsTrigger
             value="tab-2"
             className="bg-muted overflow-hidden rounded-b-none border-x border-t py-2 data-[state=active]:z-10 data-[state=active]:shadow-none"
+            onMouseEnter={handleOnMouseEnter}
           >
             <PanelsTopLeftIcon
               className="-ms-0.5 me-1.5 opacity-60"
@@ -52,19 +84,19 @@ export default function ComponentTabs436() {
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
       <TabsContent value="tab-1">
-        <p className="text-muted-foreground p-4 pt-1 text-center text-xs">
+        <div className="text-muted-foreground p-4 pt-1 text-center text-xs">
           <TypeDamageRelations />
-        </p>
+        </div>
       </TabsContent>
       <TabsContent value="tab-2">
-        <p className="text-muted-foreground p-4 pt-1 text-center text-xs">
-          Content for Tab 2
-        </p>
+        <div className="text-muted-foreground p-4 pt-1 text-center text-xs">
+          <TypePokemons />
+        </div>
       </TabsContent>
       <TabsContent value="tab-3">
-        <p className="text-muted-foreground p-4 pt-1 text-center text-xs">
+        <div className="text-muted-foreground p-4 pt-1 text-center text-xs">
           Content for Tab 3
-        </p>
+        </div>
       </TabsContent>
     </Tabs>
   )
