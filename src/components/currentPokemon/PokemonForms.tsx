@@ -66,9 +66,9 @@ function CurrentPokemon({
   )
 }
 
-function PokemonForm({ variety, isCurrent }: { variety: PokemonVariety, isCurrent: boolean }) {
+function PokemonForm({ variety }: { variety: PokemonVariety }) {
   return (
-    <div className={`flex flex-col items-center text-center group ${isCurrent ? 'ring-2 ring-purple-500' : ''}`}>
+    <div className="flex flex-col items-center text-center group">
       <Link
         to="/pokemon/$pokemon"
         params={{
