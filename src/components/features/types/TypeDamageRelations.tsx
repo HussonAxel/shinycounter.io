@@ -3,7 +3,7 @@ import { useParams, Link } from '@tanstack/react-router'
 import {
   useGetTypeDataByName,
   useGetAllTypes,
-  usePrefetchTypeDataByName,
+  fetchTypeAndPrefetchPokemons,
 } from '@/data/pokemons'
 import {
   Table,
@@ -17,11 +17,10 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 import { Badge } from '@/components/ui/badge'
+import { useQueryClient } from '@tanstack/react-query'
 
 export default function TypeDamageRelations() {
   const [tab, setTab] = useState<'from' | 'to'>('from')
-
-  const prefetchTypeData = usePrefetchTypeDataByName()
   const { type: typeName } = useParams({ from: '/type/$type' })
   const { data, isLoading, error } = useGetTypeDataByName(typeName)
   const {
@@ -123,20 +122,10 @@ export default function TypeDamageRelations() {
           <TabsTrigger value="to">Offensif</TabsTrigger>
         </TabsList>
         <TabsContent value="from">
-          <DamageTable
-            items={items}
-            typeName={typeName}
-            prefetchTypeData={prefetchTypeData}
-            isFrom={true}
-          />
+          <DamageTable items={items} typeName={typeName} isFrom={true} />
         </TabsContent>
         <TabsContent value="to">
-          <DamageTable
-            items={items}
-            typeName={typeName}
-            prefetchTypeData={prefetchTypeData}
-            isFrom={false}
-          />
+          <DamageTable items={items} typeName={typeName} isFrom={false} />
         </TabsContent>
       </Tabs>
     </div>
@@ -146,13 +135,20 @@ export default function TypeDamageRelations() {
 function DamageTable({
   items,
   typeName,
-  prefetchTypeData,
 }: {
   items: any[]
   typeName: string
-  prefetchTypeData: (type: string) => void
   isFrom: boolean
 }) {
+  const queryClient = useQueryClient()
+
+  const handleOnMouseEnterType = (type: string) => {
+    console.log(`Prefetching type '${type}' and its dependent Pokémon...`)
+    queryClient.prefetchQuery({
+      queryKey: ['typeData', type],
+      queryFn: () => fetchTypeAndPrefetchPokemons(type),
+    })
+  }
   return (
     <Table className="w-4/5 mx-auto my-16">
       <TableHeader>
@@ -168,7 +164,7 @@ function DamageTable({
                   to={`/type/$type`}
                   key={index}
                   params={{ type: type.name }}
-                  onMouseEnter={() => prefetchTypeData(type.name)}
+                  onMouseEnter={() => handleOnMouseEnterType(type.name)}
                 >
                   <Badge
                     variant="secondary"
