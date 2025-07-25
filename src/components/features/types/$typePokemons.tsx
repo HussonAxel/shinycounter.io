@@ -21,32 +21,32 @@ export default function TypePokemons() {
 
   const { data, isLoading, error } = useGetTypeDataByName(type)
 
-  const pokemonUrls = data.pokemon.map((pokemon: any) => pokemon.pokemon.url)
+  const pokemonUrls = data?.pokemon?.map((pokemon: any) => pokemon.pokemon.url) || []
+  
   const { data: pokemonsData, isLoading: isLoadingPokemons } =
     useGetPokemonsDataByUrls(pokemonUrls)
 
+  const prefetchPokemonFullData = usePrefetchPokemonFullData()
+  const prefetchNationalDexTyradex = usePrefetchNationalDexTyradex()
+  const prefetchEvolutionChainByURL = usePrefetchEvolutionChainByURL()
+
+  const handleOnMouseEnter = async (pokemon: any) => {
+    prefetchNationalDexTyradex()
+    prefetchPokemonFullData(pokemon.name)
+    const speciesData = await fetchPokemonSpeciesDataByID(String(pokemon.id))
+    const evolutionChainUrl = speciesData?.evolution_chain?.url
+    if (evolutionChainUrl) {
+      prefetchEvolutionChainByURL(evolutionChainUrl)
+    }
+  }
+
   if (isLoading || isLoadingPokemons) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
-  if (!data) return <div>No data found</div>
-
-    const prefetchPokemonFullData = usePrefetchPokemonFullData()
-    const prefetchNationalDexTyradex = usePrefetchNationalDexTyradex()
-    const prefetchEvolutionChainByURL = usePrefetchEvolutionChainByURL()
-
-    const handleOnMouseEnter = async (pokemon: any) => {
-      prefetchNationalDexTyradex()
-      prefetchPokemonFullData(pokemon.name)
-      const speciesData = await fetchPokemonSpeciesDataByID(String(pokemon.id))
-      const evolutionChainUrl = speciesData?.evolution_chain?.url
-      if (evolutionChainUrl) {
-        prefetchEvolutionChainByURL(evolutionChainUrl)
-      }
-    }
-
+  if (!data || !pokemonsData) return <div>No data found</div>
 
   return (
     <div className="test">
-      {pokemonsData?.map((pokemon: any) => (
+      {pokemonsData.map((pokemon: any) => (
         <div key={pokemon.id} className="flex flex-row gap-2 my-8">
           <img
             src={`/assets/static/sprites/base/${pokemon.id}.webp`}

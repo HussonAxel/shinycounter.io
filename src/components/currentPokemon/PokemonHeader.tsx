@@ -1,7 +1,8 @@
 import { Badge } from '@/components/ui/badge'
 import { Link } from '@tanstack/react-router'
 
-import { usePrefetchTypeDataByName } from '@/data/pokemons'
+import { fetchTypeAndPrefetchPokemons } from '@/data/pokemons'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface PokemonHeaderProps {
   pokemonID: number
@@ -14,10 +15,14 @@ export default function PokemonHeader({
   pokemonDefaultName,
   pokemonTypes,
 }: PokemonHeaderProps) {
-
-  const prefetchTypeData = usePrefetchTypeDataByName()
-
-
+  const queryClient = useQueryClient()
+  const handleOnMouseEnterType = (type: string) => {
+    console.log(`Prefetching type '${type}' and its dependent Pokémon...`)
+    queryClient.prefetchQuery({
+      queryKey: ['typeData', type],
+      queryFn: () => fetchTypeAndPrefetchPokemons(type),
+    })
+  }
 
   return (
     <div className="mb-6">
@@ -28,7 +33,12 @@ export default function PokemonHeader({
       <div className="mb-6">
         <div className="flex flex-wrap gap-2">
           {pokemonTypes.map((type, index) => (
-            <Link to={`/type/$type`} key={index} params={{ type }} onMouseEnter={() => prefetchTypeData(type)}>
+            <Link
+              to={`/type/$type`}
+              key={index}
+              params={{ type }}
+              onMouseEnter={() => handleOnMouseEnterType(type)}
+            >
               <Badge
                 variant="secondary"
                 className={`bg-${type} text-white dark:bg-${type} font-bold text-xs sm:text-sm uppercase px-3 py-1 rounded-xl flex items-center gap-2 shadow-sm hover:shadow-md transition-shadow`}
