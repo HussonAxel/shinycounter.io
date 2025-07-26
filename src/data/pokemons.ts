@@ -307,17 +307,25 @@ const queryClient = new QueryClient({
 export const fetchTypeAndPrefetchPokemons = async (type: string) => {
   const typeData = await fetchTypeFromApi(type)
   if (typeData && typeData.pokemon) {
-    const pokemonEntries = typeData.pokemon.map(
-      (p: { pokemon: { name: string; url: string } }) => p.pokemon,
+    const pokemonUrls = typeData.pokemon.map(
+      (p: { pokemon: { name: string; url: string } }) => p.pokemon.url,
     )
-    await Promise.all(
-      pokemonEntries.map((pokemon: { name: string; url: string }) =>
-        queryClient.prefetchQuery({
-          queryKey: ['pokemonData', pokemon.name],
-          queryFn: () => fetchPokemonFromApi(pokemon.url),
-        }),
-      ),
-    )
+
+    await queryClient.prefetchQuery({
+      queryKey: QUERY_KEYS.pokemonsDataByUrls(pokemonUrls),
+      queryFn: () => fetchPokemonsDataByUrls(pokemonUrls),
+      ...DEFAULT_CACHE_OPTIONS,
+    })
   }
   return typeData
 }
+
+export const useGetPokemonDataByName = (name: string) =>
+  useQuery({
+    queryKey: ['pokemonData', name],
+    queryFn: () => fetchPokemonFromApi(`${BASE_POKEAPI_URL}/pokemon/${name}`),
+    placeholderData: (prev) => prev,
+    refetchOnMount: false,
+    enabled: !!name,
+    ...DEFAULT_CACHE_OPTIONS,
+  })

@@ -1,10 +1,6 @@
 import { useState } from 'react'
-import { useParams, Link } from '@tanstack/react-router'
-import {
-  useGetTypeDataByName,
-  useGetAllTypes,
-  fetchTypeAndPrefetchPokemons,
-} from '@/data/pokemons'
+import { useParams } from '@tanstack/react-router'
+import { useGetTypeDataByName, useGetAllTypes } from '@/data/pokemons'
 import {
   Table,
   TableBody,
@@ -16,8 +12,7 @@ import {
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
-import { Badge } from '@/components/ui/badge'
-import { useQueryClient } from '@tanstack/react-query'
+import BadgeTypes from '@/components/BadgeTypes'
 
 export default function TypeDamageRelations() {
   const [tab, setTab] = useState<'from' | 'to'>('from')
@@ -53,7 +48,6 @@ export default function TypeDamageRelations() {
     (type: { name: string }) => type.name,
   )
 
-  // Calcul du multiplicateur pour chaque type
   const typesFilteredFrom = allTypes.results
     .filter(
       (type: { name: string }) =>
@@ -140,44 +134,18 @@ function DamageTable({
   typeName: string
   isFrom: boolean
 }) {
-  const queryClient = useQueryClient()
-
-  const handleOnMouseEnterType = (type: string) => {
-    console.log(`Prefetching type '${type}' and its dependent Pokémon...`)
-    queryClient.prefetchQuery({
-      queryKey: ['typeData', type],
-      queryFn: () => fetchTypeAndPrefetchPokemons(type),
-    })
-  }
   return (
     <Table className="w-4/5 mx-auto my-16">
       <TableHeader>
         <TableRow className="*:border-border hover:bg-transparent [&>:not(:last-child)]:border-r">
           <TableCell></TableCell>
-          {items[0].types.map((type: any, index: number) => (
+          {items[0].types.map((type: any) => (
             <TableHead
               key={type.name}
               className="text-foreground h-auto py-3 align-bottom px-0 self-center pr-3"
             >
               <span className="relative left-[calc(50%-.5rem)] block rotate-180 leading-4 whitespace-nowrap [text-orientation:sideways] [writing-mode:vertical-rl]">
-                <Link
-                  to={`/type/$type`}
-                  key={index}
-                  params={{ type: type.name }}
-                  onMouseEnter={() => handleOnMouseEnterType(type.name)}
-                >
-                  <Badge
-                    variant="secondary"
-                    className={`bg-${type.name} text-white dark:bg-${type.name} font-bold text-xs sm:text-sm uppercase px-2 py-1 rounded-xl flex items-center gap-2 shadow-sm hover:shadow-md transition-shadow min-h-32 min-w-8 `}
-                  >
-                    <img
-                      src={`/assets/static/pkmnsTypes/${type.name}.svg`}
-                      alt={type.name}
-                      className="w-3 h-3 sm:w-4 sm:h-4"
-                    />
-                    <span>{type.name}</span>
-                  </Badge>
-                </Link>
+                <BadgeTypes pokemonTypes={[type.name]} />
               </span>
             </TableHead>
           ))}
@@ -190,17 +158,7 @@ function DamageTable({
             className="*:border-border [&>:not(:last-child)]:border-r"
           >
             <TableHead className="text-foreground font-medium capitalize text-center pt-4">
-              <Badge
-                variant="secondary"
-                className={`bg-${typeName} text-white dark:bg-${typeName} font-bold text-xs sm:text-sm uppercase px-4 py-2 rounded-xl flex items-center gap-2 shadow-sm hover:shadow-md transition-shadow m-auto`}
-              >
-                <img
-                  src={`/assets/static/pkmnsTypes/${typeName}.svg`}
-                  alt={typeName}
-                  className="w-3 h-3 sm:w-4 sm:h-4"
-                />
-                <span>{typeName}</span>
-              </Badge>
+              <BadgeTypes pokemonTypes={[typeName]} />
             </TableHead>
             {item.types.map((type: any, index: number) => (
               <TableCell

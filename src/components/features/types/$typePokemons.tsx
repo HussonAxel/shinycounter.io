@@ -1,17 +1,15 @@
-import { useParams } from "@tanstack/react-router"
+import { useParams } from '@tanstack/react-router'
 import {
+  fetchTypeAndPrefetchPokemons,
   useGetTypeDataByName,
-  usePrefetchPokemonFullData,
-  usePrefetchNationalDexTyradex,
-  usePrefetchEvolutionChainByURL,
-  fetchPokemonSpeciesDataByID,
 } from '@/data/pokemons'
-import { useGetPokemonsDataByUrls } from "@/data/pokemons"
-import { beautifyPokemonName } from "@/lib/functions"
-import { Badge } from "@/components/ui/badge"
-import { Link } from "@tanstack/react-router"
-import { Button } from "@/components/ui/button"
 
+import { useGetPokemonsDataByUrls } from '@/data/pokemons'
+import { beautifyPokemonName } from '@/lib/functions'
+import { Badge } from '@/components/ui/badge'
+import { Link } from '@tanstack/react-router'
+import { Button } from '@/components/ui/button'
+import { useQueryClient } from '@tanstack/react-query'
 
 export default function TypePokemons() {
   const type = useParams({
@@ -21,23 +19,19 @@ export default function TypePokemons() {
 
   const { data, isLoading, error } = useGetTypeDataByName(type)
 
-  const pokemonUrls = data?.pokemon?.map((pokemon: any) => pokemon.pokemon.url) || []
-  
+  const pokemonUrls =
+    data?.pokemon?.map((pokemon: any) => pokemon.pokemon.url) || []
+
   const { data: pokemonsData, isLoading: isLoadingPokemons } =
     useGetPokemonsDataByUrls(pokemonUrls)
 
-  const prefetchPokemonFullData = usePrefetchPokemonFullData()
-  const prefetchNationalDexTyradex = usePrefetchNationalDexTyradex()
-  const prefetchEvolutionChainByURL = usePrefetchEvolutionChainByURL()
-
-  const handleOnMouseEnter = async (pokemon: any) => {
-    prefetchNationalDexTyradex()
-    prefetchPokemonFullData(pokemon.name)
-    const speciesData = await fetchPokemonSpeciesDataByID(String(pokemon.id))
-    const evolutionChainUrl = speciesData?.evolution_chain?.url
-    if (evolutionChainUrl) {
-      prefetchEvolutionChainByURL(evolutionChainUrl)
-    }
+  const queryClient = useQueryClient()
+  const handleOnMouseEnter = (pokemon: any) => {
+    console.log(`Prefetching pokemon '${pokemon.name}'...`)
+    queryClient.prefetchQuery({
+      queryKey: ['pokemonData', pokemon.name],
+      queryFn: () => fetchTypeAndPrefetchPokemons(type),
+    })
   }
 
   if (isLoading || isLoadingPokemons) return <div>Loading...</div>
@@ -69,7 +63,11 @@ export default function TypePokemons() {
               <span>{type.type.name}</span>
             </Badge>
           ))}
-          <Link to={`/pokemon/$pokemon`} params={{ pokemon: pokemon.name}} onMouseEnter={() => handleOnMouseEnter(pokemon)}>
+          <Link
+            to={`/pokemon/$pokemon`}
+            params={{ pokemon: pokemon.name }}
+            onMouseEnter={() => handleOnMouseEnter(pokemon)}
+          >
             <Button variant="outline">
               <span>Voir</span>
             </Button>

@@ -6,11 +6,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import TypeDamageRelations from './TypeDamageRelations'
 import TypePokemons from './$typePokemons'
 
-import {
-  useGetTypeDataByName,
-  usePrefetchPokemonsDataByUrls,
-} from '@/data/pokemons'
+import { useGetTypeDataByName } from '@/data/pokemons'
 import { useParams } from '@tanstack/react-router'
+import { fetchTypeAndPrefetchPokemons } from '@/data/pokemons'
+import { useQueryClient } from '@tanstack/react-query'
 
 export default function ComponentTabs436() {
   const type = useParams({
@@ -19,15 +18,18 @@ export default function ComponentTabs436() {
   })
 
   const { data, isLoading, error } = useGetTypeDataByName(type)
-  const prefetchPokemonsDataByUrls = usePrefetchPokemonsDataByUrls()
 
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
   if (!data) return <div>No data found</div>
 
-  const handleOnMouseEnter = () => {
-    const pokemonUrls = data.pokemon.map((pokemon: any) => pokemon.pokemon.url)
-    prefetchPokemonsDataByUrls(pokemonUrls)
+  const queryClient = useQueryClient()
+  const handleOnMouseEnter = (type: string) => {
+    console.log(`Prefetching type '${type}' and its dependent Pokémon...`)
+    queryClient.prefetchQuery({
+      queryKey: ['typeData', type],
+      queryFn: () => fetchTypeAndPrefetchPokemons(type),
+    })
   }
 
   return (
@@ -48,7 +50,7 @@ export default function ComponentTabs436() {
           <TabsTrigger
             value="tab-2"
             className="bg-muted overflow-hidden rounded-b-none border-x border-t py-2 data-[state=active]:z-10 data-[state=active]:shadow-none"
-            onMouseEnter={handleOnMouseEnter}
+            onMouseEnter={() => handleOnMouseEnter(type)}
           >
             <PanelsTopLeftIcon
               className="-ms-0.5 me-1.5 opacity-60"
