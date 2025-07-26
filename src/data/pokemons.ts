@@ -114,7 +114,10 @@ export const useGetPokemonDataByID = (id: string) =>
 export const useGetPokemonsDataByUrls = (urls: string[]) =>
   useQuery({
     queryKey: QUERY_KEYS.pokemonsDataByUrls(urls),
-    queryFn: () => fetchPokemonsDataByUrls(urls),
+    queryFn: () => {
+      console.log('useGetPokemonsDataByUrls', urls)
+      return fetchPokemonsDataByUrls(urls)
+    },
     placeholderData: (prev) => prev,
     refetchOnMount: false,
     ...DEFAULT_CACHE_OPTIONS,
@@ -221,6 +224,7 @@ export const usePrefetchPokemonDataByID = () => {
 export const usePrefetchPokemonsDataByUrls = () => {
   const qc = useQueryClient()
   return (urls: string[]) => {
+    console.log(urls)
     qc.ensureQueryData({
       queryKey: QUERY_KEYS.pokemonsDataByUrls(urls),
       queryFn: () => fetchPokemonsDataByUrls(urls),

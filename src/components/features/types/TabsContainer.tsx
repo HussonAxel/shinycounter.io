@@ -6,7 +6,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import TypeDamageRelations from './TypeDamageRelations'
 import TypePokemons from './$typePokemons'
 
-import { useGetTypeDataByName } from '@/data/pokemons'
+import {
+  useGetTypeDataByName,
+  usePrefetchPokemonsDataByUrls,
+} from '@/data/pokemons'
 import { useParams } from '@tanstack/react-router'
 import { fetchTypeAndPrefetchPokemons } from '@/data/pokemons'
 import { useQueryClient } from '@tanstack/react-query'
@@ -17,11 +20,7 @@ export default function ComponentTabs436() {
     select: (params) => params.type,
   })
 
-  const { data, isLoading, error } = useGetTypeDataByName(type)
-
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error: {error.message}</div>
-  if (!data) return <div>No data found</div>
+  const prefetchPokemonsDataByUrls = usePrefetchPokemonsDataByUrls()
 
   const queryClient = useQueryClient()
   const handleOnMouseEnter = (type: string) => {
@@ -30,7 +29,16 @@ export default function ComponentTabs436() {
       queryKey: ['typeData', type],
       queryFn: () => fetchTypeAndPrefetchPokemons(type),
     })
+    prefetchPokemonsDataByUrls(
+      data?.pokemon?.map((pokemon: any) => pokemon.pokemon.url) || [],
+    )
   }
+
+  const { data, isLoading, error } = useGetTypeDataByName(type)
+
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
+  if (!data) return <div>No data found</div>
 
   return (
     <Tabs defaultValue="tab-1">

@@ -144,8 +144,11 @@ function DamageTable({
               key={type.name}
               className="text-foreground h-auto py-3 align-bottom px-0 self-center pr-3"
             >
-              <span className="relative left-[calc(50%-.5rem)] block rotate-180 leading-4 whitespace-nowrap [text-orientation:sideways] [writing-mode:vertical-rl]">
-                <BadgeTypes pokemonTypes={[type.name]} />
+              <span className="relative left-[calc(50%-.5rem)] block rotate-180 leading-4 whitespace-nowrap [text-orientation:sideways] [writing-mode:vertical-rl] min-h-32 h-32">
+                <BadgeTypes
+                  pokemonTypes={[type.name]}
+                  classNameBadge="!min-h-32 !h-32 !w-8"
+                />
               </span>
             </TableHead>
           ))}
@@ -158,7 +161,10 @@ function DamageTable({
             className="*:border-border [&>:not(:last-child)]:border-r"
           >
             <TableHead className="text-foreground font-medium capitalize text-center pt-4">
-              <BadgeTypes pokemonTypes={[typeName]} />
+              <BadgeTypes
+                pokemonTypes={[typeName]}
+                classNameBadge="w-full min-w-32"
+              />
             </TableHead>
             {item.types.map((type: any, index: number) => (
               <TableCell

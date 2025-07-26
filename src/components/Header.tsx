@@ -7,13 +7,17 @@ export default function Header() {
     <header className="flex bg-white text-black justify-between">
       <nav className="flex flex-row justify-between w-full">
         <div className="p-4 w-1/4">
-          <h2 className="font-bold text-2xl">ShinyHunter.io</h2>
+          <Link to="/">
+            <h2 className="font-bold text-2xl">ShinyHunter.io</h2>
+          </Link>
         </div>
         <div className="w-3/4 flex justify-end items-center p-4">
-          <Button className="rounded-md">
-            <Plus className="mr-2 h-4 w-4" />
-            <Link to="/newHunt">New Hunt</Link>
-          </Button>
+          <Link to="/newHunt">
+            <Button className="rounded-md">
+              <Plus className="mr-2 h-4 w-4" />
+              New Hunt
+            </Button>
+          </Link>
         </div>
       </nav>
     </header>

@@ -1,15 +1,27 @@
 import { useParams } from '@tanstack/react-router'
-import {
-  fetchTypeAndPrefetchPokemons,
-  useGetTypeDataByName,
-} from '@/data/pokemons'
-
+import { useGetTypeDataByName } from '@/data/pokemons'
 import { useGetPokemonsDataByUrls } from '@/data/pokemons'
-import { beautifyPokemonName } from '@/lib/functions'
-import { Badge } from '@/components/ui/badge'
-import { Link } from '@tanstack/react-router'
-import { Button } from '@/components/ui/button'
-import { useQueryClient } from '@tanstack/react-query'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import BadgeTypes from '@/components/BadgeTypes'
+
+type Pokemon = {
+  id: number
+  name: string
+  types: Array<{
+    slot: number
+    type: {
+      name: string
+      url: string
+    }
+  }>
+}
 
 export default function TypePokemons() {
   const type = useParams({
@@ -25,55 +37,53 @@ export default function TypePokemons() {
   const { data: pokemonsData, isLoading: isLoadingPokemons } =
     useGetPokemonsDataByUrls(pokemonUrls)
 
-  const queryClient = useQueryClient()
-  const handleOnMouseEnter = (pokemon: any) => {
-    console.log(`Prefetching pokemon '${pokemon.name}'...`)
-    queryClient.prefetchQuery({
-      queryKey: ['pokemonData', pokemon.name],
-      queryFn: () => fetchTypeAndPrefetchPokemons(type),
-    })
-  }
-
-  if (isLoading || isLoadingPokemons) return <div>Loading...</div>
-  if (error) return <div>Error: {error.message}</div>
-  if (!data || !pokemonsData) return <div>No data found</div>
+  if (isLoading || isLoadingPokemons) return <div>Chargement...</div>
+  if (error) return <div>Erreur: {error.message}</div>
+  if (!data || !pokemonsData) return <div>Aucune donnée trouvée</div>
 
   return (
-    <div className="test">
-      {pokemonsData.map((pokemon: any) => (
-        <div key={pokemon.id} className="flex flex-row gap-2 my-8">
-          <img
-            src={`/assets/static/sprites/base/${pokemon.id}.webp`}
-            alt={pokemon.name}
-            className="w-16 h-16"
-          />
-          <h1>{beautifyPokemonName(pokemon.name)}</h1>
-          <h2>#{pokemon.id} </h2>
-          {pokemon.types.map((type: any) => (
-            <Badge
-              key={type.type.name}
-              variant="secondary"
-              className={`bg-${type.type.name} text-white dark:bg-${type.type.name} font-bold text-xs sm:text-sm uppercase px-2 py-1 rounded-xl flex items-center gap-2 shadow-sm hover:shadow-md transition-shadow min-h-8 min-w-32   `}
-            >
-              <img
-                src={`/assets/static/pkmnsTypes/${type.type.name}.svg`}
-                alt={type.type.name}
-                className="w-3 h-3 sm:w-4 sm:h-4"
-              />
-              <span>{type.type.name}</span>
-            </Badge>
-          ))}
-          <Link
-            to={`/pokemon/$pokemon`}
-            params={{ pokemon: pokemon.name }}
-            onMouseEnter={() => handleOnMouseEnter(pokemon)}
-          >
-            <Button variant="outline">
-              <span>Voir</span>
-            </Button>
-          </Link>
-        </div>
-      ))}
+    <div className="p-4">
+      <h2 className="text-xl font-bold mb-4">Pokémon de type {type}</h2>
+      <div className="border rounded-lg">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-left p-3 font-medium">
+                Sprite
+              </TableHead>
+              <TableHead className="text-left p-3 font-medium">
+                Nom du Pokémon
+              </TableHead>
+              <TableHead className="text-left p-3 font-medium">ID</TableHead>
+              <TableHead className="text-left p-3 font-medium">Types</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {pokemonsData.map((pokemon: Pokemon) => (
+              <TableRow key={pokemon.id} className="border-b hover:bg-gray-50">
+                <TableCell>
+                  <img
+                    src={`/assets/static/sprites/base/${pokemon.id}.webp`}
+                    alt={pokemon.name}
+                    className="w-24 h-24"
+                  />
+                </TableCell>
+                <TableCell className="text-left p-3 capitalize">
+                  {pokemon.name}
+                </TableCell>
+                <TableCell className="text-left p-3">{pokemon.id}</TableCell>
+                <TableCell className="text-left p-3">
+                  <BadgeTypes
+                    pokemonTypes={pokemon.types.map(
+                      (type: any) => type.type.name,
+                    )}
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   )
 }
