@@ -35,7 +35,7 @@ export default function BadgeTypes({
         >
           <Badge
             variant="secondary"
-            className={`bg-${type} text-white dark:bg-${type} font-bold text-xs sm:text-sm uppercase px-3 py-1 rounded-xl flex items-center gap-2 shadow-sm hover:shadow-md transition-shadow ${classNameBadge} w-28 h-10`}
+            className={`bg-${type} text-white dark:bg-${type} font-bold text-xs sm:text-sm uppercase px-2 rounded-xl flex items-center gap-2 shadow-sm hover:shadow-md transition-shadow ${classNameBadge} w-28 h-8`}
           >
             <img
               src={`/assets/static/pkmnsTypes/${type}.svg`}

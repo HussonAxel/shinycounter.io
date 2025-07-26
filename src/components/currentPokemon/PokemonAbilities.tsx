@@ -17,7 +17,7 @@ interface PokemonAbilitiesProps {
   pokemonAbilities?: PokemonAbility[]
 }
 
-function AbilityPopover({ abilityName }: { abilityName: string }) {
+export function AbilityPopover({ abilityName }: { abilityName: string }) {
   const { data: talentData } = useGetTalentDataByName(abilityName)
 
   return (
@@ -44,10 +44,7 @@ function AbilityPopover({ abilityName }: { abilityName: string }) {
               )?.effect || 'Description non disponible'}
             </p>
           </div>
-          <Link
-            to="/talent/$talent"
-            params={{ talent: abilityName }}
-          >
+          <Link to="/talent/$talent" params={{ talent: abilityName }}>
             <Button size="sm" className="h-7 px-2">
               Details
             </Button>
@@ -70,10 +67,7 @@ export default function PokemonAbilities({
       </h3>
       <div className="flex flex-wrap gap-2">
         {pokemonAbilities.map((ability, index) => (
-          <AbilityPopover
-            key={index}
-            abilityName={ability.ability.name}
-          />
+          <AbilityPopover key={index} abilityName={ability.ability.name} />
         ))}
       </div>
     </div>

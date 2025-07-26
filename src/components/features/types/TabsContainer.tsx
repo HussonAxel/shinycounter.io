@@ -87,7 +87,7 @@ export default function ComponentTabs436() {
         </div>
       </TabsContent>
       <TabsContent value="tab-2">
-        <div className="text-muted-foreground p-4 pt-1 text-center text-xs">
+        <div className="text-muted-foreground md:p-4 pt-1 text-center text-xs">
           <TypePokemons />
         </div>
       </TabsContent>
