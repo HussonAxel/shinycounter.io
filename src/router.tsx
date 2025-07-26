@@ -2,12 +2,10 @@ import { createRouter as createTanstackRouter } from '@tanstack/react-router'
 import { routerWithQueryClient } from '@tanstack/react-router-with-query'
 import * as TanstackQuery from './integrations/tanstack-query/root-provider'
 
-// Import the generated route tree
 import { routeTree } from './routeTree.gen'
 
 import './styles.css'
 
-// Create a new router instance
 export const createRouter = () => {
   const router = routerWithQueryClient(
     createTanstackRouter({
@@ -16,7 +14,9 @@ export const createRouter = () => {
         ...TanstackQuery.getContext(),
       },
       scrollRestoration: true,
-      defaultPreloadStaleTime: 0,
+      defaultPreloadStaleTime: 1000 * 60 * 10,
+      defaultPreload: 'intent',
+      defaultPreloadDelay: 100,
     }),
     TanstackQuery.getContext().queryClient,
   )
@@ -24,7 +24,6 @@ export const createRouter = () => {
   return router
 }
 
-// Register the router instance for type safety
 declare module '@tanstack/react-router' {
   interface Register {
     router: ReturnType<typeof createRouter>
