@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { useParams } from '@tanstack/react-router'
-import { useGetTypeDataByName, useGetAllTypes } from '@/data/pokemons'
+import {
+  useGetTypeDataByName,
+  useGetAllTypes,
+} from '@/data/pokemons'
 import {
   Table,
   TableBody,
@@ -23,6 +26,8 @@ export default function TypeDamageRelations() {
     isLoading: isLoadingAllTypes,
     error: errorAllTypes,
   } = useGetAllTypes()
+
+
 
   if (isLoading || isLoadingAllTypes) return <div>Loading...</div>
   if (error || errorAllTypes)
@@ -106,6 +111,9 @@ export default function TypeDamageRelations() {
 
   return (
     <div>
+      <h1>
+        {data.pokemon.length} {typeName} pokemons
+      </h1>
       <Tabs
         value={tab}
         onValueChange={(v) => setTab(v as 'from' | 'to')}
@@ -135,7 +143,7 @@ function DamageTable({
   isFrom: boolean
 }) {
   return (
-    <Table className="w-4/5 mx-auto my-16">
+    <Table className="w-4/5 mx-auto border border-border">
       <TableHeader>
         <TableRow className="*:border-border hover:bg-transparent [&>:not(:last-child)]:border-r">
           <TableCell></TableCell>
@@ -144,7 +152,7 @@ function DamageTable({
               key={type.name}
               className="text-foreground h-auto py-3 align-bottom px-0 self-center pr-3"
             >
-              <span className="relative left-[calc(50%-.5rem)] block rotate-180 leading-4 whitespace-nowrap [text-orientation:sideways] [writing-mode:vertical-rl] min-h-32 h-32">
+              <span className="relative left-[calc(50%-.5rem)] block rotate-180 leading-4 whitespace-nowrap [text-orientation:sideways] [writing-mode:vertical-rl] min-h-32 h-32 ">
                 <BadgeTypes
                   pokemonTypes={[type.name]}
                   classNameBadge="!min-h-32 !h-32 !w-8"
@@ -160,7 +168,7 @@ function DamageTable({
             key={item.feature}
             className="*:border-border [&>:not(:last-child)]:border-r"
           >
-            <TableHead className="text-foreground font-medium capitalize text-center pt-4">
+            <TableHead className="text-foreground font-medium capitalize text-center py-4">
               <BadgeTypes
                 pokemonTypes={[typeName]}
                 classNameBadge="w-full min-w-32"

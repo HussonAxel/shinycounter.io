@@ -35,7 +35,7 @@ export const fetchNationalDexTyradex = async () => {
   return res.json()
 }
 
-export const fetchPokemonDataByID = async (id: string) => {
+export const fetchPokemonDataByID = async (id: string) => { 
   const res = await fetch(`${BASE_POKEAPI_URL}/pokemon/${id}`)
   if (!res.ok) throw new Error('Failed to fetch pokemon data by id')
   return res.json()

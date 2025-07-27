@@ -111,7 +111,14 @@ export default function PokemonForms({
       </div>
     )
   }
+  
   const pokemonVarieties = pokemonSpeciesData.varieties
+
+  // Filtrer les formes alternatives (exclure le Pokémon actuel)
+  const alternativeForms = pokemonVarieties.filter(
+    (variety: PokemonVariety) => 
+      normalizePokemonName(variety.pokemon.name) !== pokemonName
+  )
 
   const currentPokemonData = pokemonsTyradex.find(
     ({ name }: { name: { en: string } }) =>
@@ -122,7 +129,7 @@ export default function PokemonForms({
   const nextEvolutions = currentPokemonData?.evolution?.next || []
 
   const hasEvolutions = preEvoltutions.length > 0 || nextEvolutions.length > 0
-  const hasForms = pokemonVarieties.length > 0
+  const hasForms = alternativeForms.length > 0
 
   if (!hasEvolutions && !hasForms) {
     return null
@@ -168,9 +175,9 @@ export default function PokemonForms({
               Alternative Forms
             </h4>
             <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
-              {pokemonVarieties.map(
+              {alternativeForms.map(
                 (variety: PokemonVariety, index: number) => (
-                  <PokemonForm key={index} variety={variety} isCurrent={normalizePokemonName(variety.pokemon.name) === pokemonName} />
+                  <PokemonForm key={index} variety={variety} />
                 ),
               )}
             </div>
