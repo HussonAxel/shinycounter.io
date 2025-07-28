@@ -25,7 +25,7 @@ export function AbilityPopover({ abilityName }: { abilityName: string }) {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="text-xs sm:text-sm capitalize hover:bg-gray-50 dark:hover:bg-gray-700 hover:cursor-help"
+          className="text-xs sm:text-sm capitalize hover:bg-gray-50 dark:hover:bg-gray-700 hover:cursor-help w-32"
         >
           {abilityName.replace('-', ' ')}
         </Button>

@@ -12,6 +12,9 @@ import {
 import BadgeTypes from '@/components/BadgeTypes'
 import { AbilityPopover } from '@/components/currentPokemon/PokemonAbilities'
 import { beautifyPokemonName } from '@/lib/functions'
+import { GENERATIONS } from '@/data/consts'
+import Comp369 from '@/components/DropdownTooltip'
+import { PokeballIcon } from '@/components/svg/pokeball'
 
 type Pokemon = {
   id: number
@@ -45,65 +48,172 @@ export default function TypePokemons() {
   const { data: pokemonsData, isLoading: isLoadingPokemons } =
     useGetPokemonsDataByUrls(pokemonUrls)
 
-  if (isLoading || isLoadingPokemons) return <div>Chargement...</div>
-  if (error) return <div>Erreur: {error.message}</div>
-  if (!data || !pokemonsData) return <div>Aucune donnée trouvée</div>
+  if (isLoading || isLoadingPokemons)
+    return (
+      <div className="w-3/4 mx-auto flex items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <p className="text-gray-600 font-medium">Chargement des Pokémon...</p>
+        </div>
+      </div>
+    )
+
+  if (error)
+    return (
+      <div className="w-3/4 mx-auto flex items-center justify-center min-h-[400px]">
+        <div className="text-center p-6 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-red-600 font-medium">Erreur: {error.message}</p>
+        </div>
+      </div>
+    )
+
+  if (!data || !pokemonsData)
+    return (
+      <div className="w-3/4 mx-auto flex items-center justify-center min-h-[400px]">
+        <div className="text-center p-6 bg-gray-50 border border-gray-200 rounded-lg">
+          <p className="text-gray-600 font-medium">Aucune donnée trouvée</p>
+        </div>
+      </div>
+    )
+
+  const isPokemonCaught = (pokemonId: number) => {
+    return pokemonId % 2 === 0
+  }
 
   console.log(pokemonsData)
   return (
-    <div className="w-3/4 mx-auto">
-      <h2 className="text-xl font-bold mb-4 capitalize">{type} pokemons</h2>
-      <div className="border rounded-lg">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-left p-3 font-medium">
-                Sprite
-              </TableHead>
-              <TableHead className="text-left p-3 font-medium">
-                Nom du Pokémon
-              </TableHead>
-              <TableHead className="text-left p-3 font-medium">ID</TableHead>
-              <TableHead className="text-left p-3 font-medium">Types</TableHead>
-              <TableHead className="text-left p-3 font-medium">
-                Abilities
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {pokemonsData.map((pokemon: Pokemon) => (
-              <TableRow key={pokemon.id} className="border-b hover:bg-gray-50">
-                <TableCell>
-                  <img
-                    src={`/assets/static/sprites/base/${pokemon.id}.webp`}
-                    alt={pokemon.name}
-                    className="w-28 h-auto"
-                  />
-                </TableCell>
-                <TableCell className="text-left p-3 text-lg">
-                  {beautifyPokemonName(pokemon.name)}
-                </TableCell>
-                <TableCell className="text-left p-3">
-                  <span className="font-semibold">
-                    #{pokemon.id.toString().padStart(3, '0')}
-                  </span>
-                </TableCell>
-                <TableCell className="text-left p-3">
-                  <BadgeTypes
-                    pokemonTypes={pokemon.types.map(
-                      (type: any) => type.type.name,
-                    )}
-                  />
-                </TableCell>
-                <TableCell className="text-left p-3 flex flex-col gap-2">
-                  {pokemon.abilities.map((ability: any) => (
-                    <AbilityPopover abilityName={ability.ability.name} />
-                  ))}
-                </TableCell>
+    <div className="w-3/4 mx-auto space-y-6">
+      <div className="text-center space-y-2">
+        <h2 className="text-3xl font-bold text-gray-900 capitalize">
+          {type} pokemons
+        </h2>
+        <p className="text-gray-600 text-lg">
+          {pokemonsData.length} found
+          {pokemonsData.length > 1 ? 's' : ''}
+        </p>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                  Sprite
+                </TableHead>
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                  Statut
+                </TableHead>
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                  ID
+                </TableHead>
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                  Nom
+                </TableHead>
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                  Génération
+                </TableHead>
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                  Types
+                </TableHead>
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm w-48">
+                  Capacités
+                </TableHead>
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                  Actions
+                </TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {pokemonsData.map((pokemon: Pokemon, index: number) => (
+                <TableRow
+                  key={pokemon.id}
+                  className="border-b border-gray-100"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  <TableCell className="p-4 pl-0">
+                    <div className="flex items-center justify-center">
+                      <div className="relative group-hover:scale-110 transition-transform duration-200">
+                        <img
+                          src={`/assets/static/sprites/base/${pokemon.id}.webp`}
+                          alt={pokemon.name}
+                          className="w-20 h-20 object-contain drop-shadow-lg"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement
+                            target.src = '/assets/static/sprites/base/1.webp' // Fallback image
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="p-4 text-center">
+                    <div className="group cursor-pointer">
+                      <PokeballIcon isCaught={isPokemonCaught(pokemon.id)} />
+                    </div>
+                  </TableCell>
+                  <TableCell className="p-4 text-left">
+                    <span className="px-3 py-1.5 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 font-bold text-sm rounded-full border border-gray-300 shadow-sm text-left">
+                      #{pokemon.id.toString().padStart(3, '0')}
+                    </span>
+                  </TableCell>
+                  <TableCell className="p-4 text-left">
+                    <div className="font-semibold text-left text-md text-clip max-w-24">
+                      {beautifyPokemonName(pokemon.name)}
+                    </div>
+                  </TableCell>
+                  <TableCell className="p-4 text-left">
+                    <span className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 text-sm font-medium rounded-full border border-green-200">
+                      {
+                        GENERATIONS.find(
+                          (generation) =>
+                            pokemon.id >= generation.start &&
+                            pokemon.id <= (generation?.end || 100000),
+                        )?.name
+                      }
+                    </span>
+                  </TableCell>
+                  <TableCell className="p-4 text-left">
+                    <div className="flex flex-col gap-1">
+                      <BadgeTypes
+                        className="flex-col"
+                        pokemonTypes={pokemon.types.map(
+                          (type: any) => type.type.name,
+                        )}
+                      />
+                    </div>
+                  </TableCell>
+                  <TableCell className="p-4 text-left">
+                    <div className="flex flex-col gap-2 w-full">
+                      {pokemon.abilities.map(
+                        (ability: any, abilityIndex: number) => (
+                          <div key={abilityIndex} className="w-full">
+                            <AbilityPopover
+                              abilityName={ability.ability.name}
+                            />
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell className="p-4 pr-0">
+                    <div className="flex items-left justify-left">
+                      <div className="group-hover:scale-110 transition-transform duration-200">
+                        <Comp369 />
+                      </div>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+
+      <div className="text-center text-sm text-gray-500">
+        <p>
+          Affichage de {pokemonsData.length} Pokémon de type {type}
+        </p>
       </div>
     </div>
   )
