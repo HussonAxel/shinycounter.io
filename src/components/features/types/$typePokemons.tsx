@@ -78,6 +78,8 @@ export default function TypePokemons() {
     return pokemonId % 2 === 0
   }
 
+  const tableRows = ["Sprites", "Statut", "ID", "Nom", "Génération", "HP", "ATK", "DEF", "ATK. SPE", "DEF. SPE", "SPEED", "Tabs"]
+
   return (
     <div className="w-9/10 mx-auto space-y-6">
       <div className="text-center space-y-2">
@@ -95,43 +97,11 @@ export default function TypePokemons() {
           <Table>
             <TableHeader>
               <TableRow className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
-                  Sprite
-                </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
-                  Statut
-                </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
-                  ID
-                </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
-                  Nom
-                </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
-                  Génération
-                </TableHead>
-
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
-                  HP
-                </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
-                  ATK
-                </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
-                  DEF
-                </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
-                  ATK. SPE
-                </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
-                  DEF. SPE
-                </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
-                  SPEED
-                </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
-                  Tabs
-                </TableHead>
+                {tableRows.map((row) => (
+                  <TableHead key={row} className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
+                    {row}
+                  </TableHead>
+                ))}
               </TableRow>
             </TableHeader>
             <TableBody>
