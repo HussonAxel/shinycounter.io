@@ -47,6 +47,7 @@ export default function PokemonDatabaseCard({
           src={pokemonImage}
           alt={pokemonName}
           className="w-full m-auto max-w-[150px]"
+          loading='lazy'
         />
         <CardTitle className="capitalize">{pokemonName}</CardTitle>
         <CardDescription>#{pokemonId}</CardDescription>

@@ -78,7 +78,6 @@ export default function TypePokemons() {
     return pokemonId % 2 === 0
   }
 
-  console.log(pokemonsData)
   return (
     <div className="w-9/10 mx-auto space-y-6">
       <div className="text-center space-y-2">
@@ -96,41 +95,41 @@ export default function TypePokemons() {
           <Table>
             <TableHeader>
               <TableRow className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
                   Sprite
                 </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
                   Statut
                 </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
                   ID
                 </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
                   Nom
                 </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
                   Génération
                 </TableHead>
 
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
                   HP
                 </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
-                  Attaque
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
+                  ATK
                 </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
-                  Défense
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
+                  DEF
                 </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
-                  Spécial Attaque
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
+                  ATK. SPE
                 </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
-                  Spécial Défense
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
+                  DEF. SPE
                 </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
-                  Vitesse
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
+                  SPEED
                 </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm max-w-28">
                   Tabs
                 </TableHead>
               </TableRow>
@@ -165,7 +164,7 @@ export default function TypePokemons() {
                     </span>
                   </TableCell>
                   <TableCell className="p-4 text-left">
-                    <div className="font-semibold text-left text-md text-clip max-w-24">
+                    <div className="font-semibold text-left text-md text-clip max-w-28">
                       {beautifyPokemonName(pokemon.name)}
                     </div>
                   </TableCell>
