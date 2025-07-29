@@ -187,190 +187,10 @@ code {
   transition: .2s all
 }
 
-.bg-Insecte,
-.bg-Insecte {
-  background: #92bc2c;
-  box-shadow: 0 0 10px #92bc2c
-}
-
-.bg-Insecte path {
-  fill: #92bc2c
-}
-
-.Ténèbres,
-.bg-Ténèbres {
-  background: #595761;
-  box-shadow: 0 0 10px #595761
-}
-
-.bg-Ténèbres path {
-  fill: #595761
-}
-
-.Dragon,
-.bg-Dragon {
-  background: #0c69c8;
-  box-shadow: 0 0 10px #0c69c8
-}
-
-.bg-Dragon path {
-  fill: #0c69c8
-}
-
-.Électrik,
-.bg-Électrik {
-  background: #f2d94e;
-  box-shadow: 0 0 10px #f2d94e
-}
-
-.bg-Électrik path {
-  fill: #f2d94e
-}
-
-.Feu,
-.bg-Feu {
-  background: #fba54c;
-  box-shadow: 0 0 10px #fba64c
-}
-
-.bg-Feu path {
-  fill: #fba54c
-}
-
-.Fée,
-.bg-Fée {
-  background: #ee90e6;
-  box-shadow: 0 0 10px #ee90e6
-}
-
-.bg-Fée path {
-  fill: #ee90e6
-}
-
-.Combat,
-.bg-Combat {
-  background: #d3425f;
-  box-shadow: 0 0 10px #d3425f
-}
-
-.bg-Combat path {
-  fill: #d3425f
-}
-
-.Vol,
-.bg-Vol {
-  background: #a1bbec;
-  box-shadow: 0 0 10px #a1bbec
-}
-
-.bg-Vol path {
-  fill: #a1bbec
-}
-
-.Spectre,
-.bg-Spectre {
-  background: #5f6dbc;
-  box-shadow: 0 0 10px #5f6dbc
-}
-
-.bg-Spectre path {
-  fill: #5f6dbc
-}
-
-.Plante,
-.bg-Plante {
-  background: #5fbd58;
-  box-shadow: 0 0 10px #5fbd58
-}
-
-.bg-Plante path {
-  fill: #5fbd58
-}
-
-.Sol,
-.bg-Sol {
-  background: #da7c4d;
-  box-shadow: 0 0 10px #da7c4d
-}
-
-.bg-Sol path {
-  fill: #da7c4d
-}
-
-.Glace,
-.bg-Glace {
-  background: #75d0c1;
-  box-shadow: 0 0 10px #75d0c1
-}
-
-.bg-Glace path {
-  fill: #75d0c1
-}
-
-.Normal,
-.bg-Normal {
-  background: #a0a29f;
-  box-shadow: 0 0 10px #a0a29f
-}
-
-.bg-Normal path {
-  fill: #a0a29f
-}
-
-.Poison,
-.bg-Poison {
-  background: #b763cf;
-  box-shadow: 0 0 10px #b763cf;
-}
-
-.bg-Poison path {
-  fill: #b763cf
-}
-
-.Psy,
-.bg-Psy {
-  background: #fa8581;
-  box-shadow: 0 0 10px #fa8581
-}
-
-.bg-Psy path {
-  fill: #fa8581
-}
-
-.Roche,
-.bg-Roche {
-  background: #c9bb8a;
-  box-shadow: 0 0 10px #c9bb8a
-}
-
-.bg-Roche path {
-  fill: #c9bb8a
-}
-
-.Acier,
-.bg-Acier {
-  background: #5695a3;
-  box-shadow: 0 0 10px #5695a3
-}
-
-.bg-Acier path {
-  fill: #5695a3
-}
-
-.Eau,
-.bg-Eau {
-  background: #539ddf;
-  box-shadow: 0 0 10px #539ddf
-}
-
-.bg-Eau path {
-  fill: #539ddf
-}
-
 .bg-bug,
 .bug {
   background: #92bc2c;
-  box-shadow: 0 0 10px #92bc2c
+  box-shadow: 0 0 5px #92bc2c
 }
 
 .bg-bug path {
@@ -380,7 +200,7 @@ code {
 .dark,
 .bg-dark {
   background: #595761;
-  box-shadow: 0 0 10px #595761
+  box-shadow: 0 0 5px #595761
 }
 
 .bg-dark path {
@@ -390,7 +210,7 @@ code {
 .dragon,
 .bg-dragon {
   background: #0c69c8;
-  box-shadow: 0 0 10px #0c69c8
+  box-shadow: 0 0 5px #0c69c8
 }
 
 .bg-dragon path {
@@ -400,7 +220,7 @@ code {
 .electric,
 .bg-electric {
   background: #f2d94e;
-  box-shadow: 0 0 10px #f2d94e
+  box-shadow: 0 0 5px #f2d94e
 }
 
 .bg-electric path {
@@ -410,7 +230,7 @@ code {
 .fire,
 .bg-fire {
   background: #fba54c;
-  box-shadow: 0 0 10px #fba64c
+  box-shadow: 0 0 5px #fba64c
 }
 
 .bg-fire path {
@@ -420,7 +240,7 @@ code {
 .fairy,
 .bg-fairy {
   background: #ee90e6;
-  box-shadow: 0 0 10px #ee90e6
+  box-shadow: 0 0 5px #ee90e6
 }
 
 .bg-fairy path {
@@ -430,7 +250,7 @@ code {
 .fighting,
 .bg-fighting {
   background: #d3425f;
-  box-shadow: 0 0 10px #d3425f
+  box-shadow: 0 0 5px #d3425f
 }
 
 .bg-fighting path {
@@ -440,7 +260,7 @@ code {
 .flying,
 .bg-flying {
   background: #a1bbec;
-  box-shadow: 0 0 10px #a1bbec
+  box-shadow: 0 0 5px #a1bbec
 }
 
 .bg-flying path {
@@ -450,7 +270,7 @@ code {
 .ghost,
 .bg-ghost {
   background: #5f6dbc;
-  box-shadow: 0 0 10px #5f6dbc
+  box-shadow: 0 0 5px #5f6dbc
 }
 
 .bg-ghost path {
@@ -460,7 +280,7 @@ code {
 .grass,
 .bg-grass {
   background: #5fbd58;
-  box-shadow: 0 0 10px #5fbd58
+  box-shadow: 0 0 5px #5fbd58
 }
 
 .bg-grass path {
@@ -470,7 +290,7 @@ code {
 .ground,
 .bg-ground {
   background: #da7c4d;
-  box-shadow: 0 0 10px #da7c4d
+  box-shadow: 0 0 5px #da7c4d
 }
 
 .bg-ground path {
@@ -480,7 +300,7 @@ code {
 .ice,
 .bg-ice {
   background: #75d0c1;
-  box-shadow: 0 0 10px #75d0c1
+  box-shadow: 0 0 5px #75d0c1
 }
 
 .bg-ice path {
@@ -490,7 +310,7 @@ code {
 .normal,
 .bg-normal {
   background: #a0a29f;
-  box-shadow: 0 0 10px #a0a29f
+  box-shadow: 0 0 5px #a0a29f
 }
 
 .bg-normal path {
@@ -500,7 +320,7 @@ code {
 .poison,
 .bg-poison {
   background: #b763cf;
-  box-shadow: 0 0 10px #b763cf;
+  box-shadow: 0 0 5px #b763cf;
 }
 
 .bg-poison path {
@@ -510,7 +330,7 @@ code {
 .psychic,
 .bg-psychic {
   background: #fa8581;
-  box-shadow: 0 0 10px #fa8581
+  box-shadow: 0 0 5px #fa8581
 }
 
 .bg-psychic path {
@@ -520,7 +340,7 @@ code {
 .rock,
 .bg-rock {
   background: #c9bb8a;
-  box-shadow: 0 0 10px #c9bb8a
+  box-shadow: 0 0 5px #c9bb8a
 }
 
 .bg-rock path {
@@ -530,7 +350,7 @@ code {
 .steel,
 .bg-steel {
   background: #5695a3;
-  box-shadow: 0 0 10px #5695a3
+  box-shadow: 0 0 5px #5695a3
 }
 
 .bg-steel path {
@@ -540,7 +360,7 @@ code {
 .water,
 .bg-water {
   background: #539ddf;
-  box-shadow: 0 0 10px #539ddf
+  box-shadow: 0 0 5px #539ddf
 }
 
 .bg-water path {

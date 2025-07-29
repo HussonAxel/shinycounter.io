@@ -9,8 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import BadgeTypes from '@/components/BadgeTypes'
-import { AbilityPopover } from '@/components/currentPokemon/PokemonAbilities'
 import { beautifyPokemonName } from '@/lib/functions'
 import { GENERATIONS } from '@/data/consts'
 import Comp369 from '@/components/DropdownTooltip'
@@ -82,7 +80,7 @@ export default function TypePokemons() {
 
   console.log(pokemonsData)
   return (
-    <div className="w-3/4 mx-auto space-y-6">
+    <div className="w-9/10 mx-auto space-y-6">
       <div className="text-center space-y-2">
         <h2 className="text-3xl font-bold text-gray-900 capitalize">
           {type} pokemons
@@ -113,24 +111,33 @@ export default function TypePokemons() {
                 <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
                   Génération
                 </TableHead>
+
                 <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
-                  Types
-                </TableHead>
-                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm w-48">
-                  Capacités
+                  HP
                 </TableHead>
                 <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
-                  Actions
+                  Attaque
+                </TableHead>
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                  Défense
+                </TableHead>
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                  Spécial Attaque
+                </TableHead>
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                  Spécial Défense
+                </TableHead>
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                  Vitesse
+                </TableHead>
+                <TableHead className="text-left p-4 font-semibold text-gray-700 uppercase tracking-wide text-sm">
+                  Tabs
                 </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {pokemonsData.map((pokemon: Pokemon, index: number) => (
-                <TableRow
-                  key={pokemon.id}
-                  className="border-b border-gray-100"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
+              {pokemonsData.map((pokemon: Pokemon) => (
+                <TableRow key={pokemon.id} className="border-b border-gray-100">
                   <TableCell className="p-4 pl-0">
                     <div className="flex items-center justify-center">
                       <div className="relative group-hover:scale-110 transition-transform duration-200">
@@ -153,7 +160,7 @@ export default function TypePokemons() {
                     </div>
                   </TableCell>
                   <TableCell className="p-4 text-left">
-                    <span className="px-3 py-1.5 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 font-bold text-sm rounded-full border border-gray-300 shadow-sm text-left">
+                    <span className="px-3 py-1.5 bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 font-bold text-sm rounded-md border border-gray-300 shadow-sm text-left">
                       #{pokemon.id.toString().padStart(3, '0')}
                     </span>
                   </TableCell>
@@ -163,7 +170,7 @@ export default function TypePokemons() {
                     </div>
                   </TableCell>
                   <TableCell className="p-4 text-left">
-                    <span className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 text-sm font-medium rounded-full border border-green-200">
+                    <span className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 text-sm font-medium rounded-full border border-green-400">
                       {
                         GENERATIONS.find(
                           (generation) =>
@@ -173,33 +180,22 @@ export default function TypePokemons() {
                       }
                     </span>
                   </TableCell>
-                  <TableCell className="p-4 text-left">
-                    <div className="flex flex-col gap-1">
-                      <BadgeTypes
-                        className="flex-col"
-                        pokemonTypes={pokemon.types.map(
-                          (type: any) => type.type.name,
-                        )}
-                      />
-                    </div>
-                  </TableCell>
-                  <TableCell className="p-4 text-left">
-                    <div className="flex flex-col gap-2 w-full">
-                      {pokemon.abilities.map(
-                        (ability: any, abilityIndex: number) => (
-                          <div key={abilityIndex} className="w-full">
-                            <AbilityPopover
-                              abilityName={ability.ability.name}
-                            />
-                          </div>
-                        ),
-                      )}
-                    </div>
-                  </TableCell>
+
+                  {pokemon.stats.map((stat: any, statIndex: number) => (
+                    <TableCell className="p-4 text-left">
+                      <div className="flex flex-col gap-2 w-full">
+                        <div key={statIndex} className="w-full">
+                          <span className="text-sm text-gray-500">
+                            {stat.base_stat}
+                          </span>
+                        </div>
+                      </div>
+                    </TableCell>
+                  ))}
                   <TableCell className="p-4 pr-0">
                     <div className="flex items-left justify-left">
                       <div className="group-hover:scale-110 transition-transform duration-200">
-                        <Comp369 />
+                        <Comp369 pokemonName={pokemon.name} />
                       </div>
                     </div>
                   </TableCell>

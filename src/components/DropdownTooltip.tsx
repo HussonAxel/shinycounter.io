@@ -5,6 +5,9 @@ import {
   Layers2Icon,
   TrashIcon,
   MoreHorizontalIcon,
+  EyeIcon,
+  PlusIcon,
+  StarIcon,
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -16,8 +19,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { Link } from '@tanstack/react-router'
 
-export default function Comp369() {
+export default function Comp369({ pokemonName }: { pokemonName: string }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,15 +33,21 @@ export default function Comp369() {
           />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent align="end">
         <DropdownMenuGroup>
+          <Link to="/pokemon/$pokemon" params={{ pokemon: pokemonName }}>
+            <DropdownMenuItem>
+              <EyeIcon size={16} className="opacity-60" aria-hidden="true" />
+              View Page
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuItem>
-            <CopyPlusIcon size={16} className="opacity-60" aria-hidden="true" />
-            Copy
+            <PlusIcon size={16} className="opacity-60" aria-hidden="true" />
+            Add to Collection
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
-            Edit
+            <StarIcon size={16} className="opacity-60" aria-hidden="true" />
+            Add to collection (shiny)
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
